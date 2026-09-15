@@ -20,6 +20,7 @@ import com.example.ui.AppScreen
 import com.example.ui.QuizViewModel
 import com.example.ui.screens.AddQuestionScreen
 import com.example.ui.screens.BookmarksScreen
+import com.example.ui.screens.ContentHubScreen
 import com.example.ui.screens.HomeScreen
 import com.example.ui.screens.MistakesScreen
 import com.example.ui.screens.QuestionBankScreen
@@ -62,6 +63,7 @@ fun MainAppContent(viewModel: QuizViewModel) {
             is AppScreen.QuizPlay -> QuizPlayScreen(viewModel = viewModel)
             is AppScreen.QuizResult -> QuizResultScreen(viewModel = viewModel)
             is AppScreen.AddQuestion -> AddQuestionScreen(viewModel = viewModel)
+            is AppScreen.ContentCreatorHub -> ContentHubScreen(viewModel = viewModel)
             is AppScreen.QuestionBank -> QuestionBankScreen(viewModel = viewModel)
             is AppScreen.Bookmarks -> BookmarksScreen(viewModel = viewModel)
             is AppScreen.Mistakes -> MistakesScreen(viewModel = viewModel)

@@ -8,6 +8,9 @@ import com.example.data.DefaultQuestions
 import com.example.data.QuestionRepository
 import com.example.data.model.QuestionEntity
 import com.example.data.model.QuizAttemptEntity
+import com.example.data.model.StudyMaterialEntity
+import com.example.util.ContentSeparator
+import com.example.util.ParsedQuestionItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,6 +24,7 @@ sealed interface AppScreen {
     data object QuizPlay : AppScreen
     data object QuizResult : AppScreen
     data object AddQuestion : AppScreen
+    data object ContentCreatorHub : AppScreen
     data object QuestionBank : AppScreen
     data object Bookmarks : AppScreen
     data object Mistakes : AppScreen
@@ -65,10 +69,11 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         val database = AppDatabase.getDatabase(application, viewModelScope)
-        repository = QuestionRepository(database.questionDao(), database.quizAttemptDao())
-        viewModelScope.launch {
-            repository.resetToFreshUnits()
-        }
+        repository = QuestionRepository(
+            database.questionDao(),
+            database.quizAttemptDao(),
+            database.studyMaterialDao()
+        )
     }
 
     // Screen navigation stack
@@ -94,6 +99,9 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DefaultQuestions.allCategories)
 
     val recentAttempts: StateFlow<List<QuizAttemptEntity>> = repository.quizAttempts
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val allStudyMaterials: StateFlow<List<StudyMaterialEntity>> = repository.allStudyMaterials
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     // Active Quiz Session
@@ -345,6 +353,71 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             repository.resetAllAttempts()
             _statusMessage.value = "अभ्यास प्रगति रीसेट कर दी गई।"
+        }
+    }
+
+    // Save Content Hub Data: Lecture link, Notes, and Quiz Questions
+    fun saveContentHubData(
+        unitCategory: String,
+        subTopic: String,
+        youtubeUrl: String,
+        youtubeTitle: String,
+        timestampNotes: String,
+        notesContent: String,
+        parsedQuestions: List<ParsedQuestionItem>,
+        onSaved: (insertedQuestions: List<QuestionEntity>) -> Unit
+    ) {
+        viewModelScope.launch {
+            val videoId = ContentSeparator.extractYouTubeVideoId(youtubeUrl) ?: ""
+            val entities = parsedQuestions.map { it.toQuestionEntity(unitCategory) }
+
+            if (entities.isNotEmpty()) {
+                repository.insertQuestions(entities)
+            }
+
+            if (youtubeUrl.isNotBlank() || notesContent.isNotBlank() || entities.isNotEmpty()) {
+                val material = StudyMaterialEntity(
+                    unitCategory = unitCategory,
+                    subTopic = subTopic.trim(),
+                    youtubeUrl = youtubeUrl.trim(),
+                    youtubeVideoId = videoId,
+                    youtubeTitle = youtubeTitle.trim().ifEmpty { "यूट्यूब वीडियो लेक्चर - $unitCategory" },
+                    timestampNotes = timestampNotes.trim(),
+                    notesContent = notesContent.trim(),
+                    questionsCount = entities.size,
+                    dateAddedMillis = System.currentTimeMillis()
+                )
+                repository.insertStudyMaterial(material)
+            }
+
+            _statusMessage.value = "सफलतापूर्वक सहेजा गया: ${entities.size} प्रश्न क्विज़ में जोड़े गए।"
+            onSaved(entities)
+        }
+    }
+
+    // Start a quiz immediately with custom questions
+    fun startQuizWithCustomQuestions(title: String, category: String, questions: List<QuestionEntity>) {
+        if (questions.isEmpty()) {
+            _statusMessage.value = "क्विज़ के लिए प्रश्न उपलब्ध नहीं हैं।"
+            return
+        }
+        _quizState.value = ActiveQuizState(
+            title = title,
+            category = category,
+            questions = questions,
+            currentIndex = 0,
+            userAnswers = emptyMap(),
+            isSubmitted = false,
+            showInstantExplanation = true
+        )
+        navigateTo(AppScreen.QuizPlay)
+    }
+
+    // Delete a study material entry
+    fun deleteStudyMaterial(material: StudyMaterialEntity) {
+        viewModelScope.launch {
+            repository.deleteStudyMaterial(material)
+            _statusMessage.value = "अध्ययन सामग्री हटा दी गई।"
         }
     }
 }

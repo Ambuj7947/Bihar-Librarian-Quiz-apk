@@ -7,21 +7,24 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.data.dao.QuestionDao
 import com.example.data.dao.QuizAttemptDao
+import com.example.data.dao.StudyMaterialDao
 import com.example.data.model.QuestionEntity
 import com.example.data.model.QuizAttemptEntity
+import com.example.data.model.StudyMaterialEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [QuestionEntity::class, QuizAttemptEntity::class],
-    version = 2,
+    entities = [QuestionEntity::class, QuizAttemptEntity::class, StudyMaterialEntity::class],
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun questionDao(): QuestionDao
     abstract fun quizAttemptDao(): QuizAttemptDao
+    abstract fun studyMaterialDao(): StudyMaterialDao
 
     companion object {
         @Volatile

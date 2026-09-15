@@ -36,6 +36,7 @@ fun TopHeader(
     onBack: () -> Unit = {},
     isBookmarked: Boolean? = null,
     onToggleBookmark: (() -> Unit)? = null,
+    actionContent: (@Composable () -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -97,8 +98,10 @@ fun TopHeader(
                 }
             }
 
-            // Right: Bookmark toggle (if applicable)
-            if (isBookmarked != null && onToggleBookmark != null) {
+            // Right: Bookmark toggle (if applicable) or custom action
+            if (actionContent != null) {
+                actionContent()
+            } else if (isBookmarked != null && onToggleBookmark != null) {
                 IconButton(
                     onClick = onToggleBookmark,
                     modifier = Modifier.size(48.dp)

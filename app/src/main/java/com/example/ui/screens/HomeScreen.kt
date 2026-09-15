@@ -29,16 +29,18 @@ import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.LocalLibrary
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.PostAdd
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.SmartDisplay
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -83,26 +85,20 @@ fun HomeScreen(
         topBar = {
             TopHeader(
                 title = "बिहार लाइब्रेरियन परीक्षा",
-                subtitle = "BLAT पात्रता परीक्षा तैयारी",
-                showBack = false
-            )
-        },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = { viewModel.navigateTo(AppScreen.AddQuestion) },
-                icon = { Icon(Icons.Default.Add, contentDescription = null) },
-                text = {
-                    Text(
-                        text = "नया प्रश्न जोड़ें",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = (15 * scale).sp
-                    )
-                },
-                containerColor = SaffronPrimary,
-                contentColor = Color.White,
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .testTag("add_question_fab")
+                subtitle = "BLET पात्रता परीक्षा तैयारी",
+                showBack = false,
+                actionContent = {
+                    IconButton(
+                        onClick = { viewModel.navigateTo(AppScreen.ContentCreatorHub) },
+                        modifier = Modifier.testTag("topbar_content_creator_hub_button")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PostAdd,
+                            contentDescription = "सामग्री / प्रश्न जोड़ें",
+                            tint = Color.White
+                        )
+                    }
+                }
             )
         },
         modifier = modifier.fillMaxSize()
@@ -297,6 +293,109 @@ fun HomeScreen(
                 }
             }
 
+            // Dedicated Content Creator Hub Feature Card (YouTube + Notes + Auto-Quiz Separator)
+            item {
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(
+                            Brush.horizontalGradient(
+                                listOf(Color(0xFF172E54), Color(0xFF1C3052))
+                            )
+                        )
+                        .clickable { viewModel.navigateTo(AppScreen.ContentCreatorHub) }
+                        .testTag("content_creator_hub_card")
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(38.dp)
+                                        .background(WisdomGold.copy(alpha = 0.2f), CircleShape),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.PostAdd,
+                                        contentDescription = null,
+                                        tint = WisdomGold,
+                                        modifier = Modifier.size(22.dp)
+                                    )
+                                }
+
+                                Column {
+                                    Text(
+                                        text = "सामग्री निर्माता केंद्र",
+                                        style = MaterialTheme.typography.titleMedium.copy(
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = (16 * scale).sp
+                                        ),
+                                        color = Color.White
+                                    )
+                                    Text(
+                                        text = "YouTube लिंक, नोट्स व ऑटो क्विज़ बनाएं",
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            fontSize = (12 * scale).sp
+                                        ),
+                                        color = Color(0xFFCBD5E1)
+                                    )
+                                }
+                            }
+
+                            Box(
+                                modifier = Modifier
+                                    .background(WisdomGold, RoundedCornerShape(10.dp))
+                                    .padding(horizontal = 8.dp, vertical = 3.dp)
+                            ) {
+                                Text(
+                                    text = "नया पेज",
+                                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                    color = Color(0xFF351000)
+                                )
+                            }
+                        }
+
+                        Text(
+                            text = "सिंगल फाइल या टेक्स्ट प्रदान करें — सिस्टम नोट्स और प्रश्नों को अलग कर देगा और स्वतः नए क्विज़ तैयार करेगा।",
+                            style = MaterialTheme.typography.bodySmall.copy(fontSize = (12 * scale).sp),
+                            color = Color(0xFFE2E8F0)
+                        )
+
+                        Button(
+                            onClick = { viewModel.navigateTo(AppScreen.ContentCreatorHub) },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFD35400),
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Icon(Icons.Default.SmartDisplay, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "वीडियो, नोट्स एवं क्विज़ जोड़ें ➔",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (13 * scale).sp
+                            )
+                        }
+                    }
+                }
+            }
+
             // Categorized Practice Sets Header
             item {
                 Row(
@@ -318,46 +417,6 @@ fun HomeScreen(
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.SemiBold
                     )
-                }
-            }
-
-            if (allQuestions.isEmpty()) {
-                item {
-                    Card(
-                        shape = RoundedCornerShape(14.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFEFF6FF)),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(1.dp, Color(0xFFBFDBFE), RoundedCornerShape(14.dp))
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(14.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = null,
-                                tint = IndigoSecondary,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = "नया प्रश्न बैंक तैयार करें",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = (14 * scale).sp,
-                                    color = Color(0xFF1E3A8A)
-                                )
-                                Spacer(modifier = Modifier.height(2.dp))
-                                Text(
-                                    text = "पाठ्यक्रम की 5 इकाइयाँ सेट हो चुकी हैं। प्रतिदिन नए प्रश्न जोड़ने के लिए नीचे '+' बटन दबाएं।",
-                                    fontSize = (12 * scale).sp,
-                                    color = Color(0xFF1D4ED8)
-                                )
-                            }
-                        }
-                    }
                 }
             }
 
