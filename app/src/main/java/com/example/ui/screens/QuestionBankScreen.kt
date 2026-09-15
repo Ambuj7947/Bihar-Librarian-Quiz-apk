@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Check
@@ -54,6 +55,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.QuestionEntity
+import com.example.ui.AppScreen
 import com.example.ui.QuizViewModel
 import com.example.ui.components.ExplanationCard
 import com.example.ui.components.TopHeader
@@ -188,7 +190,7 @@ fun QuestionBankScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 40.dp),
+                            .padding(vertical = 32.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -200,11 +202,31 @@ fun QuestionBankScreen(
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             Text(
-                                text = "कोई प्रश्न नहीं मिला",
+                                text = if (selectedCategory == "सभी") "अभी कोई प्रश्न उपलब्ध नहीं है" else "'$selectedCategory' में कोई प्रश्न नहीं है",
                                 fontSize = (16 * scale).sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF64748B)
                             )
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(
+                                text = "प्रतिदिन नए प्रश्न जोड़ने के लिए नीचे दिए गए बटन पर टैप करें।",
+                                fontSize = (13 * scale).sp,
+                                color = Color(0xFF94A3B8)
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = { viewModel.navigateTo(AppScreen.AddQuestion) },
+                                colors = ButtonDefaults.buttonColors(containerColor = SaffronPrimary),
+                                shape = RoundedCornerShape(12.dp)
+                            ) {
+                                Icon(Icons.Default.Add, contentDescription = null)
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "नया प्रश्न जोड़ें",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = (14 * scale).sp
+                                )
+                            }
                         }
                     }
                 }

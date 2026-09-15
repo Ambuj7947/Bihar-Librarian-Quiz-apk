@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [QuestionEntity::class, QuizAttemptEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -34,28 +34,10 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "bihar_librarian_db"
                 )
-                    .addCallback(DatabaseCallback(scope))
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance
-            }
-        }
-
-        private class DatabaseCallback(
-            private val scope: CoroutineScope
-        ) : RoomDatabase.Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-                INSTANCE?.let { database ->
-                    scope.launch(Dispatchers.IO) {
-                        populateDatabase(database.questionDao())
-                    }
-                }
-            }
-
-            suspend fun populateDatabase(questionDao: QuestionDao) {
-                val initialQuestions = DefaultQuestions.getInitialQuestions()
-                questionDao.insertAll(initialQuestions)
             }
         }
     }

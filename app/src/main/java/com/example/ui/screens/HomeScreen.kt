@@ -305,7 +305,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "वर्गीकृत विषयवार अभ्यास सेट",
+                        text = "बिहार लाइब्रेरियन पाठ्यक्रम (5 इकाइयाँ)",
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = (17 * scale).sp
@@ -313,11 +313,51 @@ fun HomeScreen(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
-                        text = "${categories.size} विषय",
+                        text = "${categories.size} इकाइयाँ",
                         fontSize = (13 * scale).sp,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.SemiBold
                     )
+                }
+            }
+
+            if (allQuestions.isEmpty()) {
+                item {
+                    Card(
+                        shape = RoundedCornerShape(14.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFEFF6FF)),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(1.dp, Color(0xFFBFDBFE), RoundedCornerShape(14.dp))
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(14.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = null,
+                                tint = IndigoSecondary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "नया प्रश्न बैंक तैयार करें",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = (14 * scale).sp,
+                                    color = Color(0xFF1E3A8A)
+                                )
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text(
+                                    text = "पाठ्यक्रम की 5 इकाइयाँ सेट हो चुकी हैं। प्रतिदिन नए प्रश्न जोड़ने के लिए नीचे '+' बटन दबाएं।",
+                                    fontSize = (12 * scale).sp,
+                                    color = Color(0xFF1D4ED8)
+                                )
+                            }
+                        }
+                    }
                 }
             }
 
@@ -326,9 +366,11 @@ fun HomeScreen(
                 val categoryQuestions = allQuestions.filter { it.category == categoryName }
                 val answeredCount = categoryQuestions.count { it.timesAttempted > 0 }
                 val icon = getCategoryIcon(categoryName)
+                val subtitle = com.example.data.DefaultQuestions.unitEnglishSubtitles[categoryName]
 
                 CategoryCard(
                     title = categoryName,
+                    subtitle = subtitle,
                     questionCount = categoryQuestions.size,
                     answeredCount = answeredCount,
                     icon = icon,
@@ -442,6 +484,7 @@ fun QuickActionCard(
 @Composable
 fun CategoryCard(
     title: String,
+    subtitle: String? = null,
     questionCount: Int,
     answeredCount: Int,
     icon: ImageVector,
@@ -482,13 +525,22 @@ fun CategoryCard(
                     Text(
                         text = title,
                         fontWeight = FontWeight.Bold,
-                        fontSize = (16 * scale).sp,
+                        fontSize = (15 * scale).sp,
                         color = Color(0xFF1E293B)
                     )
+                    if (subtitle != null) {
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = subtitle,
+                            fontSize = (11 * scale).sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = "$questionCount महत्वपूर्ण प्रश्न • $answeredCount हल किए",
-                        fontSize = (12 * scale).sp,
+                        text = if (questionCount > 0) "$questionCount प्रश्न • $answeredCount हल किए" else "0 प्रश्न उपलब्ध (दैनिक नया जोड़ें)",
+                        fontSize = (11 * scale).sp,
                         color = Color(0xFF64748B)
                     )
                 }
@@ -542,7 +594,7 @@ fun CategoryCard(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = "पढ़ें",
+                        text = "प्रश्न देखें",
                         fontWeight = FontWeight.SemiBold,
                         fontSize = (13 * scale).sp
                     )
@@ -554,11 +606,11 @@ fun CategoryCard(
 
 fun getCategoryIcon(categoryName: String): ImageVector {
     return when {
-        categoryName.contains("आधार") || categoryName.contains("सिद्धांत") -> Icons.Default.LocalLibrary
-        categoryName.contains("वर्गीकरण") || categoryName.contains("सूचीकरण") -> Icons.Default.Storage
-        categoryName.contains("संदर्भ") || categoryName.contains("सेवा") -> Icons.Default.AutoStories
-        categoryName.contains("प्रबंधन") || categoryName.contains("स्वचालन") || categoryName.contains("कंप्यूटर") -> Icons.Default.MenuBook
-        categoryName.contains("बिहार") || categoryName.contains("धरोहर") -> Icons.Default.School
+        categoryName.contains("इकाई 1") || categoryName.contains("आधार") -> Icons.Default.LocalLibrary
+        categoryName.contains("इकाई 2") || categoryName.contains("वर्गीकरण") || categoryName.contains("सूचीकरण") -> Icons.Default.Storage
+        categoryName.contains("इकाई 3") || categoryName.contains("प्रबंधन") || categoryName.contains("विभाग") -> Icons.Default.School
+        categoryName.contains("इकाई 4") || categoryName.contains("सूचना") || categoryName.contains("स्रोत") -> Icons.Default.AutoStories
+        categoryName.contains("इकाई 5") || categoryName.contains("कंप्यूटर") -> Icons.Default.MenuBook
         else -> Icons.Default.Psychology
     }
 }

@@ -67,7 +67,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         val database = AppDatabase.getDatabase(application, viewModelScope)
         repository = QuestionRepository(database.questionDao(), database.quizAttemptDao())
         viewModelScope.launch {
-            repository.ensureSeedData()
+            repository.resetToFreshUnits()
         }
     }
 
@@ -142,8 +142,12 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val list = repository.getRandomQuestions(10)
             val questions = if (list.isNotEmpty()) list else allQuestions.value.take(10)
+            if (questions.isEmpty()) {
+                _statusMessage.value = "क्विज़ के लिए अभी प्रश्न उपलब्ध नहीं हैं। कृपया 'नया प्रश्न जोड़ें' पर क्लिक करके प्रश्न जोड़ें।"
+                return@launch
+            }
             _quizState.value = ActiveQuizState(
-                title = "आज की दैनिक प्रश्नोत्तरी",
+                title = "दैनिक अभ्यास क्विज़",
                 category = "दैनिक अभ्यास",
                 questions = questions,
                 currentIndex = 0,
@@ -160,7 +164,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val filtered = allQuestions.value.filter { it.category == categoryName }
             if (filtered.isEmpty()) {
-                _statusMessage.value = "इस विषय में अभी प्रश्न उपलब्ध नहीं हैं।"
+                _statusMessage.value = "इस इकाई में अभी कोई प्रश्न नहीं है। कृपया 'नया प्रश्न जोड़ें' से प्रश्न जोड़ें।"
                 return@launch
             }
             _quizState.value = ActiveQuizState(
@@ -180,7 +184,10 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     fun startFullMockTest() {
         viewModelScope.launch {
             val all = allQuestions.value
-            if (all.isEmpty()) return@launch
+            if (all.isEmpty()) {
+                _statusMessage.value = "मॉक टेस्ट शुरू करने के लिए पहले प्रश्न जोड़ें।"
+                return@launch
+            }
             val mockQuestions = all.shuffled().take(20)
             _quizState.value = ActiveQuizState(
                 title = "सम्पूर्ण पाठ्यक्रम मॉक टेस्ट",
@@ -307,7 +314,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
         viewModelScope.launch {
             val newQuestion = QuestionEntity(
-                category = category.ifBlank { DefaultQuestions.CAT_FOUNDATIONS },
+                category = category.ifBlank { DefaultQuestions.UNIT_1 },
                 questionHindi = questionHindi.trim(),
                 optionA = optionA.trim(),
                 optionB = optionB.trim(),

@@ -6,6 +6,7 @@ import com.example.data.model.QuestionEntity
 import com.example.data.model.QuizAttemptEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class QuestionRepository(
@@ -16,18 +17,19 @@ class QuestionRepository(
     val bookmarkedQuestions: Flow<List<QuestionEntity>> = questionDao.getBookmarkedQuestionsFlow()
     val mistakeQuestions: Flow<List<QuestionEntity>> = questionDao.getMistakeQuestionsFlow()
     val userAddedQuestions: Flow<List<QuestionEntity>> = questionDao.getUserAddedQuestionsFlow()
-    val categories: Flow<List<String>> = questionDao.getDistinctCategoriesFlow()
+    val categories: Flow<List<String>> = questionDao.getDistinctCategoriesFlow().map { dbCategories ->
+        (DefaultQuestions.allCategories + dbCategories).distinct()
+    }
     val quizAttempts: Flow<List<QuizAttemptEntity>> = quizAttemptDao.getAllAttemptsFlow()
 
     fun getQuestionsByCategory(category: String): Flow<List<QuestionEntity>> {
         return questionDao.getQuestionsByCategoryFlow(category)
     }
 
-    suspend fun ensureSeedData() = withContext(Dispatchers.IO) {
-        val count = questionDao.getQuestionCount()
-        if (count == 0) {
-            questionDao.insertAll(DefaultQuestions.getInitialQuestions())
-        }
+    suspend fun resetToFreshUnits() = withContext(Dispatchers.IO) {
+        // Clear all previous pre-seeded questions, notes, attempts, and old categories
+        questionDao.deleteAllQuestions()
+        quizAttemptDao.clearHistory()
     }
 
     suspend fun insertQuestion(question: QuestionEntity): Long = withContext(Dispatchers.IO) {

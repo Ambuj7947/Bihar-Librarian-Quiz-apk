@@ -85,7 +85,7 @@ fun AddQuestionScreen(
         }
     }
 
-    var selectedCategory by remember { mutableStateOf(DefaultQuestions.CAT_FOUNDATIONS) }
+    var selectedCategory by remember { mutableStateOf(DefaultQuestions.UNIT_1) }
     var questionText by remember { mutableStateOf("") }
     var optionA by remember { mutableStateOf("") }
     var optionB by remember { mutableStateOf("") }

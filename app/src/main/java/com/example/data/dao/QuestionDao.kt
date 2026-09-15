@@ -64,4 +64,10 @@ interface QuestionDao {
 
     @Query("UPDATE questions SET timesAttempted = 0, timesCorrect = 0, lastAttemptOption = 0")
     suspend fun resetAllAttempts()
+
+    @Query("DELETE FROM questions")
+    suspend fun deleteAllQuestions()
+
+    @Query("DELETE FROM questions WHERE category NOT IN (:validCategories)")
+    suspend fun deleteQuestionsNotInCategories(validCategories: List<String>)
 }

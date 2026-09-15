@@ -22,14 +22,16 @@ class ExampleRobolectricTest {
     }
 
     @Test
-    fun `verify initial questions have valid content and explanations`() {
+    fun `verify syllabus units and empty initial questions for daily additions`() {
+        val categories = DefaultQuestions.allCategories
+        assertEquals(5, categories.size)
+        assertTrue(categories.contains(DefaultQuestions.UNIT_1))
+        assertTrue(categories.contains(DefaultQuestions.UNIT_2))
+        assertTrue(categories.contains(DefaultQuestions.UNIT_3))
+        assertTrue(categories.contains(DefaultQuestions.UNIT_4))
+        assertTrue(categories.contains(DefaultQuestions.UNIT_5))
+
         val questions = DefaultQuestions.getInitialQuestions()
-        assertTrue("Initial questions should not be empty", questions.isNotEmpty())
-        for (q in questions) {
-            assertTrue("Question text should not be blank", q.questionHindi.isNotBlank())
-            assertTrue("Explanation should not be blank", q.explanationHindi.isNotBlank())
-            assertTrue("Correct option should be 1..4", q.correctOption in 1..4)
-            assertTrue("Category should not be blank", q.category.isNotBlank())
-        }
+        assertTrue("Initial questions should be empty ready for daily user additions", questions.isEmpty())
     }
 }
