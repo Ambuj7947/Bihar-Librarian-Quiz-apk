@@ -74,8 +74,7 @@ fun AddQuestionScreen(
     val categories by viewModel.categories.collectAsState()
     val userAddedQuestions by viewModel.userAddedQuestions.collectAsState()
     val statusMessage by viewModel.statusMessage.collectAsState()
-    val textScale by viewModel.textScale.collectAsState()
-    val scale = textScale.scale
+    val scale = 1.0f
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -102,9 +101,7 @@ fun AddQuestionScreen(
                 title = "नया प्रश्न जोड़ें",
                 subtitle = "दैनिक प्रश्नोत्तरी बैंक विस्तार",
                 showBack = true,
-                onBack = { viewModel.navigateBack() },
-                currentTextScale = textScale,
-                onCycleTextScale = { viewModel.cycleTextScale() }
+                onBack = { viewModel.navigateBack() }
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -139,7 +136,7 @@ fun AddQuestionScreen(
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
-                            text = "यहाँ आप प्रतिदिन नए प्रश्न, चारों विकल्प और उनकी विस्तृत व्याख्या जोड़ सकते हैं। यह स्वतः माँ के अभ्यास सेट और दैनिक टेस्ट में शामिल हो जाएंगे।",
+                            text = "यहाँ आप प्रतिदिन नए प्रश्न, चारों विकल्प और उनकी विस्तृत व्याख्या जोड़ सकते हैं। यह स्वतः आपके अभ्यास सेट और दैनिक टेस्ट में शामिल हो जाएंगे।",
                             fontSize = (13 * scale).sp,
                             lineHeight = (19 * scale).sp,
                             color = Color(0xFF78350F)

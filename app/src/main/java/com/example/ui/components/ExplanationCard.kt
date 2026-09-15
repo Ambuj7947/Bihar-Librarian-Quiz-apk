@@ -41,7 +41,7 @@ import com.example.ui.theme.TipBoxBorder
 fun ExplanationCard(
     question: QuestionEntity,
     selectedOption: Int?,
-    scaleFactor: Float = 1.15f,
+    scaleFactor: Float = 1.0f,
     modifier: Modifier = Modifier
 ) {
     val isCorrect = selectedOption == question.correctOption

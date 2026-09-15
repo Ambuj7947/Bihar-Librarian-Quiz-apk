@@ -59,12 +59,6 @@ data class ActiveQuizState(
         get() = if (questions.isNotEmpty()) (currentIndex + 1).toFloat() / questions.size else 0f
 }
 
-enum class TextScale(val label: String, val scale: Float) {
-    NORMAL("सामान्य", 1.0f),
-    LARGE("बड़ा", 1.18f),
-    EXTRA_LARGE("अति बड़ा", 1.35f)
-}
-
 class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: QuestionRepository
@@ -82,10 +76,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     val currentScreen: StateFlow<AppScreen> = _currentScreen.asStateFlow()
 
     private val screenHistory = mutableListOf<AppScreen>()
-
-    // Text scale for Senior/Mother Friendly accessibility
-    private val _textScale = MutableStateFlow(TextScale.LARGE)
-    val textScale: StateFlow<TextScale> = _textScale.asStateFlow()
 
     // Data streams from Room
     val allQuestions: StateFlow<List<QuestionEntity>> = repository.allQuestions
@@ -125,18 +115,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             true
         } else {
             false
-        }
-    }
-
-    fun setTextScale(scale: TextScale) {
-        _textScale.value = scale
-    }
-
-    fun cycleTextScale() {
-        _textScale.value = when (_textScale.value) {
-            TextScale.NORMAL -> TextScale.LARGE
-            TextScale.LARGE -> TextScale.EXTRA_LARGE
-            TextScale.EXTRA_LARGE -> TextScale.NORMAL
         }
     }
 

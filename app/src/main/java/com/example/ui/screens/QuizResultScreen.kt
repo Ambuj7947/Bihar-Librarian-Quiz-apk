@@ -63,8 +63,7 @@ fun QuizResultScreen(
     modifier: Modifier = Modifier
 ) {
     val quizState by viewModel.quizState.collectAsState()
-    val textScale by viewModel.textScale.collectAsState()
-    val scale = textScale.scale
+    val scale = 1.0f
 
     val total = quizState.questions.size
     val correct = quizState.correctAnswersCount
@@ -74,17 +73,17 @@ fun QuizResultScreen(
 
     val (greetingTitle, greetingSubtitle, badgeColor) = when {
         percentage >= 80 -> Triple(
-            "अति उत्तम माँ! 🌟",
+            "अति उत्तम प्रदर्शन! 🌟",
             "शानदार प्रदर्शन! आपकी मेहनत से सफलता निश्चित है।",
             CorrectAnswerGreen
         )
         percentage >= 50 -> Triple(
-            "बहुत अच्छा प्रयास माँ! 👍",
+            "बहुत अच्छा प्रयास! 👍",
             "आपका अभ्यास सही दिशा में है, गलत प्रश्नों का एक बार पुनरीक्षण करें।",
             SaffronPrimary
         )
         else -> Triple(
-            "अभ्यास जारी रखें माँ! 💪",
+            "अभ्यास जारी रखें! 💪",
             "निराश न हों! नीचे दिए गए प्रश्नों की विस्तृत व्याख्या ध्यान से पढ़ें।",
             Color(0xFFE65100)
         )
@@ -100,9 +99,7 @@ fun QuizResultScreen(
                 title = "टेस्ट परिणाम एवं व्याख्या",
                 subtitle = quizState.title,
                 showBack = true,
-                onBack = { viewModel.navigateTo(AppScreen.Home) },
-                currentTextScale = textScale,
-                onCycleTextScale = { viewModel.cycleTextScale() }
+                onBack = { viewModel.navigateTo(AppScreen.Home) }
             )
         },
         bottomBar = {

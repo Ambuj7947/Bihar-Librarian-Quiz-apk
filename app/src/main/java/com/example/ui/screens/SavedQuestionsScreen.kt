@@ -59,8 +59,7 @@ fun BookmarksScreen(
     modifier: Modifier = Modifier
 ) {
     val bookmarkedQuestions by viewModel.bookmarkedQuestions.collectAsState()
-    val textScale by viewModel.textScale.collectAsState()
-    val scale = textScale.scale
+    val scale = 1.0f
 
     Scaffold(
         topBar = {
@@ -68,9 +67,7 @@ fun BookmarksScreen(
                 title = "महत्वपूर्ण प्रश्न (बुकमार्क)",
                 subtitle = "${bookmarkedQuestions.size} प्रश्न सुरक्षित",
                 showBack = true,
-                onBack = { viewModel.navigateBack() },
-                currentTextScale = textScale,
-                onCycleTextScale = { viewModel.cycleTextScale() }
+                onBack = { viewModel.navigateBack() }
             )
         },
         modifier = modifier.fillMaxSize()
@@ -126,7 +123,7 @@ fun BookmarksScreen(
                             )
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                text = "क्विज़ हल करते समय स्टार आइकन दबाकर महत्वपूर्ण प्रश्नों को यहाँ सुरक्षित कर सकती हैं।",
+                                text = "क्विज़ हल करते समय स्टार आइकन दबाकर महत्वपूर्ण प्रश्नों को यहाँ सुरक्षित किया जा सकता है।",
                                 fontSize = (14 * scale).sp,
                                 color = Color(0xFF94A3B8),
                                 lineHeight = (20 * scale).sp
@@ -157,8 +154,7 @@ fun MistakesScreen(
     modifier: Modifier = Modifier
 ) {
     val mistakeQuestions by viewModel.mistakeQuestions.collectAsState()
-    val textScale by viewModel.textScale.collectAsState()
-    val scale = textScale.scale
+    val scale = 1.0f
 
     Scaffold(
         topBar = {
@@ -166,9 +162,7 @@ fun MistakesScreen(
                 title = "गलत प्रश्नों का सुधार",
                 subtitle = "${mistakeQuestions.size} प्रश्न सुधार हेतु शेष",
                 showBack = true,
-                onBack = { viewModel.navigateBack() },
-                currentTextScale = textScale,
-                onCycleTextScale = { viewModel.cycleTextScale() }
+                onBack = { viewModel.navigateBack() }
             )
         },
         modifier = modifier.fillMaxSize()
@@ -217,7 +211,7 @@ fun MistakesScreen(
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(
-                                text = "बहुत खूब माँ! कोई गलत प्रश्न बाकी नहीं है! 🌟",
+                                text = "बहुत खूब! कोई गलत प्रश्न बाकी नहीं है! 🌟",
                                 fontSize = (18 * scale).sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF1E293B)

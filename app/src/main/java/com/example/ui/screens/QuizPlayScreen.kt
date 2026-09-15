@@ -65,8 +65,7 @@ fun QuizPlayScreen(
     modifier: Modifier = Modifier
 ) {
     val quizState by viewModel.quizState.collectAsState()
-    val textScale by viewModel.textScale.collectAsState()
-    val scale = textScale.scale
+    val scale = 1.0f
 
     var showExitDialog by remember { mutableStateOf(false) }
 
@@ -115,8 +114,6 @@ fun QuizPlayScreen(
                 subtitle = "प्रश्न ${quizState.currentIndex + 1} / ${quizState.questions.size}",
                 showBack = true,
                 onBack = { showExitDialog = true },
-                currentTextScale = textScale,
-                onCycleTextScale = { viewModel.cycleTextScale() },
                 isBookmarked = currentQuestion?.isBookmarked,
                 onToggleBookmark = {
                     currentQuestion?.let { viewModel.toggleBookmark(it) }

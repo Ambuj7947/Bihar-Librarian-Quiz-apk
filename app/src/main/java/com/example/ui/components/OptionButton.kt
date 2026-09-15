@@ -39,7 +39,7 @@ fun OptionButton(
     optionText: String,
     selectedOption: Int?,
     correctOption: Int,
-    scaleFactor: Float = 1.15f,
+    scaleFactor: Float = 1.0f,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

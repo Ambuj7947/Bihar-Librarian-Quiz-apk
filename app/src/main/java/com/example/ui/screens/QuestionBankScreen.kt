@@ -70,8 +70,7 @@ fun QuestionBankScreen(
 ) {
     val allQuestions by viewModel.allQuestions.collectAsState()
     val categories by viewModel.categories.collectAsState()
-    val textScale by viewModel.textScale.collectAsState()
-    val scale = textScale.scale
+    val scale = 1.0f
 
     var selectedCategory by remember { mutableStateOf(initialCategoryFilter ?: "सभी") }
     var searchQuery by remember { mutableStateOf("") }
@@ -91,9 +90,7 @@ fun QuestionBankScreen(
                 title = if (initialCategoryFilter != null) initialCategoryFilter else "प्रश्न बैंक एवं अध्ययन गाइड",
                 subtitle = "${filteredQuestions.size} प्रश्न उपलब्ध",
                 showBack = true,
-                onBack = { viewModel.navigateBack() },
-                currentTextScale = textScale,
-                onCycleTextScale = { viewModel.cycleTextScale() }
+                onBack = { viewModel.navigateBack() }
             )
         },
         modifier = modifier.fillMaxSize()

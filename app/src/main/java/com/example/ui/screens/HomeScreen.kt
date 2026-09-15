@@ -72,8 +72,7 @@ fun HomeScreen(
     val bookmarkedQuestions by viewModel.bookmarkedQuestions.collectAsState()
     val mistakeQuestions by viewModel.mistakeQuestions.collectAsState()
     val categories by viewModel.categories.collectAsState()
-    val textScale by viewModel.textScale.collectAsState()
-    val scale = textScale.scale
+    val scale = 1.0f
 
     val attemptedQuestionsCount = allQuestions.count { it.timesAttempted > 0 }
     val totalAttempts = allQuestions.sumOf { it.timesAttempted }
@@ -85,9 +84,7 @@ fun HomeScreen(
             TopHeader(
                 title = "बिहार लाइब्रेरियन परीक्षा",
                 subtitle = "BLAT पात्रता परीक्षा तैयारी",
-                showBack = false,
-                currentTextScale = textScale,
-                onCycleTextScale = { viewModel.cycleTextScale() }
+                showBack = false
             )
         },
         floatingActionButton = {
@@ -117,7 +114,7 @@ fun HomeScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Hero Welcome Card for Mother
+            // Hero Welcome Card
             item {
                 Card(
                     shape = RoundedCornerShape(20.dp),
@@ -153,7 +150,7 @@ fun HomeScreen(
                             Spacer(modifier = Modifier.width(12.dp))
                             Column {
                                 Text(
-                                    text = "नमस्ते माँ! 🙏",
+                                    text = "नमस्ते! स्वागत है 🙏",
                                     fontWeight = FontWeight.Bold,
                                     fontSize = (20 * scale).sp,
                                     color = Color.White
