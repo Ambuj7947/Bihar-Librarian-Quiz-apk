@@ -150,18 +150,7 @@ fun ContentHubScreen(
     )
     var selectedUnit by remember { mutableStateOf(unitOptions[0]) }
     var isUnitDropdownExpanded by remember { mutableStateOf(false) }
-    var subTopicText by remember { mutableStateOf("रंगनाथन के 5 सूत्र") }
-
-    // Quick subtopic suggestions per unit
-    val sampleSubtopics = remember(selectedUnit) {
-        when {
-            selectedUnit.contains("इकाई 1") -> listOf("रंगनाथन के 5 सूत्र", "पुस्तकालय आंदोलन (बिहार)", "डिलीवरी ऑफ बुक्स एक्ट", "RRRLF कोलकाता")
-            selectedUnit.contains("इकाई 2") -> listOf("DDC वर्गीकरण", "कोलन क्लासिफिकेशन (CC)", "AACR-2 सूचीकरण", "CCC कैटलॉगिंग")
-            selectedUnit.contains("इकाई 3") -> listOf("पुस्तकालय समिति", "अधिग्रहण विभाग", "POSDCORB प्रबंधन", "स्टॉक वेरिफिकेशन")
-            selectedUnit.contains("इकाई 4") -> listOf("सदर्भ सेवा (Reference)", "CAS एवं SDI सेवाएं", "ग्रंथसूची स्रोत", "ई-संसाधन")
-            else -> listOf("कंप्यूटर फंडामेंटल", "लाइब्रेरी ऑटोमेशन (KOHA)", "OPAC प्रणाली", "डिजिटल लाइब्रेरी (DSpace)")
-        }
-    }
+    var subTopicText by remember { mutableStateOf("") }
 
     // Section 2: YouTube Lecture Link
     var youtubeUrl by remember { mutableStateOf("https://youtube.com/watch?v=blat_lib_sc_unit01_lec03") }
@@ -557,39 +546,12 @@ fun ContentHubScreen(
                                 }
                             }
 
-                            // Subtopic quick chips
-                            Text(
-                                text = "उप-विषय / टॉपिक:",
-                                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
-                                color = Color(0xFF4A5568)
-                            )
-
-                            LazyRow(
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                items(sampleSubtopics) { topic ->
-                                    val isSelected = subTopicText == topic
-                                    Box(
-                                        modifier = Modifier
-                                            .clip(RoundedCornerShape(20.dp))
-                                            .background(if (isSelected) Color(0xFF1E3A8A) else Color(0xFFE7EEF8))
-                                            .clickable { subTopicText = topic }
-                                            .padding(horizontal = 10.dp, vertical = 5.dp)
-                                    ) {
-                                        Text(
-                                            text = topic,
-                                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
-                                            color = if (isSelected) Color.White else Color(0xFF1E3A8A)
-                                        )
-                                    }
-                                }
-                            }
-
+                            // Topic Input Field (User custom input)
                             OutlinedTextField(
                                 value = subTopicText,
                                 onValueChange = { subTopicText = it },
-                                label = { Text("कस्टम उप-विषय (यदि कोई हो)") },
+                                label = { Text("विषय / टॉपिक का नाम (Topic Name)") },
+                                placeholder = { Text("उदा. रंगनाथन के 5 सूत्र, DDC वर्गीकरण...") },
                                 singleLine = true,
                                 colors = OutlinedTextFieldDefaults.colors(
                                     focusedContainerColor = Color(0xFFF8FAFC),
@@ -600,7 +562,9 @@ fun ContentHubScreen(
                                     unfocusedBorderColor = Color(0xFFE2E8F0)
                                 ),
                                 shape = RoundedCornerShape(10.dp),
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .testTag("topic_name_input")
                             )
                         }
                     }
