@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.PostAdd
 import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material.icons.filled.SmartDisplay
 import androidx.compose.material.icons.filled.Storage
@@ -404,7 +405,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "बिहार लाइब्रेरियन पाठ्यक्रम (5 इकाइयाँ)",
+                        text = "बिहार लाइब्रेरियन पाठ्यक्रम एवं एक्स्ट्रा सेट्स",
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = (17 * scale).sp
@@ -670,6 +671,7 @@ fun getCategoryIcon(categoryName: String): ImageVector {
         categoryName.contains("इकाई 3") || categoryName.contains("प्रबंधन") || categoryName.contains("विभाग") -> Icons.Default.School
         categoryName.contains("इकाई 4") || categoryName.contains("सूचना") || categoryName.contains("स्रोत") -> Icons.Default.AutoStories
         categoryName.contains("इकाई 5") || categoryName.contains("कंप्यूटर") -> Icons.Default.MenuBook
+        categoryName.contains("इकाई 6") || categoryName.contains("एक्स्ट्रा") || categoryName.contains("Extra") -> Icons.Default.Quiz
         else -> Icons.Default.Psychology
     }
 }

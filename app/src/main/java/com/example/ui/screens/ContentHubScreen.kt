@@ -146,9 +146,11 @@ fun ContentHubScreen(
         DefaultQuestions.UNIT_2,
         DefaultQuestions.UNIT_3,
         DefaultQuestions.UNIT_4,
-        DefaultQuestions.UNIT_5
+        DefaultQuestions.UNIT_5,
+        DefaultQuestions.UNIT_6
     )
     var selectedUnit by remember { mutableStateOf(unitOptions[0]) }
+    val isExtraUnit = DefaultQuestions.isExtraQuestionsUnit(selectedUnit)
     var isUnitDropdownExpanded by remember { mutableStateOf(false) }
     var subTopicText by remember { mutableStateOf("") }
 
@@ -183,12 +185,23 @@ fun ContentHubScreen(
                     val content = reader.readText()
                     rawInputText = content
                     val result = ContentSeparator.separateNotesAndQuestions(content)
-                    separatedNotesText = result.notesText
-                    parsedQuestions.clear()
-                    parsedQuestions.addAll(result.questions)
-                    hasSeparatedContent = true
-                    coroutineScope.launch {
-                        snackbarHostState.showSnackbar("फाइल सफलतापूर्वक लोड की गई: नोट्स और ${result.questions.size} प्रश्न अलग किए गए!")
+                    if (isExtraUnit) {
+                        separatedNotesText = ""
+                        parsedQuestions.clear()
+                        parsedQuestions.addAll(result.questions)
+                        hasSeparatedContent = true
+                        selectedSeparatedTab = 1
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar("फाइल सफलतापूर्वक लोड की गई: ${result.questions.size} एक्स्ट्रा प्रश्न लोड किए गए!")
+                        }
+                    } else {
+                        separatedNotesText = result.notesText
+                        parsedQuestions.clear()
+                        parsedQuestions.addAll(result.questions)
+                        hasSeparatedContent = true
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar("फाइल सफलतापूर्वक लोड की गई: नोट्स और ${result.questions.size} प्रश्न अलग किए गए!")
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -203,17 +216,29 @@ fun ContentHubScreen(
     fun performSeparation(textToSeparate: String) {
         if (textToSeparate.isBlank()) {
             coroutineScope.launch {
-                snackbarHostState.showSnackbar("कृपया पहले नोट्स या प्रश्न सामग्री दर्ज करें।")
+                val msg = if (isExtraUnit) "कृपया पहले एक्स्ट्रा प्रश्न सामग्री दर्ज करें।" else "कृपया पहले नोट्स या प्रश्न सामग्री दर्ज करें।"
+                snackbarHostState.showSnackbar(msg)
             }
             return
         }
         val result = ContentSeparator.separateNotesAndQuestions(textToSeparate)
-        separatedNotesText = result.notesText
-        parsedQuestions.clear()
-        parsedQuestions.addAll(result.questions)
-        hasSeparatedContent = true
-        coroutineScope.launch {
-            snackbarHostState.showSnackbar("सफलतापूर्वक अलग किया गया: नोट्स और ${result.questions.size} क्विज़ प्रश्न तैयार हैं!")
+        if (isExtraUnit) {
+            separatedNotesText = ""
+            parsedQuestions.clear()
+            parsedQuestions.addAll(result.questions)
+            hasSeparatedContent = true
+            selectedSeparatedTab = 1
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("सफलतापूर्वक तैयार: ${result.questions.size} एक्स्ट्रा क्विज़ प्रश्न तैयार हैं!")
+            }
+        } else {
+            separatedNotesText = result.notesText
+            parsedQuestions.clear()
+            parsedQuestions.addAll(result.questions)
+            hasSeparatedContent = true
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("सफलतापूर्वक अलग किया गया: नोट्स और ${result.questions.size} क्विज़ प्रश्न तैयार हैं!")
+            }
         }
     }
 
@@ -370,10 +395,10 @@ fun ContentHubScreen(
                                 viewModel.saveContentHubData(
                                     unitCategory = selectedUnit,
                                     subTopic = subTopicText,
-                                    youtubeUrl = youtubeUrl,
-                                    youtubeTitle = lectureTitle,
-                                    timestampNotes = timestampNotes,
-                                    notesContent = separatedNotesText.ifBlank { rawInputText },
+                                    youtubeUrl = if (isExtraUnit) "" else youtubeUrl,
+                                    youtubeTitle = if (isExtraUnit) "" else lectureTitle,
+                                    timestampNotes = if (isExtraUnit) "" else timestampNotes,
+                                    notesContent = if (isExtraUnit) "" else separatedNotesText.ifBlank { rawInputText },
                                     parsedQuestions = parsedQuestions,
                                     onSaved = { savedList ->
                                         latestSavedQuestions = savedList
@@ -540,6 +565,10 @@ fun ContentHubScreen(
                                             onClick = {
                                                 selectedUnit = unit
                                                 isUnitDropdownExpanded = false
+                                                if (DefaultQuestions.isExtraQuestionsUnit(unit)) {
+                                                    selectedSeparatedTab = 1
+                                                    separatedNotesText = ""
+                                                }
                                             }
                                         )
                                     }
@@ -570,9 +599,10 @@ fun ContentHubScreen(
                     }
                 }
 
-                // 3. Section 2: YouTube Lecture Video Section
-                item {
-                    Card(
+                // 3. Section 2: YouTube Lecture Video Section (Hidden for Extra Questions Unit)
+                if (!isExtraUnit) {
+                    item {
+                        Card(
                         shape = RoundedCornerShape(16.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.White),
                         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
@@ -801,6 +831,7 @@ fun ContentHubScreen(
                         }
                     }
                 }
+            }
 
                 // 4. Section 3: Study Notes & Document Upload / Smart Separator Section
                 item {
@@ -826,25 +857,25 @@ fun ContentHubScreen(
                                     Box(
                                         modifier = Modifier
                                             .size(32.dp)
-                                            .background(Color(0xFFEFF6FF), RoundedCornerShape(8.dp)),
+                                            .background(if (isExtraUnit) Color(0xFFFFF7ED) else Color(0xFFEFF6FF), RoundedCornerShape(8.dp)),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
-                                            imageVector = Icons.Default.MenuBook,
+                                            imageVector = if (isExtraUnit) Icons.Default.Quiz else Icons.Default.MenuBook,
                                             contentDescription = null,
-                                            tint = Color(0xFF2563EB),
+                                            tint = if (isExtraUnit) Color(0xFFC85A17) else Color(0xFF2563EB),
                                             modifier = Modifier.size(20.dp)
                                         )
                                     }
 
                                     Column {
                                         Text(
-                                            text = "नोट्स एवं क्विज़ प्रश्न अलग करें",
+                                            text = if (isExtraUnit) "एक्स्ट्रा क्विज़ प्रश्न जोड़ें" else "नोट्स एवं क्विज़ प्रश्न अलग करें",
                                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                             color = Color(0xFF1A202C)
                                         )
                                         Text(
-                                            text = "Smart Notes & Q&A Auto Separator",
+                                            text = if (isExtraUnit) "इकाई 6: केवल प्रश्न और उत्तर (No Notes)" else "Smart Notes & Q&A Auto Separator",
                                             style = MaterialTheme.typography.bodySmall,
                                             color = Color(0xFF718096)
                                         )
@@ -853,19 +884,29 @@ fun ContentHubScreen(
 
                                 Box(
                                     modifier = Modifier
-                                        .background(Color(0xFFEFF6FF), RoundedCornerShape(6.dp))
+                                        .background(if (isExtraUnit) Color(0xFFFFF7ED) else Color(0xFFEFF6FF), RoundedCornerShape(6.dp))
                                         .padding(horizontal = 8.dp, vertical = 3.dp)
-                                ) {
+                                    ) {
                                     Text(
-                                        text = if (hasSeparatedContent) "${parsedQuestions.size} प्रश्न अलग किए" else "सिंगल फाइल / टेक्स्ट",
+                                        text = if (hasSeparatedContent) {
+                                            "${parsedQuestions.size} प्रश्न तैयार"
+                                        } else if (isExtraUnit) {
+                                            "केवल प्रश्न"
+                                        } else {
+                                            "सिंगल फाइल / टेक्स्ट"
+                                        },
                                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
-                                        color = Color(0xFF1E3A8A)
+                                        color = if (isExtraUnit) Color(0xFFC85A17) else Color(0xFF1E3A8A)
                                     )
                                 }
                             }
 
                             Text(
-                                text = "एक ही फाइल या टेक्स्ट में नोट्स और प्रश्न-उत्तर दोनों प्रदान करें। सिस्टम स्वचालित रूप से नोट्स और प्रश्नों को अलग कर देगा और तुरंत क्विज़ बना देगा।",
+                                text = if (isExtraUnit) {
+                                    "इस इकाई में केवल एक्स्ट्रा प्रश्न और उनके विकल्प (A, B, C, D) व उत्तर प्रदान करें। इस इकाई में कोई थ्योरी नोट्स शामिल नहीं हैं।"
+                                } else {
+                                    "एक ही फाइल या टेक्स्ट में नोट्स और प्रश्न-उत्तर दोनों प्रदान करें। सिस्टम स्वचालित रूप से नोट्स और प्रश्नों को अलग कर देगा और तुरंत क्विज़ बना देगा।"
+                                },
                                 style = MaterialTheme.typography.bodySmall,
                                 color = Color(0xFF4A5568)
                             )
@@ -900,14 +941,14 @@ fun ContentHubScreen(
                                     }
 
                                     Text(
-                                        text = "सिंगल फाइल (TXT/DOC/PDF) अपलोड करें या टेक्स्ट लिखें",
+                                        text = if (isExtraUnit) "एक्स्ट्रा प्रश्नों की फाइल (TXT/DOC) अपलोड करें या लिखें" else "सिंगल फाइल (TXT/DOC/PDF) अपलोड करें या टेक्स्ट लिखें",
                                         style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                                         color = Color(0xFF1A202C),
                                         textAlign = TextAlign.Center
                                     )
 
                                     Text(
-                                        text = "नोट्स और प्रश्न-उत्तर दोनों एक साथ शामिल हो सकते हैं",
+                                        text = if (isExtraUnit) "केवल बहुविकल्पीय प्रश्न और सही उत्तर" else "नोट्स और प्रश्न-उत्तर दोनों एक साथ शामिल हो सकते हैं",
                                         style = MaterialTheme.typography.bodySmall,
                                         color = Color(0xFF718096),
                                         textAlign = TextAlign.Center
@@ -933,7 +974,7 @@ fun ContentHubScreen(
 
                                         OutlinedButton(
                                             onClick = {
-                                                val sample = ContentSeparator.getSampleContent()
+                                                val sample = if (isExtraUnit) ContentSeparator.getExtraQuestionsSample() else ContentSeparator.getSampleContent()
                                                 rawInputText = sample
                                                 performSeparation(sample)
                                             },
@@ -958,13 +999,19 @@ fun ContentHubScreen(
                                     rawInputText = it
                                     hasSeparatedContent = false
                                 },
-                                label = { Text("नोट्स एवं प्रश्न-उत्तर सामग्री यहाँ पेस्ट करें") },
+                                label = { Text(if (isExtraUnit) "एक्स्ट्रा प्रश्न-उत्तर सामग्री यहाँ पेस्ट करें" else "नोट्स एवं प्रश्न-उत्तर सामग्री यहाँ पेस्ट करें") },
                                 placeholder = {
                                     Text(
-                                        "उदाहरण:\n" +
-                                                "# नोट्स: डॉ. रंगनाथन ने 1928 में 5 सूत्रों का प्रतिपादन किया...\n\n" +
-                                                "प्र. 1. पांच सूत्रों का प्रतिपादन किसने किया?\n" +
-                                                "(A) डॉ. रंगनाथन\n(B) मेलविल डेवी\n(C) कटर\n(D) सेयर्स\nउत्तर: (A)\nव्याख्या: 1928 में मीनाक्षी कॉलेज में।"
+                                        if (isExtraUnit) {
+                                            "उदाहरण:\n" +
+                                                    "प्र. 1. यूनेस्को पब्लिक लाइब्रेरी मेनिफेस्टो सर्वप्रथम किस वर्ष जारी किया गया?\n" +
+                                                    "(A) 1949\n(B) 1972\n(C) 1994\n(D) 1954\nउत्तर: (A)\nव्याख्या: 1949 में प्रथम बार जारी हुआ।"
+                                        } else {
+                                            "उदाहरण:\n" +
+                                                    "# नोट्स: डॉ. रंगनाथन ने 1928 में 5 सूत्रों का प्रतिपादन किया...\n\n" +
+                                                    "प्र. 1. पांच सूत्रों का प्रतिपादन किसने किया?\n" +
+                                                    "(A) डॉ. रंगनाथन\n(B) मेलविल डेवी\n(C) कटर\n(D) सेयर्स\nउत्तर: (A)\nव्याख्या: 1928 में मीनाक्षी कॉलेज में।"
+                                        }
                                     )
                                 },
                                 minLines = 5,
@@ -999,7 +1046,7 @@ fun ContentHubScreen(
                                 Icon(Icons.Default.AutoAwesome, contentDescription = null, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = "नोट्स और प्रश्न अलग करें एवं क्विज़ बनाएं",
+                                    text = if (isExtraUnit) "एक्स्ट्रा प्रश्नों से क्विज़ तैयार करें" else "नोट्स और प्रश्न अलग करें एवं क्विज़ बनाएं",
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 14.sp
                                 )
@@ -1009,7 +1056,7 @@ fun ContentHubScreen(
                 }
 
                 // 5. Separated Content Preview (Notes vs Generated Quizzes)
-                if (hasSeparatedContent || separatedNotesText.isNotBlank() || parsedQuestions.isNotEmpty()) {
+                if (hasSeparatedContent || (!isExtraUnit && separatedNotesText.isNotBlank()) || parsedQuestions.isNotEmpty()) {
                     item {
                         Card(
                             shape = RoundedCornerShape(16.dp),
@@ -1022,78 +1069,120 @@ fun ContentHubScreen(
                                 verticalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
                                 Text(
-                                    text = "स्वचालित अलग किया गया परिणाम (Separated Result)",
+                                    text = if (isExtraUnit) "तैयार एक्स्ट्रा प्रश्न (${parsedQuestions.size})" else "स्वचालित अलग किया गया परिणाम (Separated Result)",
                                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                     color = Color(0xFF1A202C)
                                 )
 
-                                TabRow(
-                                    selectedTabIndex = selectedSeparatedTab,
-                                    containerColor = Color(0xFFF1F5F9),
-                                    contentColor = Color(0xFFC85A17),
-                                    modifier = Modifier.clip(RoundedCornerShape(10.dp))
-                                ) {
-                                    Tab(
-                                        selected = selectedSeparatedTab == 0,
-                                        onClick = { selectedSeparatedTab = 0 },
-                                        text = {
-                                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                                                Icon(Icons.Default.MenuBook, contentDescription = null, modifier = Modifier.size(16.dp))
-                                                Text("अलग किए गए नोट्स", fontWeight = FontWeight.SemiBold)
+                                if (!isExtraUnit) {
+                                    TabRow(
+                                        selectedTabIndex = selectedSeparatedTab,
+                                        containerColor = Color(0xFFF1F5F9),
+                                        contentColor = Color(0xFFC85A17),
+                                        modifier = Modifier.clip(RoundedCornerShape(10.dp))
+                                    ) {
+                                        Tab(
+                                            selected = selectedSeparatedTab == 0,
+                                            onClick = { selectedSeparatedTab = 0 },
+                                            text = {
+                                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                                    Icon(Icons.Default.MenuBook, contentDescription = null, modifier = Modifier.size(16.dp))
+                                                    Text("अलग किए गए नोट्स", fontWeight = FontWeight.SemiBold)
+                                                }
                                             }
-                                        }
-                                    )
-                                    Tab(
-                                        selected = selectedSeparatedTab == 1,
-                                        onClick = { selectedSeparatedTab = 1 },
-                                        text = {
-                                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                                                Icon(Icons.Default.Quiz, contentDescription = null, modifier = Modifier.size(16.dp))
-                                                Text("क्विज़ प्रश्न (${parsedQuestions.size})", fontWeight = FontWeight.SemiBold)
+                                        )
+                                        Tab(
+                                            selected = selectedSeparatedTab == 1,
+                                            onClick = { selectedSeparatedTab = 1 },
+                                            text = {
+                                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                                    Icon(Icons.Default.Quiz, contentDescription = null, modifier = Modifier.size(16.dp))
+                                                    Text("क्विज़ प्रश्न (${parsedQuestions.size})", fontWeight = FontWeight.SemiBold)
+                                                }
                                             }
-                                        }
-                                    )
-                                }
-
-                                if (selectedSeparatedTab == 0) {
-                                    // Notes Preview & Editor
-                                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
-                                            Text(
-                                                text = "अध्ययन सामग्री / थ्योरी नोट्स:",
-                                                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                                                color = Color(0xFF4A5568)
-                                            )
-                                            Text(
-                                                text = "${separatedNotesText.length} वर्ण",
-                                                style = MaterialTheme.typography.labelSmall,
-                                                color = Color(0xFF718096)
-                                            )
-                                        }
-
-                                        OutlinedTextField(
-                                            value = separatedNotesText,
-                                            onValueChange = { separatedNotesText = it },
-                                            minLines = 4,
-                                            maxLines = 10,
-                                            colors = OutlinedTextFieldDefaults.colors(
-                                                focusedContainerColor = Color(0xFFF8FAFC),
-                                                unfocusedContainerColor = Color(0xFFF8FAFC),
-                                                focusedTextColor = Color(0xFF1A202C),
-                                                unfocusedTextColor = Color(0xFF1A202C),
-                                                focusedBorderColor = Color(0xFF2563EB),
-                                                unfocusedBorderColor = Color(0xFFE2E8F0)
-                                            ),
-                                            shape = RoundedCornerShape(10.dp),
-                                            modifier = Modifier.fillMaxWidth()
                                         )
                                     }
+
+                                    if (selectedSeparatedTab == 0) {
+                                        // Notes Preview & Editor
+                                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Text(
+                                                    text = "अध्ययन सामग्री / थ्योरी नोट्स:",
+                                                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                                                    color = Color(0xFF4A5568)
+                                                )
+                                                Text(
+                                                    text = "${separatedNotesText.length} वर्ण",
+                                                    style = MaterialTheme.typography.labelSmall,
+                                                    color = Color(0xFF718096)
+                                                )
+                                            }
+
+                                            OutlinedTextField(
+                                                value = separatedNotesText,
+                                                onValueChange = { separatedNotesText = it },
+                                                minLines = 4,
+                                                maxLines = 10,
+                                                colors = OutlinedTextFieldDefaults.colors(
+                                                    focusedContainerColor = Color(0xFFF8FAFC),
+                                                    unfocusedContainerColor = Color(0xFFF8FAFC),
+                                                    focusedTextColor = Color(0xFF1A202C),
+                                                    unfocusedTextColor = Color(0xFF1A202C),
+                                                    focusedBorderColor = Color(0xFF2563EB),
+                                                    unfocusedBorderColor = Color(0xFFE2E8F0)
+                                                ),
+                                                shape = RoundedCornerShape(10.dp),
+                                                modifier = Modifier.fillMaxWidth()
+                                            )
+                                        }
+                                    } else {
+                                        // Generated Quiz Questions List
+                                        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                                            parsedQuestions.forEachIndexed { index, item ->
+                                                ParsedQuestionCard(
+                                                    index = index + 1,
+                                                    item = item,
+                                                    onCorrectOptionChange = { newCorrect ->
+                                                        parsedQuestions[index] = item.copy(correctOption = newCorrect)
+                                                    },
+                                                    onDelete = {
+                                                        parsedQuestions.removeAt(index)
+                                                    }
+                                                )
+                                            }
+
+                                            // Add another question button
+                                            OutlinedButton(
+                                                onClick = {
+                                                    parsedQuestions.add(
+                                                        ParsedQuestionItem(
+                                                            questionHindi = "नया प्रश्न यहाँ लिखें...",
+                                                            optionA = "विकल्प A",
+                                                            optionB = "विकल्प B",
+                                                            optionC = "विकल्प C",
+                                                            optionD = "विकल्प D",
+                                                            correctOption = 1,
+                                                            explanationHindi = "व्याख्या यहाँ दर्ज करें।"
+                                                        )
+                                                    )
+                                                },
+                                                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFC85A17)),
+                                                shape = RoundedCornerShape(10.dp),
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) {
+                                                Icon(Icons.Default.AddCircle, contentDescription = null, modifier = Modifier.size(18.dp))
+                                                Spacer(modifier = Modifier.width(6.dp))
+                                                Text("+ नया प्रश्न जोड़ें (Add Question)", fontWeight = FontWeight.SemiBold)
+                                            }
+                                        }
+                                    }
                                 } else {
-                                    // Generated Quiz Questions List
+                                    // Directly show Extra Questions list without any notes or tab controls
                                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                         parsedQuestions.forEachIndexed { index, item ->
                                             ParsedQuestionCard(
@@ -1108,12 +1197,12 @@ fun ContentHubScreen(
                                             )
                                         }
 
-                                        // Add another question button
+                                        // Add another extra question button
                                         OutlinedButton(
                                             onClick = {
                                                 parsedQuestions.add(
                                                     ParsedQuestionItem(
-                                                        questionHindi = "नया प्रश्न यहाँ लिखें...",
+                                                        questionHindi = "नया एक्स्ट्रा प्रश्न यहाँ लिखें...",
                                                         optionA = "विकल्प A",
                                                         optionB = "विकल्प B",
                                                         optionC = "विकल्प C",
@@ -1129,7 +1218,7 @@ fun ContentHubScreen(
                                         ) {
                                             Icon(Icons.Default.AddCircle, contentDescription = null, modifier = Modifier.size(18.dp))
                                             Spacer(modifier = Modifier.width(6.dp))
-                                            Text("+ नया प्रश्न जोड़ें (Add Question)", fontWeight = FontWeight.SemiBold)
+                                            Text("+ नया एक्स्ट्रा प्रश्न जोड़ें", fontWeight = FontWeight.SemiBold)
                                         }
                                     }
                                 }
@@ -1143,7 +1232,8 @@ fun ContentHubScreen(
                     SummaryPreparationCard(
                         videoCount = if (detectedVideoId != null || youtubeUrl.isNotBlank()) 1 else 0,
                         notesLength = separatedNotesText.length,
-                        quizCount = parsedQuestions.size
+                        quizCount = parsedQuestions.size,
+                        isExtraQuestionsUnit = isExtraUnit
                     )
                 }
 
@@ -1166,7 +1256,7 @@ fun ContentHubScreen(
             },
             title = {
                 Text(
-                    text = "सामग्री सफलतापूर्वक प्रकाशित!",
+                    text = if (isExtraUnit) "एक्स्ट्रा प्रश्न सफलतापूर्वक जोड़े गए!" else "सामग्री सफलतापूर्वक प्रकाशित!",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center
                 )
@@ -1177,7 +1267,11 @@ fun ContentHubScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "आपके द्वारा जोड़े गए ${latestSavedQuestions.size} प्रश्न क्विज़ बैंक में सम्मिलित कर दिए गए हैं और नोट्स सुरक्षित कर लिए गए हैं।",
+                        text = if (isExtraUnit) {
+                            "आपके द्वारा जोड़े गए ${latestSavedQuestions.size} एक्स्ट्रा प्रश्न क्विज़ बैंक में सम्मिलित कर दिए गए हैं।"
+                        } else {
+                            "आपके द्वारा जोड़े गए ${latestSavedQuestions.size} प्रश्न क्विज़ बैंक में सम्मिलित कर दिए गए हैं और नोट्स सुरक्षित कर लिए गए हैं।"
+                        },
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
                         color = Color(0xFFDCE2F2)
@@ -1445,7 +1539,8 @@ fun ParsedQuestionCard(
 fun SummaryPreparationCard(
     videoCount: Int,
     notesLength: Int,
-    quizCount: Int
+    quizCount: Int,
+    isExtraQuestionsUnit: Boolean = false
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -1467,7 +1562,7 @@ fun SummaryPreparationCard(
                 ) {
                     Icon(Icons.Default.CheckCircle, contentDescription = null, tint = WisdomGold, modifier = Modifier.size(20.dp))
                     Text(
-                        text = "तैयारी सारांश",
+                        text = if (isExtraQuestionsUnit) "एक्स्ट्रा प्रश्न सारांश" else "तैयारी सारांश",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                         color = Color.White
                     )
@@ -1490,21 +1585,23 @@ fun SummaryPreparationCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                SummaryBox(
-                    count = "$videoCount",
-                    label = "वीडियो क्लास",
-                    color = SaffronPrimary,
-                    modifier = Modifier.weight(1f)
-                )
-                SummaryBox(
-                    count = if (notesLength > 0) "उपलब्ध" else "0",
-                    label = "पीडीएफ / नोट्स",
-                    color = WisdomGold,
-                    modifier = Modifier.weight(1f)
-                )
+                if (!isExtraQuestionsUnit) {
+                    SummaryBox(
+                        count = "$videoCount",
+                        label = "वीडियो क्लास",
+                        color = SaffronPrimary,
+                        modifier = Modifier.weight(1f)
+                    )
+                    SummaryBox(
+                        count = if (notesLength > 0) "उपलब्ध" else "0",
+                        label = "पीडीएफ / नोट्स",
+                        color = WisdomGold,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
                 SummaryBox(
                     count = "$quizCount",
-                    label = "क्विज़ प्रश्न",
+                    label = if (isExtraQuestionsUnit) "एक्स्ट्रा प्रश्न" else "क्विज़ प्रश्न",
                     color = Color(0xFF34D399),
                     modifier = Modifier.weight(1f)
                 )

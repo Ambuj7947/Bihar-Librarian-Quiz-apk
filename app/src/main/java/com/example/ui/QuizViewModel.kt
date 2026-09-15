@@ -375,7 +375,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 repository.insertQuestions(entities)
             }
 
-            if (youtubeUrl.isNotBlank() || notesContent.isNotBlank() || entities.isNotEmpty()) {
+            val isExtraUnit = DefaultQuestions.isExtraQuestionsUnit(unitCategory)
+            if (!isExtraUnit && (youtubeUrl.isNotBlank() || notesContent.isNotBlank() || entities.isNotEmpty())) {
                 val material = StudyMaterialEntity(
                     unitCategory = unitCategory,
                     subTopic = subTopic.trim(),
@@ -390,7 +391,12 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 repository.insertStudyMaterial(material)
             }
 
-            _statusMessage.value = "सफलतापूर्वक सहेजा गया: ${entities.size} प्रश्न क्विज़ में जोड़े गए।"
+            val successMsg = if (isExtraUnit) {
+                "सफलतापूर्वक सहेजा गया: ${entities.size} एक्स्ट्रा प्रश्न जोड़े गए।"
+            } else {
+                "सफलतापूर्वक सहेजा गया: ${entities.size} प्रश्न क्विज़ में जोड़े गए।"
+            }
+            _statusMessage.value = successMsg
             onSaved(entities)
         }
     }

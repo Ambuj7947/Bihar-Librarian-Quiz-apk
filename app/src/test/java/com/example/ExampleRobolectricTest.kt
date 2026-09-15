@@ -24,12 +24,15 @@ class ExampleRobolectricTest {
     @Test
     fun `verify syllabus units and empty initial questions for daily additions`() {
         val categories = DefaultQuestions.allCategories
-        assertEquals(5, categories.size)
+        assertEquals(6, categories.size)
         assertTrue(categories.contains(DefaultQuestions.UNIT_1))
         assertTrue(categories.contains(DefaultQuestions.UNIT_2))
         assertTrue(categories.contains(DefaultQuestions.UNIT_3))
         assertTrue(categories.contains(DefaultQuestions.UNIT_4))
         assertTrue(categories.contains(DefaultQuestions.UNIT_5))
+        assertTrue(categories.contains(DefaultQuestions.UNIT_6))
+        assertTrue(DefaultQuestions.isExtraQuestionsUnit(DefaultQuestions.UNIT_6))
+        org.junit.Assert.assertFalse(DefaultQuestions.isExtraQuestionsUnit(DefaultQuestions.UNIT_1))
 
         val questions = DefaultQuestions.getInitialQuestions()
         assertTrue("Initial questions should be empty ready for daily user additions", questions.isEmpty())
