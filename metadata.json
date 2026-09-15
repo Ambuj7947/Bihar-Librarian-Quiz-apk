@@ -1,0 +1,6 @@
+{
+  "name": "Bihar Librarian Quiz",
+  "description": "बिहार पुस्तकालय अध्यक्ष पात्रता परीक्षा (BLAT) अभ्यास ऐप - हिंदी भाषा में वर्गीकृत प्रैक्टिस सेट, विस्तृत व्याख्या एवं दैनिक प्रश्नोत्तरी।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

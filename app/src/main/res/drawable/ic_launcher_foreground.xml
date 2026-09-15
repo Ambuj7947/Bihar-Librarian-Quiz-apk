@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Star of knowledge at top center -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M54,28L56,33L61,34L57,38L58,43L54,40L50,43L51,38L47,34L52,33Z" />
+
+    <!-- Open book pages left & right -->
+    <!-- Left page shadow -->
+    <path
+        android:fillColor="#ECEFF1"
+        android:pathData="M52,47C42,44 32,46 26,48C25,48.3 24,49.2 24,50.3L24,74.5C24,75.8 25.2,76.8 26.5,76.5C32.5,75 42,73.5 52,76.5Z" />
+    <!-- Left page highlight overlay -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M51,48.5C42,45.8 33,47.5 27.5,49.2L27.5,73.2C33,71.8 42,70.5 51,73.2Z" />
+
+    <!-- Right page shadow -->
+    <path
+        android:fillColor="#ECEFF1"
+        android:pathData="M56,47C66,44 76,46 82,48C83,48.3 84,49.2 84,50.3L84,74.5C84,75.8 82.8,76.8 81.5,76.5C75.5,75 66,73.5 56,76.5Z" />
+    <!-- Right page highlight overlay -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M57,48.5C66,45.8 75,47.5 80.5,49.2L80.5,73.2C75,71.8 66,70.5 57,73.2Z" />
+
+    <!-- Book spine / center bookmark ribbon -->
+    <path
+        android:fillColor="#FF9800"
+        android:pathData="M52.5,45.5L55.5,45.5L55.5,78L54,76.5L52.5,78Z" />
+
+    <!-- Left text lines on page -->
+    <path
+        android:fillColor="#B0BEC5"
+        android:pathData="M31,54C35,53.2 41,52.8 47,53.5L47,55C41,54.3 35,54.7 31,55.5ZM31,59C35,58.2 41,57.8 47,58.5L47,60C41,59.3 35,59.7 31,60.5ZM31,64C35,63.2 41,62.8 47,63.5L47,65C41,64.3 35,64.7 31,65.5Z" />
+
+    <!-- Right text lines on page -->
+    <path
+        android:fillColor="#B0BEC5"
+        android:pathData="M61,53.5C67,52.8 73,53.2 77,54L77,55.5C73,54.7 67,54.3 61,55ZM61,58.5C67,57.8 73,58.2 77,59L77,60.5C73,59.7 67,59.3 61,60ZM61,63.5C67,62.8 73,63.2 77,64L77,65.5C73,64.7 67,64.3 61,65Z" />
+
+    <!-- Base book cover stand -->
+    <path
+        android:fillColor="#FFB74D"
+        android:pathData="M25,76.5C33,75 43,73.8 53,77L55,77C65,73.8 75,75 83,76.5C84.5,76.8 85,78.2 84,79C76,81.5 65,81 54,82C43,81 32,81.5 24,79C23,78.2 23.5,76.8 25,76.5Z" />
+</vector>
