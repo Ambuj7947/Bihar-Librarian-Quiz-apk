@@ -10,6 +10,7 @@ object DefaultQuestions {
     const val UNIT_3 = "इकाई 3: पुस्तकालय प्रबंधन एवं विभाग"
     const val UNIT_4 = "इकाई 4: सूचना स्रोत एवं सूचना सेवाएं"
     const val UNIT_5 = "इकाई 5: सामान्य कंप्यूटर / बेसिक कंप्यूटर"
+    const val UNIT_6 = "इकाई 6: एक्स्ट्रा क्वेश्चंस (Extra Questions)"
 
     // Unit 1 Subtopic 1 details
     const val UNIT_1_SUBTOPIC_1 = "पुस्तकालय की बेसिक अवधारणा"
@@ -41,7 +42,8 @@ object DefaultQuestions {
         UNIT_2,
         UNIT_3,
         UNIT_4,
-        UNIT_5
+        UNIT_5,
+        UNIT_6
     )
 
     val unitEnglishSubtitles = mapOf(
@@ -49,10 +51,14 @@ object DefaultQuestions {
         UNIT_2 to "Library Classification and Cataloging",
         UNIT_3 to "Library Management and Library Sections",
         UNIT_4 to "Information Sources and Services",
-        UNIT_5 to "Basic Computer / ICT"
+        UNIT_5 to "Basic Computer / ICT",
+        UNIT_6 to "Extra Practice Sets (Q&A Only)"
     )
 
-    fun isExtraQuestionsUnit(category: String?): Boolean = false
+    fun isExtraQuestionsUnit(category: String?): Boolean {
+        if (category == null) return false
+        return category == UNIT_6 || category.contains("इकाई 6") || category.contains("एक्स्ट्रा") || category.contains("Extra Questions")
+    }
 
     fun getUnit1Subtopic1Notes(): String {
         return """
@@ -982,6 +988,7 @@ object DefaultQuestions {
         getUnit1Subtopic2Questions() +
         getUnit1Subtopic3Questions() +
         getUnit1Subtopic4Questions() +
-        getUnit1Subtopic5Questions()
+        getUnit1Subtopic5Questions() +
+        Unit6Questions.getAllQuestions()
 }
 

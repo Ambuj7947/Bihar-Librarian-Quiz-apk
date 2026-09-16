@@ -414,6 +414,7 @@ fun SubtopicLectureCard(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val hasVideo = subtopic.youtubeUrl.isNotBlank()
 
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -431,17 +432,18 @@ fun SubtopicLectureCard(
                 horizontalArrangement = Arrangement.spacedBy(14.dp),
                 verticalAlignment = Alignment.Top
             ) {
-                // Left Video Thumbnail with Red Circular Play button superimposed
+                // Left Video Thumbnail with Red Circular Play button superimposed (or Quiz icon if no video)
                 Box(
                     modifier = Modifier
                         .size(width = 114.dp, height = 82.dp)
                         .clip(RoundedCornerShape(12.dp))
                         .background(
                             Brush.linearGradient(
-                                listOf(Color(0xFF0F172A), Color(0xFF1E3A8A), Color(0xFF1E293B))
+                                if (hasVideo) listOf(Color(0xFF0F172A), Color(0xFF1E3A8A), Color(0xFF1E293B))
+                                else listOf(Color(0xFF1E3A8A), Color(0xFF1E40AF), Color(0xFF3B82F6))
                             )
                         )
-                        .clickable(onClick = onWatchVideo)
+                        .clickable(onClick = if (hasVideo) onWatchVideo else onAttemptQuiz)
                 ) {
                     // Educational Background Graphic
                     Column(
@@ -455,7 +457,7 @@ fun SubtopicLectureCard(
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.SmartDisplay,
+                                imageVector = if (hasVideo) Icons.Default.SmartDisplay else Icons.Default.MenuBook,
                                 contentDescription = null,
                                 tint = WisdomGold,
                                 modifier = Modifier.size(16.dp)
@@ -476,19 +478,19 @@ fun SubtopicLectureCard(
                         )
                     }
 
-                    // Red Circular Play Button in bottom-right corner (matching Screenshot 2)
+                    // Circular Action Button in bottom-right corner
                     Box(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .padding(6.dp)
                             .size(24.dp)
                             .clip(CircleShape)
-                            .background(Color(0xFFE11D48)), // Vibrant Red Play button
+                            .background(if (hasVideo) Color(0xFFE11D48) else Color(0xFF10B981)),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Play Lecture",
+                            imageVector = if (hasVideo) Icons.Default.PlayArrow else Icons.Default.CheckCircle,
+                            contentDescription = if (hasVideo) "Play Lecture" else "Start Quiz",
                             tint = Color.White,
                             modifier = Modifier.size(16.dp)
                         )
@@ -589,12 +591,12 @@ fun SubtopicLectureCard(
                     )
                 }
 
-                // Watch Button (opens YouTube video)
+                // Watch or Start Quiz Button
                 Button(
-                    onClick = onWatchVideo,
+                    onClick = if (hasVideo) onWatchVideo else onAttemptQuiz,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFF1F5F9),
-                        contentColor = Color(0xFF1E293B)
+                        containerColor = if (hasVideo) Color(0xFFF1F5F9) else MaterialTheme.colorScheme.primary,
+                        contentColor = if (hasVideo) Color(0xFF1E293B) else Color.White
                     ),
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp),
@@ -604,14 +606,14 @@ fun SubtopicLectureCard(
                         .testTag("watch_button_${subtopic.id}")
                 ) {
                     Icon(
-                        imageVector = Icons.Default.PlayArrow,
+                        imageVector = if (hasVideo) Icons.Default.PlayArrow else Icons.Default.CheckCircle,
                         contentDescription = null,
-                        tint = Color(0xFFE11D48), // red play icon
+                        tint = if (hasVideo) Color(0xFFE11D48) else Color.White,
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "Watch",
+                        text = if (hasVideo) "Watch" else "Start Quiz",
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 13.sp
                     )

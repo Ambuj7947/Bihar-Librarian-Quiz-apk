@@ -156,9 +156,15 @@ class QuestionRepository(
         }
     }
 
+    suspend fun ensureUnit6Seed() = withContext(Dispatchers.IO) {
+        val existingUnit6 = questionDao.getQuestionsByCategory(DefaultQuestions.UNIT_6)
+        if (existingUnit6.isEmpty()) {
+            questionDao.insertAll(Unit6Questions.getAllQuestions())
+        }
+    }
+
     suspend fun ensureUnit1Subtopic1Seed() = withContext(Dispatchers.IO) {
-        // Clean up any previously generated extra questions to respect user request
-        questionDao.deleteUnit6Questions()
         ensureUnit1Seed()
+        ensureUnit6Seed()
     }
 }

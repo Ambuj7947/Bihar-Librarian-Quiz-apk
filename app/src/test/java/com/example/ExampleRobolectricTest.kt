@@ -24,12 +24,13 @@ class ExampleRobolectricTest {
     @Test
     fun `verify syllabus units and Unit 1 Subtopic 1 initial questions and notes`() {
         val categories = DefaultQuestions.allCategories
-        assertEquals(5, categories.size)
+        assertEquals(6, categories.size)
         assertTrue(categories.contains(DefaultQuestions.UNIT_1))
         assertTrue(categories.contains(DefaultQuestions.UNIT_2))
         assertTrue(categories.contains(DefaultQuestions.UNIT_3))
         assertTrue(categories.contains(DefaultQuestions.UNIT_4))
         assertTrue(categories.contains(DefaultQuestions.UNIT_5))
+        assertTrue(categories.contains(DefaultQuestions.UNIT_6))
 
         assertEquals("पुस्तकालय की बेसिक अवधारणा", DefaultQuestions.UNIT_1_SUBTOPIC_1)
         assertEquals("https://www.youtube.com/live/XDdMEc3Kvh4?si=tUI3sqQ7en3pCUjn", DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_URL)
@@ -47,8 +48,33 @@ class ExampleRobolectricTest {
         assertEquals("https://www.youtube.com/live/wD8Bue1vdGQ?si=WU4c12D48xx0vc-8", DefaultQuestions.UNIT_1_SUBTOPIC_5_YOUTUBE_URL)
 
         val questions = DefaultQuestions.getInitialQuestions()
-        assertEquals("Initial questions include Unit 1 (55)", 55, questions.size)
+        assertEquals("Initial questions include Unit 1 (55) + Unit 6 (80)", 135, questions.size)
         assertEquals(DefaultQuestions.UNIT_1, questions[0].category)
+
+        // Verify Unit 1 subtopics count is exactly 5 (user provided 5 lecture links)
+        val unit1Materials = listOf(
+            DefaultQuestions.getUnit1Subtopic1Material(),
+            DefaultQuestions.getUnit1Subtopic2Material(),
+            DefaultQuestions.getUnit1Subtopic3Material(),
+            DefaultQuestions.getUnit1Subtopic4Material(),
+            DefaultQuestions.getUnit1Subtopic5Material()
+        )
+        val unit1Subtopics = com.example.data.SubtopicRepository.getSubtopicsForCategory(
+            DefaultQuestions.UNIT_1,
+            questions,
+            unit1Materials
+        )
+        assertEquals("Unit 1 must have exactly 5 lectures", 5, unit1Subtopics.size)
+
+        // Verify Unit 6 has 8 practice sets with 10 questions each (80 questions total)
+        val unit6Subtopics = com.example.data.SubtopicRepository.getSubtopicsForCategory(
+            DefaultQuestions.UNIT_6,
+            questions,
+            emptyList()
+        )
+        assertEquals("Unit 6 must have 8 practice sets", 8, unit6Subtopics.size)
+        val unit6TotalQuestions = unit6Subtopics.sumOf { it.questions.size }
+        assertEquals("Unit 6 must have 80 questions across 8 sets", 80, unit6TotalQuestions)
 
         val videoId1 = com.example.util.ContentSeparator.extractYouTubeVideoId(DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_URL)
         assertEquals("XDdMEc3Kvh4", videoId1)
