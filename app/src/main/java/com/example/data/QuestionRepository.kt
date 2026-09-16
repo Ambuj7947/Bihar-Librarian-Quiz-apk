@@ -156,5 +156,9 @@ class QuestionRepository(
         }
     }
 
-    suspend fun ensureUnit1Subtopic1Seed() = ensureUnit1Seed()
+    suspend fun ensureUnit1Subtopic1Seed() = withContext(Dispatchers.IO) {
+        // Clean up any previously generated extra questions to respect user request
+        questionDao.deleteUnit6Questions()
+        ensureUnit1Seed()
+    }
 }

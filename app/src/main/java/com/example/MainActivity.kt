@@ -2,6 +2,7 @@ package com.example
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
@@ -26,6 +27,7 @@ import com.example.ui.screens.MistakesScreen
 import com.example.ui.screens.QuestionBankScreen
 import com.example.ui.screens.QuizPlayScreen
 import com.example.ui.screens.QuizResultScreen
+import com.example.ui.screens.UnitSubtopicsScreen
 import com.example.ui.theme.BiharLibrarianTheme
 
 class MainActivity : ComponentActivity() {
@@ -50,6 +52,10 @@ class MainActivity : ComponentActivity() {
 fun MainAppContent(viewModel: QuizViewModel) {
     val currentScreen by viewModel.currentScreen.collectAsState()
 
+    BackHandler(enabled = currentScreen != AppScreen.Home) {
+        viewModel.navigateBack()
+    }
+
     AnimatedContent(
         targetState = currentScreen,
         transitionSpec = {
@@ -70,6 +76,10 @@ fun MainAppContent(viewModel: QuizViewModel) {
             is AppScreen.StudyMode -> QuestionBankScreen(
                 viewModel = viewModel,
                 initialCategoryFilter = screen.category
+            )
+            is AppScreen.UnitSubtopics -> UnitSubtopicsScreen(
+                viewModel = viewModel,
+                categoryName = screen.category
             )
         }
     }

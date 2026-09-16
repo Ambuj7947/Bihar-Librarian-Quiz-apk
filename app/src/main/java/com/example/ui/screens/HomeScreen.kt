@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -59,6 +60,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.DefaultQuestions
+import com.example.data.SubtopicRepository
 import com.example.ui.AppScreen
 import com.example.ui.QuizViewModel
 import com.example.ui.components.TopHeader
@@ -75,6 +77,7 @@ fun HomeScreen(
     val bookmarkedQuestions by viewModel.bookmarkedQuestions.collectAsState()
     val mistakeQuestions by viewModel.mistakeQuestions.collectAsState()
     val categories by viewModel.categories.collectAsState()
+    val allStudyMaterials by viewModel.allStudyMaterials.collectAsState()
     val scale = 1.0f
 
     val attemptedQuestionsCount = allQuestions.count { it.timesAttempted > 0 }
@@ -405,7 +408,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "बिहार लाइब्रेरियन पाठ्यक्रम एवं एक्स्ट्रा सेट्स",
+                        text = "बिहार लाइब्रेरियन पाठ्यक्रम (इकाइयाँ)",
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = (17 * scale).sp
@@ -421,22 +424,24 @@ fun HomeScreen(
                 }
             }
 
-            // Category cards list
-            items(categories) { categoryName ->
+            // Category cards list - no buttons inside, one arrow to go under unit section
+            itemsIndexed(categories) { index, categoryName ->
                 val categoryQuestions = allQuestions.filter { it.category == categoryName }
                 val answeredCount = categoryQuestions.count { it.timesAttempted > 0 }
                 val icon = getCategoryIcon(categoryName)
                 val subtitle = com.example.data.DefaultQuestions.unitEnglishSubtitles[categoryName]
+                val subtopicsCount = SubtopicRepository.getSubtopicsForCategory(categoryName, allQuestions, allStudyMaterials).size
 
                 CategoryCard(
                     title = categoryName,
                     subtitle = subtitle,
+                    chapterIndex = index + 1,
+                    lecturesCount = subtopicsCount,
                     questionCount = categoryQuestions.size,
                     answeredCount = answeredCount,
                     icon = icon,
                     scale = scale,
-                    onPractice = { viewModel.startCategoryQuiz(categoryName) },
-                    onStudy = { viewModel.navigateTo(AppScreen.StudyMode(categoryName)) },
+                    onClick = { viewModel.navigateToUnitSubtopics(categoryName) },
                     modifier = Modifier.testTag("category_card_${categoryName.hashCode()}")
                 )
             }
@@ -545,120 +550,95 @@ fun QuickActionCard(
 fun CategoryCard(
     title: String,
     subtitle: String? = null,
-    questionCount: Int,
-    answeredCount: Int,
+    chapterIndex: Int = 1,
+    lecturesCount: Int = 5,
+    questionCount: Int = 0,
+    answeredCount: Int = 0,
     icon: ImageVector,
     scale: Float,
-    onPractice: () -> Unit,
-    onStudy: () -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val chapterTag = String.format("CH - %02d", chapterIndex)
+
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        modifier = modifier.border(1.dp, Color(0xFFE2E8F0), RoundedCornerShape(16.dp))
+        modifier = modifier
+            .fillMaxWidth()
+            .border(1.dp, Color(0xFFE2E8F0), RoundedCornerShape(16.dp))
+            .clickable(onClick = onClick)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
+                // Top Pill: e.g. "CH - 01" matching Screenshot 1
                 Box(
                     modifier = Modifier
-                        .size(44.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
-                    contentAlignment = Alignment.Center
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(Color(0xFFE0F2FE))
+                        .padding(horizontal = 10.dp, vertical = 3.dp)
                 ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(12.dp))
-
-                Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = title,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = (15 * scale).sp,
-                        color = Color(0xFF1E293B)
-                    )
-                    if (subtitle != null) {
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = subtitle,
-                            fontSize = (11 * scale).sp,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = if (questionCount > 0) "$questionCount प्रश्न • $answeredCount हल किए" else "0 प्रश्न उपलब्ध (दैनिक नया जोड़ें)",
+                        text = chapterTag,
                         fontSize = (11 * scale).sp,
-                        color = Color(0xFF64748B)
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF0369A1)
                     )
                 }
+
+                // Title: Bold and prominent
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = (16 * scale).sp,
+                    color = Color(0xFF0F172A),
+                    lineHeight = (22 * scale).sp
+                )
+
+                if (!subtitle.isNullOrBlank()) {
+                    Text(
+                        text = subtitle,
+                        fontSize = (12 * scale).sp,
+                        color = Color(0xFF64748B),
+                        fontWeight = FontWeight.Normal
+                    )
+                }
+
+                // Subtitle stats: "Lectures : 5 • DPP : 55"
+                Text(
+                    text = "Lectures : $lecturesCount  •  DPP : ${if (questionCount > 0) "$questionCount Qs" else "0 Qs"}",
+                    fontSize = (13 * scale).sp,
+                    color = Color(0xFF64748B),
+                    fontWeight = FontWeight.Medium
+                )
             }
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-            // Two action buttons: Practice Quiz and Study Notes
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            // Right Chevron Arrow (One arrow to go under unit section - NO buttons inside card)
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFFF8FAFC)),
+                contentAlignment = Alignment.Center
             ) {
-                Button(
-                    onClick = onPractice,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    ),
-                    shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier
-                        .weight(1.2f)
-                        .height(44.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "क्विज़ टेस्ट",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = (14 * scale).sp
-                    )
-                }
-
-                Button(
-                    onClick = onStudy,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f),
-                        contentColor = MaterialTheme.colorScheme.secondary
-                    ),
-                    shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(44.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.MenuBook,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "प्रश्न देखें",
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = (13 * scale).sp
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Default.ChevronRight,
+                    contentDescription = "इकाई खोलें",
+                    tint = Color(0xFF64748B),
+                    modifier = Modifier.size(22.dp)
+                )
             }
         }
     }

@@ -142,14 +142,7 @@ fun ContentHubScreen(
     var selectedScreenTab by remember { mutableIntStateOf(0) }
 
     // Section 1: Unit & Subtopic Selection
-    val unitOptions = listOf(
-        DefaultQuestions.UNIT_1,
-        DefaultQuestions.UNIT_2,
-        DefaultQuestions.UNIT_3,
-        DefaultQuestions.UNIT_4,
-        DefaultQuestions.UNIT_5,
-        DefaultQuestions.UNIT_6
-    )
+    val unitOptions = DefaultQuestions.allCategories
     var selectedUnit by remember { mutableStateOf(unitOptions[0]) }
     val isExtraUnit = DefaultQuestions.isExtraQuestionsUnit(selectedUnit)
     var isUnitDropdownExpanded by remember { mutableStateOf(false) }
@@ -717,7 +710,7 @@ fun ContentHubScreen(
                                                 rawInputText = sample
                                                 performSeparation(sample)
                                             }
-                                        ) {
+                                         ) {
                                             Text(
                                                 text = "उप-विषय 5: विशिष्ट लाइब्रेरी",
                                                 fontSize = 11.sp,
@@ -1107,9 +1100,7 @@ fun ContentHubScreen(
 
                                         OutlinedButton(
                                             onClick = {
-                                                val sample = if (isExtraUnit) {
-                                                    ContentSeparator.getExtraQuestionsSample()
-                                                } else if (selectedUnit == DefaultQuestions.UNIT_1) {
+                                                val sample = if (selectedUnit == DefaultQuestions.UNIT_1) {
                                                     when (subTopicText) {
                                                         DefaultQuestions.UNIT_1_SUBTOPIC_2 -> ContentSeparator.getUnit1Subtopic2FullContent()
                                                         DefaultQuestions.UNIT_1_SUBTOPIC_3 -> ContentSeparator.getUnit1Subtopic3FullContent()

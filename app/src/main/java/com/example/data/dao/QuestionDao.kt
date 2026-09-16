@@ -73,4 +73,7 @@ interface QuestionDao {
 
     @Query("DELETE FROM questions WHERE category NOT IN (:validCategories)")
     suspend fun deleteQuestionsNotInCategories(validCategories: List<String>)
+
+    @Query("DELETE FROM questions WHERE category LIKE '%इकाई 6%' OR category LIKE '%एक्स्ट्रा%' OR category LIKE '%Extra%'")
+    suspend fun deleteUnit6Questions()
 }

@@ -24,15 +24,12 @@ class ExampleRobolectricTest {
     @Test
     fun `verify syllabus units and Unit 1 Subtopic 1 initial questions and notes`() {
         val categories = DefaultQuestions.allCategories
-        assertEquals(6, categories.size)
+        assertEquals(5, categories.size)
         assertTrue(categories.contains(DefaultQuestions.UNIT_1))
         assertTrue(categories.contains(DefaultQuestions.UNIT_2))
         assertTrue(categories.contains(DefaultQuestions.UNIT_3))
         assertTrue(categories.contains(DefaultQuestions.UNIT_4))
         assertTrue(categories.contains(DefaultQuestions.UNIT_5))
-        assertTrue(categories.contains(DefaultQuestions.UNIT_6))
-        assertTrue(DefaultQuestions.isExtraQuestionsUnit(DefaultQuestions.UNIT_6))
-        org.junit.Assert.assertFalse(DefaultQuestions.isExtraQuestionsUnit(DefaultQuestions.UNIT_1))
 
         assertEquals("पुस्तकालय की बेसिक अवधारणा", DefaultQuestions.UNIT_1_SUBTOPIC_1)
         assertEquals("https://www.youtube.com/live/XDdMEc3Kvh4?si=tUI3sqQ7en3pCUjn", DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_URL)
@@ -50,7 +47,7 @@ class ExampleRobolectricTest {
         assertEquals("https://www.youtube.com/live/wD8Bue1vdGQ?si=WU4c12D48xx0vc-8", DefaultQuestions.UNIT_1_SUBTOPIC_5_YOUTUBE_URL)
 
         val questions = DefaultQuestions.getInitialQuestions()
-        assertEquals("Unit 1 Subtopics 1, 2, 3, 4 & 5 have 55 initial questions", 55, questions.size)
+        assertEquals("Initial questions include Unit 1 (55)", 55, questions.size)
         assertEquals(DefaultQuestions.UNIT_1, questions[0].category)
 
         val videoId1 = com.example.util.ContentSeparator.extractYouTubeVideoId(DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_URL)

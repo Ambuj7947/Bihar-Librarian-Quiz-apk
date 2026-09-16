@@ -29,6 +29,7 @@ sealed interface AppScreen {
     data object Bookmarks : AppScreen
     data object Mistakes : AppScreen
     data class StudyMode(val category: String? = null) : AppScreen
+    data class UnitSubtopics(val category: String) : AppScreen
 }
 
 data class ActiveQuizState(
@@ -168,6 +169,29 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             )
             navigateTo(AppScreen.QuizPlay)
         }
+    }
+
+    // Navigate to unit subtopics screen
+    fun navigateToUnitSubtopics(categoryName: String) {
+        navigateTo(AppScreen.UnitSubtopics(categoryName))
+    }
+
+    // Start Subtopic specific quiz / DPP
+    fun startSubtopicQuiz(categoryName: String, subTopicTitle: String, questions: List<QuestionEntity>) {
+        if (questions.isEmpty()) {
+            _statusMessage.value = "इस उप-विषय में अभी कोई प्रश्न उपलब्ध नहीं है।"
+            return
+        }
+        _quizState.value = ActiveQuizState(
+            title = "$subTopicTitle • DPP",
+            category = categoryName,
+            questions = questions,
+            currentIndex = 0,
+            userAnswers = emptyMap(),
+            isSubmitted = false,
+            showInstantExplanation = true
+        )
+        navigateTo(AppScreen.QuizPlay)
     }
 
     // Start Category Quiz
