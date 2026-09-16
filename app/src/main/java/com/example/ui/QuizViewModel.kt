@@ -74,6 +74,9 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             database.quizAttemptDao(),
             database.studyMaterialDao()
         )
+        viewModelScope.launch {
+            repository.ensureUnit1Subtopic1Seed()
+        }
     }
 
     // Screen navigation stack

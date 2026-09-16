@@ -87,4 +87,74 @@ class QuestionRepository(
     suspend fun resetAllAttempts() = withContext(Dispatchers.IO) {
         questionDao.resetAllAttempts()
     }
+
+    suspend fun ensureUnit1Seed() = withContext(Dispatchers.IO) {
+        val matCount1 = studyMaterialDao.getMaterialCountForSubtopic(
+            DefaultQuestions.UNIT_1,
+            DefaultQuestions.UNIT_1_SUBTOPIC_1
+        )
+        if (matCount1 == 0) {
+            studyMaterialDao.insertMaterial(DefaultQuestions.getUnit1Subtopic1Material())
+        }
+
+        val matCount2 = studyMaterialDao.getMaterialCountForSubtopic(
+            DefaultQuestions.UNIT_1,
+            DefaultQuestions.UNIT_1_SUBTOPIC_2
+        )
+        if (matCount2 == 0) {
+            studyMaterialDao.insertMaterial(DefaultQuestions.getUnit1Subtopic2Material())
+        }
+
+        val matCount3 = studyMaterialDao.getMaterialCountForSubtopic(
+            DefaultQuestions.UNIT_1,
+            DefaultQuestions.UNIT_1_SUBTOPIC_3
+        )
+        if (matCount3 == 0) {
+            studyMaterialDao.insertMaterial(DefaultQuestions.getUnit1Subtopic3Material())
+        }
+
+        val matCount4 = studyMaterialDao.getMaterialCountForSubtopic(
+            DefaultQuestions.UNIT_1,
+            DefaultQuestions.UNIT_1_SUBTOPIC_4
+        )
+        if (matCount4 == 0) {
+            studyMaterialDao.insertMaterial(DefaultQuestions.getUnit1Subtopic4Material())
+        }
+
+        val matCount5 = studyMaterialDao.getMaterialCountForSubtopic(
+            DefaultQuestions.UNIT_1,
+            DefaultQuestions.UNIT_1_SUBTOPIC_5
+        )
+        if (matCount5 == 0) {
+            studyMaterialDao.insertMaterial(DefaultQuestions.getUnit1Subtopic5Material())
+        }
+
+        val existingQuestions = questionDao.getQuestionsByCategory(DefaultQuestions.UNIT_1)
+        val hasQ1 = existingQuestions.any { it.keyHighlight.contains(DefaultQuestions.UNIT_1_SUBTOPIC_1) }
+        if (!hasQ1) {
+            questionDao.insertAll(DefaultQuestions.getUnit1Subtopic1Questions())
+        }
+
+        val hasQ2 = existingQuestions.any { it.keyHighlight.contains(DefaultQuestions.UNIT_1_SUBTOPIC_2) }
+        if (!hasQ2) {
+            questionDao.insertAll(DefaultQuestions.getUnit1Subtopic2Questions())
+        }
+
+        val hasQ3 = existingQuestions.any { it.keyHighlight.contains(DefaultQuestions.UNIT_1_SUBTOPIC_3) }
+        if (!hasQ3) {
+            questionDao.insertAll(DefaultQuestions.getUnit1Subtopic3Questions())
+        }
+
+        val hasQ4 = existingQuestions.any { it.keyHighlight.contains(DefaultQuestions.UNIT_1_SUBTOPIC_4) }
+        if (!hasQ4) {
+            questionDao.insertAll(DefaultQuestions.getUnit1Subtopic4Questions())
+        }
+
+        val hasQ5 = existingQuestions.any { it.keyHighlight.contains(DefaultQuestions.UNIT_1_SUBTOPIC_5) }
+        if (!hasQ5) {
+            questionDao.insertAll(DefaultQuestions.getUnit1Subtopic5Questions())
+        }
+    }
+
+    suspend fun ensureUnit1Subtopic1Seed() = ensureUnit1Seed()
 }

@@ -74,6 +74,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -152,13 +153,13 @@ fun ContentHubScreen(
     var selectedUnit by remember { mutableStateOf(unitOptions[0]) }
     val isExtraUnit = DefaultQuestions.isExtraQuestionsUnit(selectedUnit)
     var isUnitDropdownExpanded by remember { mutableStateOf(false) }
-    var subTopicText by remember { mutableStateOf("") }
+    var subTopicText by remember { mutableStateOf(DefaultQuestions.UNIT_1_SUBTOPIC_1) }
 
     // Section 2: YouTube Lecture Link
-    var youtubeUrl by remember { mutableStateOf("https://youtube.com/watch?v=blat_lib_sc_unit01_lec03") }
-    var lectureTitle by remember { mutableStateOf("इकाई 1: पुस्तकालय विज्ञान के 5 सूत्र (Dr. S.R. Ranganathan 5 Laws)") }
-    var channelName by remember { mutableStateOf("BLAT मेंटर बिहार • 1080p HD") }
-    var timestampNotes by remember { mutableStateOf("05:20 - प्रथम सूत्र, 14:10 - द्वितीय सूत्र, 25:30 - महत्वपूर्ण बहुविकल्पीय प्रश्न") }
+    var youtubeUrl by remember { mutableStateOf(DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_URL) }
+    var lectureTitle by remember { mutableStateOf(DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_TITLE) }
+    var channelName by remember { mutableStateOf("BLAT मेंटर बिहार • डॉ. सैयद फहीम अली") }
+    var timestampNotes by remember { mutableStateOf("00:00 - पुस्तकालय शब्द की व्युत्पत्ति एवं अर्थ, 12:40 - आधुनिक परिभाषा एवं त्रिमूर्ति, 26:15 - पुस्तकालय विज्ञान के जनक व सूत्र, 42:00 - वस्तुनिष्ठ प्रश्नोत्तरी") }
 
     val detectedVideoId = remember(youtubeUrl) {
         ContentSeparator.extractYouTubeVideoId(youtubeUrl)
@@ -568,6 +569,10 @@ fun ContentHubScreen(
                                                 if (DefaultQuestions.isExtraQuestionsUnit(unit)) {
                                                     selectedSeparatedTab = 1
                                                     separatedNotesText = ""
+                                                } else if (unit == DefaultQuestions.UNIT_1) {
+                                                    subTopicText = DefaultQuestions.UNIT_1_SUBTOPIC_1
+                                                    youtubeUrl = DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_URL
+                                                    lectureTitle = DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_TITLE
                                                 }
                                             }
                                         )
@@ -595,6 +600,134 @@ fun ContentHubScreen(
                                     .fillMaxWidth()
                                     .testTag("topic_name_input")
                             )
+
+                            if (selectedUnit == DefaultQuestions.UNIT_1) {
+                                LazyRow(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    val isSub1 = subTopicText == DefaultQuestions.UNIT_1_SUBTOPIC_1
+                                    val isSub2 = subTopicText == DefaultQuestions.UNIT_1_SUBTOPIC_2
+                                    val isSub3 = subTopicText == DefaultQuestions.UNIT_1_SUBTOPIC_3
+                                    val isSub4 = subTopicText == DefaultQuestions.UNIT_1_SUBTOPIC_4
+                                    val isSub5 = subTopicText == DefaultQuestions.UNIT_1_SUBTOPIC_5
+
+                                    item {
+                                        Surface(
+                                            shape = RoundedCornerShape(20.dp),
+                                            color = if (isSub1) Color(0xFF172E54) else Color(0xFFF1F5F9),
+                                            contentColor = if (isSub1) Color.White else Color(0xFF334155),
+                                            modifier = Modifier.clickable {
+                                                subTopicText = DefaultQuestions.UNIT_1_SUBTOPIC_1
+                                                youtubeUrl = DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_URL
+                                                lectureTitle = DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_TITLE
+                                                val sample = ContentSeparator.getUnit1Subtopic1FullContent()
+                                                rawInputText = sample
+                                                performSeparation(sample)
+                                            }
+                                        ) {
+                                            Text(
+                                                text = "उप-विषय 1: बेसिक अवधारणा",
+                                                fontSize = 11.sp,
+                                                fontWeight = if (isSub1) FontWeight.Bold else FontWeight.Normal,
+                                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                                            )
+                                        }
+                                    }
+
+                                    item {
+                                        Surface(
+                                            shape = RoundedCornerShape(20.dp),
+                                            color = if (isSub2) Color(0xFF172E54) else Color(0xFFF1F5F9),
+                                            contentColor = if (isSub2) Color.White else Color(0xFF334155),
+                                            modifier = Modifier.clickable {
+                                                subTopicText = DefaultQuestions.UNIT_1_SUBTOPIC_2
+                                                youtubeUrl = DefaultQuestions.UNIT_1_SUBTOPIC_2_YOUTUBE_URL
+                                                lectureTitle = DefaultQuestions.UNIT_1_SUBTOPIC_2_YOUTUBE_TITLE
+                                                val sample = ContentSeparator.getUnit1Subtopic2FullContent()
+                                                rawInputText = sample
+                                                performSeparation(sample)
+                                            }
+                                        ) {
+                                            Text(
+                                                text = "उप-विषय 2: पुस्तकालय के प्रकार",
+                                                fontSize = 11.sp,
+                                                fontWeight = if (isSub2) FontWeight.Bold else FontWeight.Normal,
+                                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                                            )
+                                        }
+                                    }
+
+                                    item {
+                                        Surface(
+                                            shape = RoundedCornerShape(20.dp),
+                                            color = if (isSub3) Color(0xFF172E54) else Color(0xFFF1F5F9),
+                                            contentColor = if (isSub3) Color.White else Color(0xFF334155),
+                                            modifier = Modifier.clickable {
+                                                subTopicText = DefaultQuestions.UNIT_1_SUBTOPIC_3
+                                                youtubeUrl = DefaultQuestions.UNIT_1_SUBTOPIC_3_YOUTUBE_URL
+                                                lectureTitle = DefaultQuestions.UNIT_1_SUBTOPIC_3_YOUTUBE_TITLE
+                                                val sample = ContentSeparator.getUnit1Subtopic3FullContent()
+                                                rawInputText = sample
+                                                performSeparation(sample)
+                                            }
+                                        ) {
+                                            Text(
+                                                text = "उप-विषय 3: सार्वजनिक लाइब्रेरी",
+                                                fontSize = 11.sp,
+                                                fontWeight = if (isSub3) FontWeight.Bold else FontWeight.Normal,
+                                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                                            )
+                                        }
+                                    }
+
+                                    item {
+                                        Surface(
+                                            shape = RoundedCornerShape(20.dp),
+                                            color = if (isSub4) Color(0xFF172E54) else Color(0xFFF1F5F9),
+                                            contentColor = if (isSub4) Color.White else Color(0xFF334155),
+                                            modifier = Modifier.clickable {
+                                                subTopicText = DefaultQuestions.UNIT_1_SUBTOPIC_4
+                                                youtubeUrl = DefaultQuestions.UNIT_1_SUBTOPIC_4_YOUTUBE_URL
+                                                lectureTitle = DefaultQuestions.UNIT_1_SUBTOPIC_4_YOUTUBE_TITLE
+                                                val sample = ContentSeparator.getUnit1Subtopic4FullContent()
+                                                rawInputText = sample
+                                                performSeparation(sample)
+                                            }
+                                        ) {
+                                            Text(
+                                                text = "उप-विषय 4: राष्ट्रीय पुस्तकालय",
+                                                fontSize = 11.sp,
+                                                fontWeight = if (isSub4) FontWeight.Bold else FontWeight.Normal,
+                                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                                            )
+                                        }
+                                    }
+
+                                    item {
+                                        Surface(
+                                            shape = RoundedCornerShape(20.dp),
+                                            color = if (isSub5) Color(0xFF172E54) else Color(0xFFF1F5F9),
+                                            contentColor = if (isSub5) Color.White else Color(0xFF334155),
+                                            modifier = Modifier.clickable {
+                                                subTopicText = DefaultQuestions.UNIT_1_SUBTOPIC_5
+                                                youtubeUrl = DefaultQuestions.UNIT_1_SUBTOPIC_5_YOUTUBE_URL
+                                                lectureTitle = DefaultQuestions.UNIT_1_SUBTOPIC_5_YOUTUBE_TITLE
+                                                val sample = ContentSeparator.getUnit1Subtopic5FullContent()
+                                                rawInputText = sample
+                                                performSeparation(sample)
+                                            }
+                                        ) {
+                                            Text(
+                                                text = "उप-विषय 5: विशिष्ट लाइब्रेरी",
+                                                fontSize = 11.sp,
+                                                fontWeight = if (isSub5) FontWeight.Bold else FontWeight.Normal,
+                                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -974,7 +1107,19 @@ fun ContentHubScreen(
 
                                         OutlinedButton(
                                             onClick = {
-                                                val sample = if (isExtraUnit) ContentSeparator.getExtraQuestionsSample() else ContentSeparator.getSampleContent()
+                                                val sample = if (isExtraUnit) {
+                                                    ContentSeparator.getExtraQuestionsSample()
+                                                } else if (selectedUnit == DefaultQuestions.UNIT_1) {
+                                                    when (subTopicText) {
+                                                        DefaultQuestions.UNIT_1_SUBTOPIC_2 -> ContentSeparator.getUnit1Subtopic2FullContent()
+                                                        DefaultQuestions.UNIT_1_SUBTOPIC_3 -> ContentSeparator.getUnit1Subtopic3FullContent()
+                                                        DefaultQuestions.UNIT_1_SUBTOPIC_4 -> ContentSeparator.getUnit1Subtopic4FullContent()
+                                                        DefaultQuestions.UNIT_1_SUBTOPIC_5 -> ContentSeparator.getUnit1Subtopic5FullContent()
+                                                        else -> ContentSeparator.getUnit1Subtopic1FullContent()
+                                                    }
+                                                } else {
+                                                    ContentSeparator.getSampleContent()
+                                                }
                                                 rawInputText = sample
                                                 performSeparation(sample)
                                             },

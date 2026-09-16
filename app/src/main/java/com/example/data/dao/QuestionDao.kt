@@ -17,6 +17,9 @@ interface QuestionDao {
     @Query("SELECT * FROM questions WHERE category = :category ORDER BY id ASC")
     fun getQuestionsByCategoryFlow(category: String): Flow<List<QuestionEntity>>
 
+    @Query("SELECT * FROM questions WHERE category = :category ORDER BY id ASC")
+    suspend fun getQuestionsByCategory(category: String): List<QuestionEntity>
+
     @Query("SELECT * FROM questions WHERE isBookmarked = 1 ORDER BY id DESC")
     fun getBookmarkedQuestionsFlow(): Flow<List<QuestionEntity>>
 

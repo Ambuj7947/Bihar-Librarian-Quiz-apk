@@ -1,5 +1,7 @@
 package com.example.ui.screens
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,9 +28,14 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SmartDisplay
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -36,6 +43,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -49,12 +57,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.data.model.QuestionEntity
+import com.example.data.model.StudyMaterialEntity
 import com.example.ui.AppScreen
 import com.example.ui.QuizViewModel
 import com.example.ui.components.ExplanationCard
@@ -63,6 +78,7 @@ import com.example.ui.theme.CorrectAnswerBg
 import com.example.ui.theme.CorrectAnswerGreen
 import com.example.ui.theme.SaffronPrimary
 import com.example.ui.theme.WisdomGold
+import com.example.util.ContentSeparator
 
 @Composable
 fun QuestionBankScreen(
@@ -71,11 +87,17 @@ fun QuestionBankScreen(
     modifier: Modifier = Modifier
 ) {
     val allQuestions by viewModel.allQuestions.collectAsState()
+    val allStudyMaterials by viewModel.allStudyMaterials.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val scale = 1.0f
 
     var selectedCategory by remember { mutableStateOf(initialCategoryFilter ?: "सभी") }
     var searchQuery by remember { mutableStateOf("") }
+
+    val relevantMaterials = remember(selectedCategory, allStudyMaterials) {
+        if (selectedCategory == "सभी") emptyList()
+        else allStudyMaterials.filter { it.unitCategory == selectedCategory }
+    }
 
     val filteredQuestions = allQuestions.filter { question ->
         val matchesCat = selectedCategory == "सभी" || question.category == selectedCategory
@@ -182,6 +204,16 @@ fun QuestionBankScreen(
                             fontSize = (14 * scale).sp
                         )
                     }
+                }
+            }
+
+            // If selected unit has study materials (Video lecture and notes), show them nicely
+            if (relevantMaterials.isNotEmpty()) {
+                items(relevantMaterials) { material ->
+                    UnitStudyMaterialBanner(
+                        material = material,
+                        scale = scale
+                    )
                 }
             }
 
@@ -379,5 +411,269 @@ fun StudyOptionItem(
             fontWeight = if (isCorrect) FontWeight.SemiBold else FontWeight.Normal,
             color = if (isCorrect) Color(0xFF14532D) else Color(0xFF334155)
         )
+    }
+}
+
+@Composable
+fun UnitStudyMaterialBanner(
+    material: StudyMaterialEntity,
+    scale: Float,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val clipboardManager = LocalClipboardManager.current
+    var isNotesExpanded by remember { mutableStateOf(false) }
+
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            // Header badge & Topic title
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(Color(0xFFEFF6FF), RoundedCornerShape(8.dp))
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                ) {
+                    Text(
+                        text = "उप-विषय: ${material.subTopic}",
+                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                        color = Color(0xFF1D4ED8)
+                    )
+                }
+
+                Text(
+                    text = "${material.questionsCount} अभ्यास प्रश्न",
+                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
+                    color = Color(0xFF16A34A)
+                )
+            }
+
+            // YouTube Video Card
+            if (material.youtubeUrl.isNotBlank()) {
+                val videoId = material.youtubeVideoId.ifEmpty {
+                    ContentSeparator.extractYouTubeVideoId(material.youtubeUrl) ?: ""
+                }
+                val thumbUrl = ContentSeparator.getYouTubeThumbnailUrl(videoId)
+
+                Card(
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A)),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(160.dp)
+                        ) {
+                            if (thumbUrl.isNotBlank()) {
+                                AsyncImage(
+                                    model = thumbUrl,
+                                    contentDescription = "Video Thumbnail",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            } else {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(
+                                            Brush.verticalGradient(
+                                                listOf(Color(0xFF1E293B), Color(0xFF0F172A))
+                                            )
+                                        )
+                                )
+                            }
+
+                            // Dark gradient overlay
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        Brush.verticalGradient(
+                                            listOf(Color.Transparent, Color(0xCC000000))
+                                        )
+                                    )
+                            )
+
+                            // Play Button Indicator
+                            Box(
+                                modifier = Modifier
+                                    .size(52.dp)
+                                    .background(Color(0xCCDC2626), CircleShape)
+                                    .align(Alignment.Center)
+                                    .clickable {
+                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(material.youtubeUrl))
+                                        context.startActivity(intent)
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.PlayArrow,
+                                    contentDescription = "Play Video",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(32.dp)
+                                )
+                            }
+
+                            // Live / HD badge
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .padding(8.dp)
+                                    .background(Color(0xCCDC2626), RoundedCornerShape(4.dp))
+                                    .padding(horizontal = 6.dp, vertical = 2.dp)
+                            ) {
+                                Text(
+                                    text = "यूट्यूब क्लास",
+                                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                    color = Color.White,
+                                    fontSize = 10.sp
+                                )
+                            }
+                        }
+
+                        Column(
+                            modifier = Modifier.padding(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Text(
+                                text = material.youtubeTitle.ifEmpty { "वीडियो लेक्चर" },
+                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                color = Color.White,
+                                maxLines = 2
+                            )
+
+                            if (material.timestampNotes.isNotBlank()) {
+                                Text(
+                                    text = "विवरण: ${material.timestampNotes}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color(0xFF94A3B8),
+                                    fontSize = 11.sp
+                                )
+                            }
+
+                            Button(
+                                onClick = {
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(material.youtubeUrl))
+                                    context.startActivity(intent)
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFDC2626)),
+                                shape = RoundedCornerShape(8.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(38.dp)
+                            ) {
+                                Icon(Icons.Default.SmartDisplay, contentDescription = null, modifier = Modifier.size(16.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "यूट्यूब पर वीडियो लेक्चर देखें",
+                                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                                    color = Color.White
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Notes Section
+            if (material.notesContent.isNotBlank()) {
+                Card(
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF8FAFC)),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE2E8F0)),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.MenuBook,
+                                    contentDescription = null,
+                                    tint = Color(0xFF172E54),
+                                    modifier = Modifier.size(18.dp)
+                                )
+                                Text(
+                                    text = "अध्ययन नोट्स (Study Notes)",
+                                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                    color = Color(0xFF1E293B)
+                                )
+                            }
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                IconButton(
+                                    onClick = {
+                                        clipboardManager.setText(AnnotatedString(material.notesContent))
+                                    },
+                                    modifier = Modifier.size(28.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.ContentCopy,
+                                        contentDescription = "कॉपी करें",
+                                        tint = Color(0xFF64748B),
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                }
+
+                                IconButton(
+                                    onClick = { isNotesExpanded = !isNotesExpanded },
+                                    modifier = Modifier.size(28.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = if (isNotesExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                                        contentDescription = if (isNotesExpanded) "कम करें" else "पूरा देखें",
+                                        tint = Color(0xFF64748B),
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                }
+                            }
+                        }
+
+                        Text(
+                            text = material.notesContent,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                lineHeight = 20.sp,
+                                color = Color(0xFF334155)
+                            ),
+                            maxLines = if (isNotesExpanded) Int.MAX_VALUE else 6
+                        )
+
+                        if (!isNotesExpanded) {
+                            Text(
+                                text = "पूरा नोट्स पढ़ने के लिए टैप करें...",
+                                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                color = Color(0xFFC85A17),
+                                modifier = Modifier.clickable { isNotesExpanded = true }
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }

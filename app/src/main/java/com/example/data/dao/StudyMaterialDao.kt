@@ -20,6 +20,9 @@ interface StudyMaterialDao {
     @Query("SELECT * FROM study_materials WHERE id = :id LIMIT 1")
     suspend fun getMaterialById(id: Long): StudyMaterialEntity?
 
+    @Query("SELECT COUNT(*) FROM study_materials WHERE unitCategory = :unitCategory AND subTopic = :subTopic")
+    suspend fun getMaterialCountForSubtopic(unitCategory: String, subTopic: String): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMaterial(material: StudyMaterialEntity): Long
 

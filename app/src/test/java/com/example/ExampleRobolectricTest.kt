@@ -22,7 +22,7 @@ class ExampleRobolectricTest {
     }
 
     @Test
-    fun `verify syllabus units and empty initial questions for daily additions`() {
+    fun `verify syllabus units and Unit 1 Subtopic 1 initial questions and notes`() {
         val categories = DefaultQuestions.allCategories
         assertEquals(6, categories.size)
         assertTrue(categories.contains(DefaultQuestions.UNIT_1))
@@ -34,7 +34,68 @@ class ExampleRobolectricTest {
         assertTrue(DefaultQuestions.isExtraQuestionsUnit(DefaultQuestions.UNIT_6))
         org.junit.Assert.assertFalse(DefaultQuestions.isExtraQuestionsUnit(DefaultQuestions.UNIT_1))
 
+        assertEquals("पुस्तकालय की बेसिक अवधारणा", DefaultQuestions.UNIT_1_SUBTOPIC_1)
+        assertEquals("https://www.youtube.com/live/XDdMEc3Kvh4?si=tUI3sqQ7en3pCUjn", DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_URL)
+
+        assertEquals("पुस्तकालय के प्रकार (Types of Library)", DefaultQuestions.UNIT_1_SUBTOPIC_2)
+        assertEquals("https://www.youtube.com/live/wYSPC7-MJIo?si=5T6N6yc7NPTXYnnr", DefaultQuestions.UNIT_1_SUBTOPIC_2_YOUTUBE_URL)
+
+        assertEquals("सार्वजनिक लाइब्रेरी (Public Library)", DefaultQuestions.UNIT_1_SUBTOPIC_3)
+        assertEquals("https://www.youtube.com/live/uCEcYZpYJzU?si=h833VB2zim-UX-3S", DefaultQuestions.UNIT_1_SUBTOPIC_3_YOUTUBE_URL)
+
+        assertEquals("भारत के राष्ट्रीय लाइब्रेरी (National Library of India)", DefaultQuestions.UNIT_1_SUBTOPIC_4)
+        assertEquals("https://www.youtube.com/live/YdvxrwbvaAs?si=xSxRqQty50dXkmCk", DefaultQuestions.UNIT_1_SUBTOPIC_4_YOUTUBE_URL)
+
+        assertEquals("विशिष्ट लाइब्रेरी (Special Library)", DefaultQuestions.UNIT_1_SUBTOPIC_5)
+        assertEquals("https://www.youtube.com/live/wD8Bue1vdGQ?si=WU4c12D48xx0vc-8", DefaultQuestions.UNIT_1_SUBTOPIC_5_YOUTUBE_URL)
+
         val questions = DefaultQuestions.getInitialQuestions()
-        assertTrue("Initial questions should be empty ready for daily user additions", questions.isEmpty())
+        assertEquals("Unit 1 Subtopics 1, 2, 3, 4 & 5 have 55 initial questions", 55, questions.size)
+        assertEquals(DefaultQuestions.UNIT_1, questions[0].category)
+
+        val videoId1 = com.example.util.ContentSeparator.extractYouTubeVideoId(DefaultQuestions.UNIT_1_SUBTOPIC_1_YOUTUBE_URL)
+        assertEquals("XDdMEc3Kvh4", videoId1)
+
+        val videoId2 = com.example.util.ContentSeparator.extractYouTubeVideoId(DefaultQuestions.UNIT_1_SUBTOPIC_2_YOUTUBE_URL)
+        assertEquals("wYSPC7-MJIo", videoId2)
+
+        val videoId3 = com.example.util.ContentSeparator.extractYouTubeVideoId(DefaultQuestions.UNIT_1_SUBTOPIC_3_YOUTUBE_URL)
+        assertEquals("uCEcYZpYJzU", videoId3)
+
+        val videoId4 = com.example.util.ContentSeparator.extractYouTubeVideoId(DefaultQuestions.UNIT_1_SUBTOPIC_4_YOUTUBE_URL)
+        assertEquals("YdvxrwbvaAs", videoId4)
+
+        val videoId5 = com.example.util.ContentSeparator.extractYouTubeVideoId(DefaultQuestions.UNIT_1_SUBTOPIC_5_YOUTUBE_URL)
+        assertEquals("wD8Bue1vdGQ", videoId5)
+
+        val separationResult1 = com.example.util.ContentSeparator.separateNotesAndQuestions(
+            com.example.util.ContentSeparator.getUnit1Subtopic1FullContent()
+        )
+        assertTrue("Notes should contain etymology information", separationResult1.notesText.contains("Liber"))
+        assertEquals("Should parse 10 questions from Unit 1 Subtopic 1 content", 10, separationResult1.questions.size)
+
+        val separationResult2 = com.example.util.ContentSeparator.separateNotesAndQuestions(
+            com.example.util.ContentSeparator.getUnit1Subtopic2FullContent()
+        )
+        assertTrue("Notes should contain academic library information", separationResult2.notesText.contains("शैक्षणिक पुस्तकालय"))
+        assertEquals("Should parse 10 questions from Unit 1 Subtopic 2 content", 10, separationResult2.questions.size)
+
+        val separationResult3 = com.example.util.ContentSeparator.separateNotesAndQuestions(
+            com.example.util.ContentSeparator.getUnit1Subtopic3FullContent()
+        )
+        assertTrue("Notes should contain public library information", separationResult3.notesText.contains("सार्वजनिक पुस्तकालय"))
+        assertEquals("Should parse 10 questions from Unit 1 Subtopic 3 content", 10, separationResult3.questions.size)
+
+        val separationResult4 = com.example.util.ContentSeparator.separateNotesAndQuestions(
+            com.example.util.ContentSeparator.getUnit1Subtopic4FullContent()
+        )
+        assertTrue("Notes should contain national library information", separationResult4.notesText.contains("राष्ट्रीय पुस्तकालय"))
+        assertEquals("Should parse 15 questions from Unit 1 Subtopic 4 content", 15, separationResult4.questions.size)
+
+        val separationResult5 = com.example.util.ContentSeparator.separateNotesAndQuestions(
+            com.example.util.ContentSeparator.getUnit1Subtopic5FullContent()
+        )
+        assertTrue("Notes should contain special library information", separationResult5.notesText.contains("विशिष्ट पुस्तकालय"))
+        assertEquals("Should parse 10 questions from Unit 1 Subtopic 5 content", 10, separationResult5.questions.size)
     }
 }
