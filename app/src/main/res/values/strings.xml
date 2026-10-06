@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">बिहार लाइब्रेरियन क्विज़</string>
+    <string name="default_web_client_id" translatable="false">"</string>
 </resources>
