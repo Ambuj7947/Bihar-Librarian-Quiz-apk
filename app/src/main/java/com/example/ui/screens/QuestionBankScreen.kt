@@ -32,10 +32,8 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.MenuBook
-import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.SmartDisplay
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -67,7 +65,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.example.data.model.QuestionEntity
 import com.example.data.model.StudyMaterialEntity
 import com.example.ui.AppScreen
@@ -78,7 +75,6 @@ import com.example.ui.theme.CorrectAnswerBg
 import com.example.ui.theme.CorrectAnswerGreen
 import com.example.ui.theme.SaffronPrimary
 import com.example.ui.theme.WisdomGold
-import com.example.util.ContentSeparator
 
 @Composable
 fun QuestionBankScreen(
@@ -100,7 +96,10 @@ fun QuestionBankScreen(
     }
 
     val filteredQuestions = allQuestions.filter { question ->
-        val matchesCat = selectedCategory == "सभी" || question.category == selectedCategory
+        val matchesCat = selectedCategory == "सभी" ||
+                question.category == selectedCategory ||
+                (com.example.data.DefaultQuestions.isExtraQuestionsUnit(selectedCategory) &&
+                        com.example.data.DefaultQuestions.isExtraQuestionsUnit(question.category))
         val matchesQuery = searchQuery.isBlank() ||
                 question.questionHindi.contains(searchQuery, ignoreCase = true) ||
                 question.explanationHindi.contains(searchQuery, ignoreCase = true) ||
@@ -185,24 +184,43 @@ fun QuestionBankScreen(
                 }
             }
 
-            // Quick practice button for selected category
+            // Quick practice button or study notes navigation for selected category
             if (selectedCategory != "सभी") {
                 item {
-                    Button(
-                        onClick = { viewModel.startCategoryQuiz(selectedCategory) },
-                        colors = ButtonDefaults.buttonColors(containerColor = SaffronPrimary),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp)
-                    ) {
-                        Icon(Icons.Default.PlayArrow, contentDescription = null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "'$selectedCategory' का टेस्ट शुरू करें",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = (14 * scale).sp
-                        )
+                    if (filteredQuestions.isNotEmpty()) {
+                        Button(
+                            onClick = { viewModel.startCategoryQuiz(selectedCategory) },
+                            colors = ButtonDefaults.buttonColors(containerColor = SaffronPrimary),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp)
+                        ) {
+                            Icon(Icons.Default.PlayArrow, contentDescription = null)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "'$selectedCategory' का टेस्ट शुरू करें",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (14 * scale).sp
+                            )
+                        }
+                    } else {
+                        Button(
+                            onClick = { viewModel.navigateToUnitSubtopics(selectedCategory) },
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp)
+                        ) {
+                            Icon(Icons.Default.MenuBook, contentDescription = null)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "इस इकाई के विस्तृत थ्योरी नोट्स पढ़ें",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (14 * scale).sp
+                            )
+                        }
                     }
                 }
             }
@@ -241,24 +259,10 @@ fun QuestionBankScreen(
                             )
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                text = "प्रतिदिन नए प्रश्न जोड़ने के लिए नीचे दिए गए बटन पर टैप करें।",
+                                text = "इस विषय में नए अभ्यास प्रश्न जल्द उपलब्ध होंगे।",
                                 fontSize = (13 * scale).sp,
                                 color = Color(0xFF94A3B8)
                             )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Button(
-                                onClick = { viewModel.navigateTo(AppScreen.AddQuestion) },
-                                colors = ButtonDefaults.buttonColors(containerColor = SaffronPrimary),
-                                shape = RoundedCornerShape(12.dp)
-                            ) {
-                                Icon(Icons.Default.Add, contentDescription = null)
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = "नया प्रश्न जोड़ें",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = (14 * scale).sp
-                                )
-                            }
                         }
                     }
                 }
@@ -457,135 +461,6 @@ fun UnitStudyMaterialBanner(
                     style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
                     color = Color(0xFF16A34A)
                 )
-            }
-
-            // YouTube Video Card
-            if (material.youtubeUrl.isNotBlank()) {
-                val videoId = material.youtubeVideoId.ifEmpty {
-                    ContentSeparator.extractYouTubeVideoId(material.youtubeUrl) ?: ""
-                }
-                val thumbUrl = ContentSeparator.getYouTubeThumbnailUrl(videoId)
-
-                Card(
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A)),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(160.dp)
-                        ) {
-                            if (thumbUrl.isNotBlank()) {
-                                AsyncImage(
-                                    model = thumbUrl,
-                                    contentDescription = "Video Thumbnail",
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier.fillMaxSize()
-                                )
-                            } else {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .background(
-                                            Brush.verticalGradient(
-                                                listOf(Color(0xFF1E293B), Color(0xFF0F172A))
-                                            )
-                                        )
-                                )
-                            }
-
-                            // Dark gradient overlay
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(
-                                        Brush.verticalGradient(
-                                            listOf(Color.Transparent, Color(0xCC000000))
-                                        )
-                                    )
-                            )
-
-                            // Play Button Indicator
-                            Box(
-                                modifier = Modifier
-                                    .size(52.dp)
-                                    .background(Color(0xCCDC2626), CircleShape)
-                                    .align(Alignment.Center)
-                                    .clickable {
-                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(material.youtubeUrl))
-                                        context.startActivity(intent)
-                                    },
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.PlayArrow,
-                                    contentDescription = "Play Video",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                            }
-
-                            // Live / HD badge
-                            Box(
-                                modifier = Modifier
-                                    .align(Alignment.TopEnd)
-                                    .padding(8.dp)
-                                    .background(Color(0xCCDC2626), RoundedCornerShape(4.dp))
-                                    .padding(horizontal = 6.dp, vertical = 2.dp)
-                            ) {
-                                Text(
-                                    text = "यूट्यूब क्लास",
-                                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = Color.White,
-                                    fontSize = 10.sp
-                                )
-                            }
-                        }
-
-                        Column(
-                            modifier = Modifier.padding(12.dp),
-                            verticalArrangement = Arrangement.spacedBy(6.dp)
-                        ) {
-                            Text(
-                                text = material.youtubeTitle.ifEmpty { "वीडियो लेक्चर" },
-                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                color = Color.White,
-                                maxLines = 2
-                            )
-
-                            if (material.timestampNotes.isNotBlank()) {
-                                Text(
-                                    text = "विवरण: ${material.timestampNotes}",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = Color(0xFF94A3B8),
-                                    fontSize = 11.sp
-                                )
-                            }
-
-                            Button(
-                                onClick = {
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(material.youtubeUrl))
-                                    context.startActivity(intent)
-                                },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFDC2626)),
-                                shape = RoundedCornerShape(8.dp),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(38.dp)
-                            ) {
-                                Icon(Icons.Default.SmartDisplay, contentDescription = null, modifier = Modifier.size(16.dp))
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = "यूट्यूब पर वीडियो लेक्चर देखें",
-                                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                                    color = Color.White
-                                )
-                            }
-                        }
-                    }
-                }
             }
 
             // Notes Section

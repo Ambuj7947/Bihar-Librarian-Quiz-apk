@@ -1,0 +1,64 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with cumulative practice progress",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Authenticated user UID" },
+        "displayName": { "type": "string", "description": "Display name or Student name" },
+        "email": { "type": "string", "description": "Email address or student ID" },
+        "studentId": { "type": "string", "description": "Student registration/ID" },
+        "totalAttempted": { "type": "integer", "description": "Total practiced questions count" },
+        "totalCorrect": { "type": "integer", "description": "Total correctly answered questions" },
+        "accuracy": { "type": "integer", "description": "Accuracy percentage" },
+        "lastSyncMillis": { "type": "integer", "description": "Epoch timestamp of last cloud sync" }
+      },
+      "required": ["userId"]
+    },
+    "UserProgress": {
+      "title": "UserProgress",
+      "description": "Individual question practice records for cross-device sync",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "User UID" },
+        "questionKey": { "type": "string", "description": "Question text identifier" },
+        "timesAttempted": { "type": "integer", "description": "Times attempted" },
+        "timesCorrect": { "type": "integer", "description": "Times correct" },
+        "lastAttemptOption": { "type": "integer", "description": "Last chosen option" },
+        "isBookmarked": { "type": "boolean", "description": "Bookmark flag" }
+      },
+      "required": ["userId", "questionKey"]
+    },
+    "QuizAttempt": {
+      "title": "QuizAttempt",
+      "description": "Completed quiz and test records",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "User UID" },
+        "attemptId": { "type": "string", "description": "Attempt unique ID" },
+        "quizTitle": { "type": "string", "description": "Quiz title" },
+        "categoryName": { "type": "string", "description": "Category or unit name" },
+        "totalQuestions": { "type": "integer", "description": "Question count" },
+        "correctCount": { "type": "integer", "description": "Correct count" },
+        "wrongCount": { "type": "integer", "description": "Wrong count" },
+        "timestampMillis": { "type": "integer", "description": "Timestamp" }
+      },
+      "required": ["userId", "quizTitle"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile with sync metadata and stats"
+    },
+    "/users/{userId}/progress/{progressId}": {
+      "schema": "UserProgress",
+      "description": "Detailed question practice history for seamless restore"
+    },
+    "/users/{userId}/quiz_attempts/{attemptId}": {
+      "schema": "QuizAttempt",
+      "description": "Saved quiz results"
+    }
+  }
+}

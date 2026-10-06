@@ -57,7 +57,18 @@ object DefaultQuestions {
 
     fun isExtraQuestionsUnit(category: String?): Boolean {
         if (category == null) return false
-        return category == UNIT_6 || category.contains("इकाई 6") || category.contains("एक्स्ट्रा") || category.contains("Extra Questions")
+        return category == UNIT_6 || category.contains("इकाई 6") || category.contains("एक्स्ट्रा") || category.contains("Extra")
+    }
+
+    /**
+     * Units 2, 3, 4, and 5 currently have full study notes but no DPP questions added yet.
+     */
+    fun isUnitWithoutDpp(category: String?): Boolean {
+        if (category == null) return false
+        return category.contains("इकाई 2") || category.contains("वर्गीकरण") || category.contains("सूचीकरण") ||
+               category.contains("इकाई 3") || category.contains("प्रबंधन") ||
+               category.contains("इकाई 4") || category.contains("सूचना") ||
+               category.contains("इकाई 5") || category.contains("कंप्यूटर")
     }
 
     fun getUnit1Subtopic1Notes(): String {

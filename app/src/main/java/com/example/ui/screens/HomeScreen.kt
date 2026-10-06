@@ -22,10 +22,14 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.CloudDone
+import androidx.compose.material.icons.filled.CloudOff
+import androidx.compose.material.icons.filled.CloudSync
 import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.LocalLibrary
 import androidx.compose.material.icons.filled.MenuBook
@@ -49,6 +53,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,6 +68,8 @@ import com.example.data.DefaultQuestions
 import com.example.data.SubtopicRepository
 import com.example.ui.AppScreen
 import com.example.ui.QuizViewModel
+import com.example.ui.components.SubjectProgressData
+import com.example.ui.components.SubjectProgressVisualizer
 import com.example.ui.components.TopHeader
 import com.example.ui.theme.IndigoSecondary
 import com.example.ui.theme.SaffronPrimary
@@ -78,12 +85,56 @@ fun HomeScreen(
     val mistakeQuestions by viewModel.mistakeQuestions.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val allStudyMaterials by viewModel.allStudyMaterials.collectAsState()
+    val currentUser by viewModel.currentUser.collectAsState()
+    val isOnline by viewModel.isOnline.collectAsState()
     val scale = 1.0f
 
     val attemptedQuestionsCount = allQuestions.count { it.timesAttempted > 0 }
     val totalAttempts = allQuestions.sumOf { it.timesAttempted }
     val totalCorrect = allQuestions.sumOf { it.timesCorrect }
     val accuracyPercentage = if (totalAttempts > 0) (totalCorrect * 100) / totalAttempts else 0
+
+    // Palette of colors for units in visual progress breakdown
+    val categoryColors = listOf(
+        Color(0xFF2563EB), // Blue - Unit 1
+        Color(0xFF0D9488), // Teal - Unit 2
+        Color(0xFF7C3AED), // Violet - Unit 3
+        Color(0xFFD97706), // Amber - Unit 4
+        Color(0xFFDC2626), // Crimson - Unit 5
+        Color(0xFF059669)  // Emerald - Extra / Unit 6
+    )
+
+    val subjectProgressList = remember(categories, allQuestions) {
+        categories.mapIndexed { index, catName ->
+            val isExtra = com.example.data.DefaultQuestions.isExtraQuestionsUnit(catName)
+            val catQuestions = allQuestions.filter {
+                if (isExtra) com.example.data.DefaultQuestions.isExtraQuestionsUnit(it.category)
+                else it.category == catName
+            }
+            val attempted = catQuestions.count { it.timesAttempted > 0 }
+            val correct = catQuestions.sumOf { it.timesCorrect }
+            val color = categoryColors.getOrElse(index % categoryColors.size) { SaffronPrimary }
+
+            // Clean short label
+            val shortLabel = when {
+                catName.contains("इकाई 1") || catName.contains("पुस्तकालय एवं समाज") -> "इकाई 1: पुस्तकालय समाज"
+                catName.contains("इकाई 2") || catName.contains("वर्गीकरण") -> "इकाई 2: वर्गीकरण एवं सूचीकरण"
+                catName.contains("इकाई 3") || catName.contains("सूचना सेवाएं") -> "इकाई 3: सूचना एवं संदर्भ"
+                catName.contains("इकाई 4") || catName.contains("प्रबंधन") -> "इकाई 4: पुस्तकालय प्रबंधन"
+                catName.contains("इकाई 5") || catName.contains("कंप्यूटर") -> "इकाई 5: ICT एवं कंप्यूटर"
+                else -> catName.take(24)
+            }
+
+            SubjectProgressData(
+                categoryName = catName,
+                shortLabel = shortLabel,
+                totalQuestions = catQuestions.size,
+                attemptedQuestions = attempted,
+                correctQuestions = correct,
+                color = color
+            )
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -93,13 +144,13 @@ fun HomeScreen(
                 showBack = false,
                 actionContent = {
                     IconButton(
-                        onClick = { viewModel.navigateTo(AppScreen.ContentCreatorHub) },
-                        modifier = Modifier.testTag("topbar_content_creator_hub_button")
+                        onClick = { viewModel.navigateTo(AppScreen.SignIn) },
+                        modifier = Modifier.testTag("account_signin_icon_button")
                     ) {
                         Icon(
-                            imageVector = Icons.Default.PostAdd,
-                            contentDescription = "सामग्री / प्रश्न जोड़ें",
-                            tint = Color.White
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = "लॉगिन / प्रोफ़ाइल",
+                            tint = if (currentUser != null) WisdomGold else Color.White
                         )
                     }
                 }
@@ -114,6 +165,69 @@ fun HomeScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // Cloud Sync & Login Status Banner
+            item {
+                Card(
+                    shape = RoundedCornerShape(14.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (currentUser != null) Color(0xFFEFF6FF) else Color(0xFFFFFBEB)
+                    ),
+                    border = androidx.compose.foundation.BorderStroke(
+                        1.dp,
+                        if (currentUser != null) Color(0xFFBFDBFE) else Color(0xFFFDE68A)
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { viewModel.navigateTo(AppScreen.SignIn) }
+                        .testTag("login_sync_banner_card")
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 14.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(
+                                imageVector = if (currentUser != null) Icons.Default.CloudDone else Icons.Default.CloudSync,
+                                contentDescription = null,
+                                tint = if (currentUser != null) Color(0xFF2563EB) else Color(0xFFD97706),
+                                modifier = Modifier.size(22.dp)
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text(
+                                    text = if (currentUser != null)
+                                        "प्रगति सुरक्षित: ${currentUser?.displayName}"
+                                    else
+                                        "नया फोन / अपडेट? डेटा सुरक्षित रखने हेतु लॉगिन करें",
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (currentUser != null) Color(0xFF1E40AF) else Color(0xFF92400E)
+                                )
+                                Text(
+                                    text = if (currentUser != null)
+                                        "क्लाउड सिंक सक्रिय • ऑनलाइन आने पर स्वतः बैकअप"
+                                    else
+                                        "ID पासवर्ड या Google से लॉगिन करें • कभी प्रगति रीसेट नहीं होगी",
+                                    fontSize = 11.sp,
+                                    color = if (currentUser != null) Color(0xFF3B82F6) else Color(0xFFB45309)
+                                )
+                            }
+                        }
+                        Icon(
+                            imageVector = Icons.Default.ChevronRight,
+                            contentDescription = null,
+                            tint = if (currentUser != null) Color(0xFF2563EB) else Color(0xFFD97706),
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+            }
             // Hero Welcome Card
             item {
                 Card(
@@ -223,6 +337,16 @@ fun HomeScreen(
                 }
             }
 
+            // Visual Summary Section (Interactive Recharts-style Bar & Donut Charts for Category Progress)
+            item {
+                SubjectProgressVisualizer(
+                    progressList = subjectProgressList,
+                    onCategoryClick = { categoryName ->
+                        viewModel.navigateToUnitSubtopics(categoryName)
+                    }
+                )
+            }
+
             // Quick Actions (Full Mock, Mistakes, Bookmarks, Study Mode)
             item {
                 Text(
@@ -297,109 +421,6 @@ fun HomeScreen(
                 }
             }
 
-            // Dedicated Content Creator Hub Feature Card (YouTube + Notes + Auto-Quiz Separator)
-            item {
-                Card(
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(
-                            Brush.horizontalGradient(
-                                listOf(Color(0xFF172E54), Color(0xFF1C3052))
-                            )
-                        )
-                        .clickable { viewModel.navigateTo(AppScreen.ContentCreatorHub) }
-                        .testTag("content_creator_hub_card")
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(38.dp)
-                                        .background(WisdomGold.copy(alpha = 0.2f), CircleShape),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.PostAdd,
-                                        contentDescription = null,
-                                        tint = WisdomGold,
-                                        modifier = Modifier.size(22.dp)
-                                    )
-                                }
-
-                                Column {
-                                    Text(
-                                        text = "सामग्री निर्माता केंद्र",
-                                        style = MaterialTheme.typography.titleMedium.copy(
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = (16 * scale).sp
-                                        ),
-                                        color = Color.White
-                                    )
-                                    Text(
-                                        text = "YouTube लिंक, नोट्स व ऑटो क्विज़ बनाएं",
-                                        style = MaterialTheme.typography.bodySmall.copy(
-                                            fontSize = (12 * scale).sp
-                                        ),
-                                        color = Color(0xFFCBD5E1)
-                                    )
-                                }
-                            }
-
-                            Box(
-                                modifier = Modifier
-                                    .background(WisdomGold, RoundedCornerShape(10.dp))
-                                    .padding(horizontal = 8.dp, vertical = 3.dp)
-                            ) {
-                                Text(
-                                    text = "नया पेज",
-                                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = Color(0xFF351000)
-                                )
-                            }
-                        }
-
-                        Text(
-                            text = "सिंगल फाइल या टेक्स्ट प्रदान करें — सिस्टम नोट्स और प्रश्नों को अलग कर देगा और स्वतः नए क्विज़ तैयार करेगा।",
-                            style = MaterialTheme.typography.bodySmall.copy(fontSize = (12 * scale).sp),
-                            color = Color(0xFFE2E8F0)
-                        )
-
-                        Button(
-                            onClick = { viewModel.navigateTo(AppScreen.ContentCreatorHub) },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFD35400),
-                                contentColor = Color.White
-                            ),
-                            shape = RoundedCornerShape(10.dp),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Icon(Icons.Default.SmartDisplay, contentDescription = null, modifier = Modifier.size(16.dp))
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                text = "वीडियो, नोट्स एवं क्विज़ जोड़ें ➔",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = (13 * scale).sp
-                            )
-                        }
-                    }
-                }
-            }
-
             // Categorized Practice Sets Header
             item {
                 Row(
@@ -426,7 +447,11 @@ fun HomeScreen(
 
             // Category cards list - no buttons inside, one arrow to go under unit section
             itemsIndexed(categories) { index, categoryName ->
-                val categoryQuestions = allQuestions.filter { it.category == categoryName }
+                val isExtra = com.example.data.DefaultQuestions.isExtraQuestionsUnit(categoryName)
+                val categoryQuestions = allQuestions.filter {
+                    if (isExtra) com.example.data.DefaultQuestions.isExtraQuestionsUnit(it.category)
+                    else it.category == categoryName
+                }
                 val answeredCount = categoryQuestions.count { it.timesAttempted > 0 }
                 val icon = getCategoryIcon(categoryName)
                 val subtitle = com.example.data.DefaultQuestions.unitEnglishSubtitles[categoryName]
@@ -436,9 +461,10 @@ fun HomeScreen(
                     title = categoryName,
                     subtitle = subtitle,
                     chapterIndex = index + 1,
-                    lecturesCount = subtopicsCount,
+                    subtopicsCount = subtopicsCount,
                     questionCount = categoryQuestions.size,
                     answeredCount = answeredCount,
+                    isExtraUnit = isExtra,
                     icon = icon,
                     scale = scale,
                     onClick = { viewModel.navigateToUnitSubtopics(categoryName) },
@@ -551,9 +577,10 @@ fun CategoryCard(
     title: String,
     subtitle: String? = null,
     chapterIndex: Int = 1,
-    lecturesCount: Int = 5,
+    subtopicsCount: Int = 5,
     questionCount: Int = 0,
     answeredCount: Int = 0,
+    isExtraUnit: Boolean = false,
     icon: ImageVector,
     scale: Float,
     onClick: () -> Unit,
@@ -614,13 +641,54 @@ fun CategoryCard(
                     )
                 }
 
-                // Subtitle stats: "Lectures : 5 • DPP : 55"
-                Text(
-                    text = "Lectures : $lecturesCount  •  DPP : ${if (questionCount > 0) "$questionCount Qs" else "0 Qs"}",
-                    fontSize = (13 * scale).sp,
-                    color = Color(0xFF64748B),
-                    fontWeight = FontWeight.Medium
-                )
+                // Notes & DPP Stats Badges (NO Lectures)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(Color(0xFFFEF3C7))
+                            .padding(horizontal = 8.dp, vertical = 3.dp)
+                    ) {
+                        Text(
+                            text = if (isExtraUnit) "अभ्यास सेट्स : $subtopicsCount" else "नोट्स : $subtopicsCount उपविषय",
+                            fontSize = (11.5 * scale).sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color(0xFF92400E)
+                        )
+                    }
+                    if (questionCount > 0 || isExtraUnit) {
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(6.dp))
+                                .background(Color(0xFFDCFCE7))
+                                .padding(horizontal = 8.dp, vertical = 3.dp)
+                        ) {
+                            Text(
+                                text = if (isExtraUnit) "MCQs : ${if (questionCount > 0) "$questionCount प्रश्न" else "0 प्रश्न"}" else "DPP : $questionCount प्रश्न",
+                                fontSize = (11.5 * scale).sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color(0xFF166534)
+                            )
+                        }
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(6.dp))
+                                .background(Color(0xFFEFF6FF))
+                                .padding(horizontal = 8.dp, vertical = 3.dp)
+                        ) {
+                            Text(
+                                text = "थ्योरी नोट्स",
+                                fontSize = (11.5 * scale).sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color(0xFF1D4ED8)
+                            )
+                        }
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.width(12.dp))

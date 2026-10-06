@@ -14,6 +14,12 @@ interface QuestionDao {
     @Query("SELECT * FROM questions ORDER BY id ASC")
     fun getAllQuestionsFlow(): Flow<List<QuestionEntity>>
 
+    @Query("SELECT * FROM questions ORDER BY id ASC")
+    suspend fun getAllQuestionsList(): List<QuestionEntity>
+
+    @Query("SELECT * FROM questions WHERE id = :id LIMIT 1")
+    suspend fun getQuestionById(id: Long): QuestionEntity?
+
     @Query("SELECT * FROM questions WHERE category = :category ORDER BY id ASC")
     fun getQuestionsByCategoryFlow(category: String): Flow<List<QuestionEntity>>
 
@@ -73,4 +79,20 @@ interface QuestionDao {
 
     @Query("DELETE FROM questions WHERE category NOT IN (:validCategories)")
     suspend fun deleteQuestionsNotInCategories(validCategories: List<String>)
+
+    @Query("DELETE FROM questions WHERE category IN (:categories)")
+    suspend fun deleteQuestionsByCategories(categories: List<String>)
+
+    @Query("""
+        DELETE FROM questions 
+        WHERE category LIKE '%इकाई 2%' 
+           OR category LIKE '%इकाई 3%' 
+           OR category LIKE '%इकाई 4%' 
+           OR category LIKE '%इकाई 5%'
+           OR category LIKE '%वर्गीकरण%' 
+           OR category LIKE '%प्रबंधन%' 
+           OR category LIKE '%सूचना स्रोत%' 
+           OR category LIKE '%कंप्यूटर%'
+    """)
+    suspend fun deleteUnits2To5Questions()
 }

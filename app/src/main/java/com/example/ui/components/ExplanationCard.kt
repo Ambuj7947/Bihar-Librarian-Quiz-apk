@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lightbulb
@@ -36,6 +37,8 @@ import com.example.ui.theme.ExplanationBoxBg
 import com.example.ui.theme.ExplanationBoxBorder
 import com.example.ui.theme.TipBoxBg
 import com.example.ui.theme.TipBoxBorder
+import com.example.ui.theme.WrongAnswerBg
+import com.example.ui.theme.WrongAnswerRed
 
 @Composable
 fun ExplanationCard(
@@ -89,6 +92,43 @@ fun ExplanationCard(
             }
 
             Spacer(modifier = Modifier.height(10.dp))
+
+            // If user answered incorrectly, show their selection first
+            if (selectedOption != null && !isCorrect) {
+                val selectedLabel = when (selectedOption) {
+                    1 -> "विकल्प (क)"
+                    2 -> "विकल्प (ख)"
+                    3 -> "विकल्प (ग)"
+                    4 -> "विकल्प (घ)"
+                    else -> ""
+                }
+                val selectedText = question.getOptionText(selectedOption)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(WrongAnswerBg)
+                        .border(1.dp, WrongAnswerRed, RoundedCornerShape(10.dp))
+                        .padding(horizontal = 12.dp, vertical = 8.dp)
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.Cancel,
+                            contentDescription = "गलत",
+                            tint = WrongAnswerRed,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "आपका उत्तर गलत था: $selectedLabel - $selectedText",
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = (14 * scaleFactor).sp,
+                            color = Color(0xFF7F1D1D)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
 
             // Correct Answer Tag
             Box(

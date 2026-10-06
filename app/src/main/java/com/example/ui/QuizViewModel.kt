@@ -1,33 +1,40 @@
 package com.example.ui
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.AppDatabase
+import com.example.data.AuthManager
+import com.example.data.AuthResult
+import com.example.data.CloudSyncManager
 import com.example.data.DefaultQuestions
 import com.example.data.QuestionRepository
+import com.example.data.UserProgressStore
+import com.example.data.UserSession
+import com.example.data.UserSummaryStats
 import com.example.data.model.QuestionEntity
 import com.example.data.model.QuizAttemptEntity
 import com.example.data.model.StudyMaterialEntity
-import com.example.util.ContentSeparator
-import com.example.util.ParsedQuestionItem
+import com.example.util.NetworkMonitor
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 sealed interface AppScreen {
     data object Home : AppScreen
     data object CategoryList : AppScreen
     data object QuizPlay : AppScreen
     data object QuizResult : AppScreen
-    data object AddQuestion : AppScreen
-    data object ContentCreatorHub : AppScreen
     data object QuestionBank : AppScreen
     data object Bookmarks : AppScreen
     data object Mistakes : AppScreen
+    data object SignIn : AppScreen
     data class StudyMode(val category: String? = null) : AppScreen
     data class UnitSubtopics(val category: String) : AppScreen
 }
@@ -39,7 +46,7 @@ data class ActiveQuizState(
     val currentIndex: Int = 0,
     val userAnswers: Map<Long, Int> = emptyMap(),
     val isSubmitted: Boolean = false,
-    val showInstantExplanation: Boolean = true, // By default enabled for study mode
+    val showInstantExplanation: Boolean = true,
     val timeStartedMillis: Long = System.currentTimeMillis()
 ) {
     val currentQuestion: QuestionEntity?
@@ -67,16 +74,45 @@ data class ActiveQuizState(
 class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: QuestionRepository
+    private val progressStore: UserProgressStore
+    private val cloudSyncManager: CloudSyncManager
+    private val authManager: AuthManager
+    private val networkMonitor: NetworkMonitor
 
     init {
         val database = AppDatabase.getDatabase(application, viewModelScope)
+        progressStore = UserProgressStore(application)
+        cloudSyncManager = CloudSyncManager(application)
+        authManager = AuthManager(application)
+        networkMonitor = NetworkMonitor(application)
+
         repository = QuestionRepository(
             database.questionDao(),
             database.quizAttemptDao(),
-            database.studyMaterialDao()
+            database.studyMaterialDao(),
+            progressStore
         )
+
         viewModelScope.launch {
-            repository.ensureUnit1Subtopic1Seed()
+            repository.syncAllQuestionsAndPreserveProgress()
+
+            // If user is already logged in on launch, sync with cloud
+            val user = authManager.currentUser.value
+            if (user != null) {
+                restoreAndSyncCloudData(user.userId)
+            }
+        }
+
+        // Listen for network connectivity: when device comes online, sync queued progress to cloud!
+        viewModelScope.launch {
+            networkMonitor.isOnline.collect { online ->
+                if (online) {
+                    val user = authManager.currentUser.value
+                    if (user != null) {
+                        syncWithCloudNow()
+                    }
+                }
+            }
         }
     }
 
@@ -85,6 +121,10 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     val currentScreen: StateFlow<AppScreen> = _currentScreen.asStateFlow()
 
     private val screenHistory = mutableListOf<AppScreen>()
+
+    // Network & Authentication
+    val isOnline: StateFlow<Boolean> get() = networkMonitor.isOnline
+    val currentUser: StateFlow<UserSession?> get() = authManager.currentUser
 
     // Data streams from Room
     val allQuestions: StateFlow<List<QuestionEntity>> = repository.allQuestions
@@ -121,6 +161,11 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _currentScreen.value = screen
     }
 
+    fun navigateToHome() {
+        screenHistory.clear()
+        _currentScreen.value = AppScreen.Home
+    }
+
     fun navigateBack(): Boolean {
         return if (screenHistory.isNotEmpty()) {
             _currentScreen.value = screenHistory.removeAt(screenHistory.size - 1)
@@ -134,18 +179,163 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _statusMessage.value = null
     }
 
+    // Sign in with Google (1-tap via Credential Manager)
+    fun signInWithGoogle(onComplete: (Boolean, String?) -> Unit) {
+        viewModelScope.launch {
+            when (val result = authManager.signInWithGoogle()) {
+                is AuthResult.Success -> {
+                    restoreAndSyncCloudData(result.user.userId)
+                    onComplete(true, null)
+                }
+                is AuthResult.Error -> onComplete(false, result.message)
+                is AuthResult.Cancelled -> onComplete(false, null)
+            }
+        }
+    }
+
+    // Sign in or Register with Student ID & Password
+    fun signInWithStudentId(
+        studentId: String,
+        password: String,
+        isRegister: Boolean,
+        onComplete: (Boolean, String?) -> Unit
+    ) {
+        viewModelScope.launch {
+            when (val result = authManager.signInWithStudentCredentials(studentId, password, isRegister)) {
+                is AuthResult.Success -> {
+                    restoreAndSyncCloudData(result.user.userId)
+                    onComplete(true, null)
+                }
+                is AuthResult.Error -> onComplete(false, result.message)
+                is AuthResult.Cancelled -> onComplete(false, null)
+            }
+        }
+    }
+
+    fun signOut() {
+        authManager.clearSession()
+        _statusMessage.value = "सफलतापूर्वक लॉग आउट हुआ।"
+    }
+
+    /**
+     * Restore cloud progress for the authenticated user and sync local state with Firestore.
+     */
+    private suspend fun restoreAndSyncCloudData(userId: String) = withContext(Dispatchers.IO) {
+        try {
+            val cloudBundle = cloudSyncManager.restoreProgressFromCloud(userId)
+            if (cloudBundle != null && cloudBundle.progressItems.isNotEmpty()) {
+                val dbQuestions = repository.getAllQuestionsList()
+                val dbMap = dbQuestions.associateBy { it.questionHindi.trim() }
+
+                for (item in cloudBundle.progressItems) {
+                    val key = item.questionKey.trim()
+                    progressStore.saveProgress(
+                        questionHindi = key,
+                        timesAttempted = item.timesAttempted,
+                        timesCorrect = item.timesCorrect,
+                        lastAttemptOption = item.lastAttemptOption,
+                        isBookmarked = item.isBookmarked
+                    )
+
+                    val q = dbMap[key]
+                    if (q != null) {
+                        val updated = q.copy(
+                            timesAttempted = maxOf(q.timesAttempted, item.timesAttempted),
+                            timesCorrect = maxOf(q.timesCorrect, item.timesCorrect),
+                            lastAttemptOption = if (item.lastAttemptOption > 0) item.lastAttemptOption else q.lastAttemptOption,
+                            isBookmarked = q.isBookmarked || item.isBookmarked
+                        )
+                        if (updated != q) {
+                            repository.updateQuestion(updated)
+                        }
+                    }
+                }
+                Log.d("QuizViewModel", "Restored ${cloudBundle.progressItems.size} items from cloud for $userId")
+            }
+
+            // Push current local progress to cloud as well
+            syncWithCloudNow()
+        } catch (e: Exception) {
+            Log.w("QuizViewModel", "Error during cloud restore: ${e.message}")
+        }
+    }
+
+    /**
+     * Trigger explicit or automated cloud sync of progress.
+     */
+    fun syncWithCloudNow() {
+        val user = authManager.currentUser.value ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            val allQ = repository.getAllQuestionsList()
+            val attempted = allQ.count { it.timesAttempted > 0 }
+            val correct = allQ.sumOf { it.timesCorrect }
+            val attemptsTotal = allQ.sumOf { it.timesAttempted }
+            val accuracy = if (attemptsTotal > 0) (correct * 100) / attemptsTotal else 0
+
+            val allProgress = progressStore.getAllProgress().toMutableMap()
+            for (q in allQ) {
+                if (q.timesAttempted > 0 || q.isBookmarked) {
+                    val key = q.questionHindi.trim()
+                    val existing = allProgress[key]
+                    allProgress[key] = QuestionProgressRecord(
+                        timesAttempted = maxOf(q.timesAttempted, existing?.timesAttempted ?: 0),
+                        timesCorrect = maxOf(q.timesCorrect, existing?.timesCorrect ?: 0),
+                        lastAttemptOption = if (q.lastAttemptOption > 0) q.lastAttemptOption else (existing?.lastAttemptOption ?: 0),
+                        isBookmarked = q.isBookmarked || (existing?.isBookmarked == true),
+                        lastUpdatedMillis = System.currentTimeMillis()
+                    )
+                }
+            }
+
+            cloudSyncManager.syncProgressToCloud(
+                userId = user.userId,
+                displayName = user.displayName,
+                emailOrId = user.emailOrId,
+                stats = UserSummaryStats(
+                    totalAttempted = attempted,
+                    totalCorrect = correct,
+                    accuracy = accuracy
+                ),
+                progressMap = allProgress
+            )
+        }
+    }
+
+    // Helper to guarantee every question in an active quiz has a distinct positive ID
+    private fun List<QuestionEntity>.ensureUniqueIds(): List<QuestionEntity> {
+        val seenIds = mutableSetOf<Long>()
+        var nextAvailableId = 1_000_000L
+        return this.map { question ->
+            if (question.id <= 0L || question.id in seenIds) {
+                while (nextAvailableId in seenIds) {
+                    nextAvailableId++
+                }
+                seenIds.add(nextAvailableId)
+                val assignedId = nextAvailableId++
+                question.copy(id = assignedId)
+            } else {
+                seenIds.add(question.id)
+                question
+            }
+        }
+    }
+
     // Toggle bookmark for any question
     fun toggleBookmark(question: QuestionEntity) {
         viewModelScope.launch {
-            repository.toggleBookmark(question.id, question.isBookmarked)
-            // Update active quiz question if currently in quiz
+            if (question.id > 0L) {
+                repository.toggleBookmark(question.id, question.isBookmarked)
+            }
             val activeQ = _quizState.value.questions
             if (activeQ.isNotEmpty()) {
                 val updated = activeQ.map {
-                    if (it.id == question.id) it.copy(isBookmarked = !it.isBookmarked) else it
+                    if (it.id == question.id || it.questionHindi == question.questionHindi) {
+                        it.copy(isBookmarked = !it.isBookmarked)
+                    } else it
                 }
                 _quizState.value = _quizState.value.copy(questions = updated)
             }
+            syncWithCloudNow()
         }
     }
 
@@ -155,13 +345,13 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             val list = repository.getRandomQuestions(10)
             val questions = if (list.isNotEmpty()) list else allQuestions.value.take(10)
             if (questions.isEmpty()) {
-                _statusMessage.value = "क्विज़ के लिए अभी प्रश्न उपलब्ध नहीं हैं। कृपया 'नया प्रश्न जोड़ें' पर क्लिक करके प्रश्न जोड़ें।"
+                _statusMessage.value = "क्विज़ के लिए प्रश्न लोड हो रहे हैं..."
                 return@launch
             }
             _quizState.value = ActiveQuizState(
                 title = "दैनिक अभ्यास क्विज़",
                 category = "दैनिक अभ्यास",
-                questions = questions,
+                questions = questions.ensureUniqueIds(),
                 currentIndex = 0,
                 userAnswers = emptyMap(),
                 isSubmitted = false,
@@ -185,7 +375,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _quizState.value = ActiveQuizState(
             title = "$subTopicTitle • DPP",
             category = categoryName,
-            questions = questions,
+            questions = questions.ensureUniqueIds(),
             currentIndex = 0,
             userAnswers = emptyMap(),
             isSubmitted = false,
@@ -197,15 +387,19 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     // Start Category Quiz
     fun startCategoryQuiz(categoryName: String) {
         viewModelScope.launch {
-            val filtered = allQuestions.value.filter { it.category == categoryName }
+            val isExtra = DefaultQuestions.isExtraQuestionsUnit(categoryName)
+            val filtered = allQuestions.value.filter {
+                if (isExtra) DefaultQuestions.isExtraQuestionsUnit(it.category)
+                else it.category == categoryName
+            }
             if (filtered.isEmpty()) {
-                _statusMessage.value = "इस इकाई में अभी कोई प्रश्न नहीं है। कृपया 'नया प्रश्न जोड़ें' से प्रश्न जोड़ें।"
+                _statusMessage.value = "इस इकाई में अभी कोई प्रश्न उपलब्ध नहीं है।"
                 return@launch
             }
             _quizState.value = ActiveQuizState(
                 title = categoryName,
                 category = categoryName,
-                questions = filtered.shuffled(),
+                questions = filtered.shuffled().ensureUniqueIds(),
                 currentIndex = 0,
                 userAnswers = emptyMap(),
                 isSubmitted = false,
@@ -220,14 +414,14 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val all = allQuestions.value
             if (all.isEmpty()) {
-                _statusMessage.value = "मॉक टेस्ट शुरू करने के लिए पहले प्रश्न जोड़ें।"
+                _statusMessage.value = "मॉक टेस्ट के लिए प्रश्न लोड हो रहे हैं..."
                 return@launch
             }
             val mockQuestions = all.shuffled().take(20)
             _quizState.value = ActiveQuizState(
                 title = "सम्पूर्ण पाठ्यक्रम मॉक टेस्ट",
                 category = "मॉक टेस्ट",
-                questions = mockQuestions,
+                questions = mockQuestions.ensureUniqueIds(),
                 currentIndex = 0,
                 userAnswers = emptyMap(),
                 isSubmitted = false,
@@ -247,7 +441,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _quizState.value = ActiveQuizState(
             title = "गलत प्रश्नों का सुधार अभ्यास",
             category = "पुनरीक्षण",
-            questions = mistakes.shuffled(),
+            questions = mistakes.shuffled().ensureUniqueIds(),
             currentIndex = 0,
             userAnswers = emptyMap(),
             isSubmitted = false,
@@ -266,7 +460,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _quizState.value = ActiveQuizState(
             title = "महत्वपूर्ण प्रश्न (बुकमार्क)",
             category = "बुकमार्क",
-            questions = saved,
+            questions = saved.ensureUniqueIds(),
             currentIndex = 0,
             userAnswers = emptyMap(),
             isSubmitted = false,
@@ -275,16 +469,56 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         navigateTo(AppScreen.QuizPlay)
     }
 
+    // Restart the current quiz session from beginning
+    fun restartQuiz() {
+        val state = _quizState.value
+        _quizState.value = state.copy(
+            currentIndex = 0,
+            userAnswers = emptyMap(),
+            isSubmitted = false,
+            timeStartedMillis = System.currentTimeMillis()
+        )
+        navigateTo(AppScreen.QuizPlay)
+    }
+
+    // Re-attempt only the incorrect questions from the current quiz session
+    fun retryQuizMistakes() {
+        val state = _quizState.value
+        val mistakes = state.questions.filter { q ->
+            val ans = state.userAnswers[q.id]
+            ans != null && ans != q.correctOption
+        }
+        if (mistakes.isNotEmpty()) {
+            _quizState.value = ActiveQuizState(
+                title = "${state.title} (गलत प्रश्नों का अभ्यास)",
+                category = state.category,
+                questions = mistakes.ensureUniqueIds(),
+                currentIndex = 0,
+                userAnswers = emptyMap(),
+                isSubmitted = false,
+                showInstantExplanation = true
+            )
+            navigateTo(AppScreen.QuizPlay)
+        } else {
+            _statusMessage.value = "इस टेस्ट में कोई गलत प्रश्न नहीं था!"
+        }
+    }
+
     // Answer a question in quiz
     fun selectAnswer(optionNumber: Int) {
         val current = _quizState.value.currentQuestion ?: return
+        if (_quizState.value.userAnswers.containsKey(current.id)) return // Prevent double-answering
+
         val currentAnswers = _quizState.value.userAnswers.toMutableMap()
         currentAnswers[current.id] = optionNumber
         _quizState.value = _quizState.value.copy(userAnswers = currentAnswers)
 
-        // Record attempt in database
-        viewModelScope.launch {
-            repository.recordQuestionAttempt(current.id, optionNumber)
+        // Record attempt in database and sync
+        if (current.id > 0L) {
+            viewModelScope.launch {
+                repository.recordQuestionAttempt(current.id, optionNumber)
+                syncWithCloudNow()
+            }
         }
     }
 
@@ -312,6 +546,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     fun finishQuiz() {
         val state = _quizState.value
+        if (state.isSubmitted) return
         _quizState.value = state.copy(isSubmitted = true)
 
         viewModelScope.launch {
@@ -323,109 +558,13 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 wrongCount = state.wrongAnswersCount
             )
             repository.saveQuizAttempt(attempt)
+            syncWithCloudNow()
         }
 
-        navigateTo(AppScreen.QuizResult)
-    }
-
-    // Add New Question by User (Daily basis)
-    fun addNewQuestion(
-        category: String,
-        questionHindi: String,
-        optionA: String,
-        optionB: String,
-        optionC: String,
-        optionD: String,
-        correctOption: Int,
-        explanationHindi: String,
-        keyHighlight: String
-    ): Boolean {
-        if (questionHindi.isBlank() || optionA.isBlank() || optionB.isBlank() ||
-            optionC.isBlank() || optionD.isBlank() || explanationHindi.isBlank()
-        ) {
-            _statusMessage.value = "कृपया प्रश्न, चारों विकल्प एवं व्याख्या भरें।"
-            return false
+        while (screenHistory.isNotEmpty() && screenHistory.last() is AppScreen.QuizPlay) {
+            screenHistory.removeAt(screenHistory.size - 1)
         }
-
-        viewModelScope.launch {
-            val newQuestion = QuestionEntity(
-                category = category.ifBlank { DefaultQuestions.UNIT_1 },
-                questionHindi = questionHindi.trim(),
-                optionA = optionA.trim(),
-                optionB = optionB.trim(),
-                optionC = optionC.trim(),
-                optionD = optionD.trim(),
-                correctOption = correctOption,
-                explanationHindi = explanationHindi.trim(),
-                keyHighlight = keyHighlight.trim(),
-                isUserAdded = true,
-                dateAddedMillis = System.currentTimeMillis()
-            )
-            repository.insertQuestion(newQuestion)
-            _statusMessage.value = "नया प्रश्न सफलतापूर्वक जोड़ा गया!"
-        }
-        return true
-    }
-
-    // Delete question
-    fun deleteQuestion(question: QuestionEntity) {
-        viewModelScope.launch {
-            repository.deleteQuestion(question)
-            _statusMessage.value = "प्रश्न हटा दिया गया।"
-        }
-    }
-
-    // Reset all attempts for a fresh start
-    fun resetAllProgress() {
-        viewModelScope.launch {
-            repository.resetAllAttempts()
-            _statusMessage.value = "अभ्यास प्रगति रीसेट कर दी गई।"
-        }
-    }
-
-    // Save Content Hub Data: Lecture link, Notes, and Quiz Questions
-    fun saveContentHubData(
-        unitCategory: String,
-        subTopic: String,
-        youtubeUrl: String,
-        youtubeTitle: String,
-        timestampNotes: String,
-        notesContent: String,
-        parsedQuestions: List<ParsedQuestionItem>,
-        onSaved: (insertedQuestions: List<QuestionEntity>) -> Unit
-    ) {
-        viewModelScope.launch {
-            val videoId = ContentSeparator.extractYouTubeVideoId(youtubeUrl) ?: ""
-            val entities = parsedQuestions.map { it.toQuestionEntity(unitCategory) }
-
-            if (entities.isNotEmpty()) {
-                repository.insertQuestions(entities)
-            }
-
-            val isExtraUnit = DefaultQuestions.isExtraQuestionsUnit(unitCategory)
-            if (!isExtraUnit && (youtubeUrl.isNotBlank() || notesContent.isNotBlank() || entities.isNotEmpty())) {
-                val material = StudyMaterialEntity(
-                    unitCategory = unitCategory,
-                    subTopic = subTopic.trim(),
-                    youtubeUrl = youtubeUrl.trim(),
-                    youtubeVideoId = videoId,
-                    youtubeTitle = youtubeTitle.trim().ifEmpty { "यूट्यूब वीडियो लेक्चर - $unitCategory" },
-                    timestampNotes = timestampNotes.trim(),
-                    notesContent = notesContent.trim(),
-                    questionsCount = entities.size,
-                    dateAddedMillis = System.currentTimeMillis()
-                )
-                repository.insertStudyMaterial(material)
-            }
-
-            val successMsg = if (isExtraUnit) {
-                "सफलतापूर्वक सहेजा गया: ${entities.size} एक्स्ट्रा प्रश्न जोड़े गए।"
-            } else {
-                "सफलतापूर्वक सहेजा गया: ${entities.size} प्रश्न क्विज़ में जोड़े गए।"
-            }
-            _statusMessage.value = successMsg
-            onSaved(entities)
-        }
+        _currentScreen.value = AppScreen.QuizResult
     }
 
     // Start a quiz immediately with custom questions
@@ -437,20 +576,12 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _quizState.value = ActiveQuizState(
             title = title,
             category = category,
-            questions = questions,
+            questions = questions.ensureUniqueIds(),
             currentIndex = 0,
             userAnswers = emptyMap(),
             isSubmitted = false,
             showInstantExplanation = true
         )
         navigateTo(AppScreen.QuizPlay)
-    }
-
-    // Delete a study material entry
-    fun deleteStudyMaterial(material: StudyMaterialEntity) {
-        viewModelScope.launch {
-            repository.deleteStudyMaterial(material)
-            _statusMessage.value = "अध्ययन सामग्री हटा दी गई।"
-        }
     }
 }

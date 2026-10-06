@@ -90,7 +90,7 @@ fun QuizResultScreen(
     }
 
     BackHandler {
-        viewModel.navigateTo(AppScreen.Home)
+        viewModel.navigateToHome()
     }
 
     Scaffold(
@@ -99,7 +99,7 @@ fun QuizResultScreen(
                 title = "टेस्ट परिणाम एवं व्याख्या",
                 subtitle = quizState.title,
                 showBack = true,
-                onBack = { viewModel.navigateTo(AppScreen.Home) }
+                onBack = { viewModel.navigateToHome() }
             )
         },
         bottomBar = {
@@ -109,50 +109,71 @@ fun QuizResultScreen(
                 color = Color.White,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Row(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .navigationBarsPadding()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    OutlinedButton(
-                        onClick = { viewModel.navigateTo(AppScreen.Home) },
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp)
-                    ) {
-                        Icon(Icons.Default.Home, contentDescription = null)
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "होम",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = (15 * scale).sp
-                        )
+                    if (wrong > 0) {
+                        Button(
+                            onClick = { viewModel.retryQuizMistakes() },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFDC2626)),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(46.dp)
+                                .testTag("retry_mistakes_button")
+                        ) {
+                            Icon(Icons.Default.Replay, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "केवल गलत प्रश्नों का पुनः अभ्यास करें ($wrong प्रश्न)",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (14 * scale).sp
+                            )
+                        }
                     }
 
-                    Button(
-                        onClick = {
-                            if (quizState.category == "दैनिक अभ्यास") {
-                                viewModel.startDailyQuiz()
-                            } else {
-                                viewModel.startCategoryQuiz(quizState.category)
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = SaffronPrimary),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier
-                            .weight(1.3f)
-                            .height(50.dp)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        Icon(Icons.Default.Replay, contentDescription = null)
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "पुनः अभ्यास",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = (15 * scale).sp
-                        )
+                        OutlinedButton(
+                            onClick = { viewModel.navigateToHome() },
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(48.dp)
+                                .testTag("result_home_button")
+                        ) {
+                            Icon(Icons.Default.Home, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "होम",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (14 * scale).sp
+                            )
+                        }
+
+                        Button(
+                            onClick = { viewModel.restartQuiz() },
+                            colors = ButtonDefaults.buttonColors(containerColor = SaffronPrimary),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier
+                                .weight(1.3f)
+                                .height(48.dp)
+                                .testTag("result_retry_full_button")
+                        ) {
+                            Icon(Icons.Default.Replay, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "पूरा टेस्ट पुनः दें",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (14 * scale).sp
+                            )
+                        }
                     }
                 }
             }

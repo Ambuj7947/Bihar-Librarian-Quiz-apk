@@ -19,14 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ui.AppScreen
 import com.example.ui.QuizViewModel
-import com.example.ui.screens.AddQuestionScreen
 import com.example.ui.screens.BookmarksScreen
-import com.example.ui.screens.ContentHubScreen
 import com.example.ui.screens.HomeScreen
 import com.example.ui.screens.MistakesScreen
 import com.example.ui.screens.QuestionBankScreen
 import com.example.ui.screens.QuizPlayScreen
 import com.example.ui.screens.QuizResultScreen
+import com.example.ui.screens.SignInScreen
 import com.example.ui.screens.UnitSubtopicsScreen
 import com.example.ui.theme.BiharLibrarianTheme
 
@@ -68,11 +67,10 @@ fun MainAppContent(viewModel: QuizViewModel) {
             is AppScreen.CategoryList -> HomeScreen(viewModel = viewModel)
             is AppScreen.QuizPlay -> QuizPlayScreen(viewModel = viewModel)
             is AppScreen.QuizResult -> QuizResultScreen(viewModel = viewModel)
-            is AppScreen.AddQuestion -> AddQuestionScreen(viewModel = viewModel)
-            is AppScreen.ContentCreatorHub -> ContentHubScreen(viewModel = viewModel)
             is AppScreen.QuestionBank -> QuestionBankScreen(viewModel = viewModel)
             is AppScreen.Bookmarks -> BookmarksScreen(viewModel = viewModel)
             is AppScreen.Mistakes -> MistakesScreen(viewModel = viewModel)
+            is AppScreen.SignIn -> SignInScreen(viewModel = viewModel)
             is AppScreen.StudyMode -> QuestionBankScreen(
                 viewModel = viewModel,
                 initialCategoryFilter = screen.category

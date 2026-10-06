@@ -908,6 +908,1081 @@ object Unit6Questions {
         )
     )
 
+    fun getSet9Questions(): List<QuestionEntity> = listOf(
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "81. डेवी डेसिमल क्लासिफिकेशन (DDC) का प्रथम संस्करण मेलविल डेवी द्वारा किस वर्ष और कितने पृष्ठों में अनाम रूप से प्रकाशित हुआ था?",
+            optionA = "1876 में (44 पृष्ठों में)",
+            optionB = "1885 में (100 पृष्ठों में)",
+            optionC = "1890 में (200 पृष्ठों में)",
+            optionD = "1870 में (50 पृष्ठों में)",
+            correctOption = 1,
+            explanationHindi = "DDC का प्रथम संस्करण 1876 में 'A Classification and Subject Index for Cataloguing and Arranging the Books and Pamphlets of a Library' शीर्षक से 44 पृष्ठों में प्रकाशित हुआ था।",
+            keyHighlight = "सेट 9: पुस्तकालय वर्गीकरण • DDC 1876 व मेलविल डेवी"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "82. कोलन क्लासिफिकेशन (CC) के प्रथम संस्करण (1933) में ज्ञान जगत को विभाजित करने हेतु किस प्रकार के अंकन (Notation) का प्रयोग किया गया था?",
+            optionA = "शुद्ध अंकन (Pure Notation)",
+            optionB = "मिश्रित अंकन (Mixed Notation)",
+            optionC = "केवल रोमन बड़े अक्षर",
+            optionD = "केवल अरबी अंक",
+            correctOption = 2,
+            explanationHindi = "कोलन क्लासिफिकेशन में इंडो-अरेबिक अंक (0-9), रोमन बड़े व छोटे अक्षर तथा विभिन्न गणितीय व विराम चिह्नों का प्रयोग होने के कारण यह मिश्रित अंकन (Mixed Notation) पद्धति है।",
+            keyHighlight = "सेट 9: पुस्तकालय वर्गीकरण • कोलन क्लासिफिकेशन मिश्रित अंकन"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "83. यू.डी.सी. (Universal Decimal Classification - UDC) का विकास 1895 में हेनरी ला फॉन्टेन एवं पॉल ओटलेट द्वारा किस वर्गीकरण पद्धति के आधार पर किया गया?",
+            optionA = "डीडीसी (DDC का 5वां संस्करण)",
+            optionB = "लाइब्रेरी ऑफ कांग्रेस क्लासिफिकेशन (LCC)",
+            optionC = "कोलन क्लासिफिकेशन (CC)",
+            optionD = "सब्जेक्ट क्लासिफिकेशन (SC)",
+            correctOption = 1,
+            explanationHindi = "UDC का विकास FID के तत्वावधान में ब्रुसेल्स में हेनरी ला फॉन्टेन और पॉल ओटलेट द्वारा मेलविल डेवी की DDC पद्धति के 5वें संस्करण (1894) को आधार बनाकर किया गया था।",
+            keyHighlight = "सेट 9: पुस्तकालय वर्गीकरण • UDC एवं DDC 5वां संस्करण"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "84. डॉ. रंगनाथन द्वारा प्रतिपादित पाँच मूलभूत श्रेणियों (PMEST) में 'स्पेस' (स्थान) और 'टाइम' (समय) के लिए प्रयुक्त योजक चिह्न (Connecting Symbols) क्रमशः क्या हैं?",
+            optionA = "डॉट (.) और सिंगल इनवर्टेड कॉमा (')",
+            optionB = "कोलन (:) और सेमी-कोलन (;)",
+            optionC = "कॉमा (,) और डॉट (.)",
+            optionD = "डैश (-) और स्लैश (/)",
+            correctOption = 1,
+            explanationHindi = "CC के 6वें संशोधित संस्करण (1963) में PMEST के योजक चिह्न हैं: Personality = कॉमा (,), Matter = सेमीकोलन (;), Energy = कोलन (:), Space = डॉट (.), Time = सिंगल कोट (')।",
+            keyHighlight = "सेट 9: पुस्तकालय वर्गीकरण • PMEST योजक चिह्न"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "85. डीडीसी (DDC) के 19वें संस्करण (1979) में कुल कितने मुख्य वर्ग (Main Classes) तथा कितनी सहायक तालिकाएं (Tables) हैं?",
+            optionA = "10 मुख्य वर्ग और 7 तालिकाएं (Tables 1-7)",
+            optionB = "10 मुख्य वर्ग और 6 तालिकाएं",
+            optionC = "20 मुख्य वर्ग और 5 तालिकाएं",
+            optionD = "8 मुख्य वर्ग और 4 तालिकाएं",
+            correctOption = 1,
+            explanationHindi = "DDC 19वें संस्करण (संपादक: बेंजामिन ए. कस्टर) में 10 मुख्य वर्ग (000-900) और 7 सहायक तालिकाएं (Tables 1 से 7) शामिल हैं। 20वें संस्करण से तालिका 7 हटा दी गई थी।",
+            keyHighlight = "सेट 9: पुस्तकालय वर्गीकरण • DDC 19वां संस्करण व 7 तालिकाएं"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "86. 'फीनिक्स शेड्यूल' (Phoenix Schedule) की अवधारणा किस वर्गीकरण पद्धति से संबंधित है जिसका अर्थ पूर्णतः पुनर्गठित वर्ग होता है?",
+            optionA = "डेवी डेसिमल क्लासिफिकेशन (DDC)",
+            optionB = "कोलन क्लासिफिकेशन (CC)",
+            optionC = "यूनिवर्सल डेसिमल क्लासिफिकेशन (UDC)",
+            optionD = "राइडर्स इंटरनेशनल क्लासिफिकेशन (RIC)",
+            correctOption = 1,
+            explanationHindi = "फीनिक्स शेड्यूल की शुरुआत DDC के 16वें संस्करण से हुई थी। यह पुराने अप्रचलित वर्ग को नष्ट कर उसी नंबर पर पूरी तरह से नया आधुनिक शेड्यूल प्रस्तुत करता है।",
+            keyHighlight = "सेट 9: पुस्तकालय वर्गीकरण • DDC फीनिक्स शेड्यूल"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "87. डॉ. रंगनाथन के अनुसार वर्गीकरण कार्य के तीन धरातल (Three Planes of Work) कौन-से हैं?",
+            optionA = "वैचारिक, शाब्दिक और अंकन धरातल (Idea, Verbal, and Notational Plane)",
+            optionB = "पुस्तक, पाठक और कर्मचारी धरातल",
+            optionC = "सूचीकरण, अर्जन और परिसंचरण धरातल",
+            optionD = "राष्ट्रीय, राज्य और स्थानीय धरातल",
+            correctOption = 1,
+            explanationHindi = "डॉ. रंगनाथन ने वर्गीकरण को 3 धरातलों में बाँटा: 1. वैचारिक धरातल (Idea Plane - सबसे शक्तिशाली), 2. शाब्दिक धरातल (Verbal Plane), 3. अंकन धरातल (Notational Plane - क्रियान्वयन स्तर)।",
+            keyHighlight = "सेट 9: पुस्तकालय वर्गीकरण • वर्गीकरण के 3 धरातल"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "88. सार्वभौमिक दशमलव वर्गीकरण (UDC) में दो या दो से अधिक विषयों के बीच 'सामान्य संबंध' (Relation) दर्शाने हेतु किस चिह्न का प्रयोग किया जाता है?",
+            optionA = "कोलन ( : )",
+            optionB = "प्लस ( + )",
+            optionC = "स्लैश ( / )",
+            optionD = "इक्वल ( = )",
+            correctOption = 1,
+            explanationHindi = "UDC में दो अलग-अलग वर्गों के मध्य समन्वय या संबंध दिखाने के लिए कोलन ( : ) का प्रयोग सामान्य संबंध चिह्न (Simple Relation sign) के रूप में किया जाता है।",
+            keyHighlight = "सेट 9: पुस्तकालय वर्गीकरण • UDC संबंध चिह्न कोलन"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "89. डॉ. रंगनाथन के अनुसार कोलन क्लासिफिकेशन (CC) किस प्रकार की वर्गीकरण पद्धति है?",
+            optionA = "मुक्त पक्षात्मक (Freely-Faceted / Analytico-Synthetic)",
+            optionB = "शुद्ध परिगणनात्मक (Purely Enumerative)",
+            optionC = "लगभग परिगणनात्मक (Almost Enumerative)",
+            optionD = "पदानुक्रम रहित पद्धति",
+            correctOption = 1,
+            explanationHindi = "कोलन क्लासिफिकेशन एक विश्लेषणात्मक-संश्लेषणात्मक (Analytico-Synthetic) एवं मुक्त पक्षात्मक (Freely-Faceted) वर्गीकरण पद्धति है जिसमें विषय के पक्षों का विश्लेषण कर कोड संश्लेषित किया जाता है।",
+            keyHighlight = "सेट 9: पुस्तकालय वर्गीकरण • विश्लेषणात्मक-संश्लेषणात्मक पद्धति"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "90. 'बिब्लियोग्राफिक क्लासिफिकेशन' (BC) का विकास 1935 में किस प्रसिद्ध पुस्तकालय वैज्ञानिक द्वारा किया गया था?",
+            optionA = "एच. ई. ब्लिस (Henry Evelyn Bliss)",
+            optionB = "सी. ए. कटर",
+            optionC = "जे. डी. ब्राउन",
+            optionD = "मेलविल डेवी",
+            correctOption = 1,
+            explanationHindi = "बिब्लियोग्राफिक क्लासिफिकेशन (BC) का निर्माण अमेरिकी पुस्तकालय विज्ञानी हेनरी एवलिन ब्लिस (H.E. Bliss) द्वारा 1935 में किया गया था।",
+            keyHighlight = "सेट 9: पुस्तकालय वर्गीकरण • एच. ई. ब्लिस व BC"
+        )
+    )
+
+    fun getSet10Questions(): List<QuestionEntity> = listOf(
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "91. क्लासिफाइड कैटलॉग कोड (CCC) के अनुसार 'मुख्य प्रविष्टि' (Main Entry) में कुल कितने अनुभाग (Sections) होते हैं?",
+            optionA = "6 अनुभाग (Leading, Heading, Title, Note, Accession, Tracing)",
+            optionB = "4 अनुभाग",
+            optionC = "8 अनुभाग",
+            optionD = "5 अनुभाग",
+            correctOption = 1,
+            explanationHindi = "CCC मुख्य प्रविष्टि के 6 अनुभाग होते हैं: 1. Leading Section, 2. Heading Section, 3. Title Section, 4. Note Section, 5. Accession Number Section, 6. Tracing Section।",
+            keyHighlight = "सेट 10: पुस्तकालय सूचीकरण • CCC मुख्य प्रविष्टि के 6 अनुभाग"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "92. एंग्लो-अमेरिकन कैटलॉगिंग रूल्स-2 (AACR-2) का प्रकाशन किस वर्ष हुआ जिसके संपादक माइकल गोरमैन और पॉल विंकलर थे?",
+            optionA = "1978",
+            optionB = "1967",
+            optionC = "1988",
+            optionD = "1998",
+            correctOption = 1,
+            explanationHindi = "AACR-1 1967 में और AACR-2 1978 में प्रकाशित हुआ। 1988 में इसका संशोधित संस्करण AACR-2R प्रकाशित किया गया था।",
+            keyHighlight = "सेट 10: पुस्तकालय सूचीकरण • AACR-2 1978"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "93. एएसीआर-2 (AACR-2) में मुख्य प्रविष्टि के किस क्षेत्र (Area) में ISBN और पुस्तक की कीमत दर्ज की जाती है?",
+            optionA = "मानक संख्या एवं उपलब्धता की शर्तें (Area 8: Standard Number)",
+            optionB = "भौतिक विवरण क्षेत्र (Physical Description)",
+            optionC = "प्रकाशन एवं वितरण क्षेत्र (Publication Area)",
+            optionD = "शीर्षक एवं उत्तरदायित्व क्षेत्र",
+            correctOption = 1,
+            explanationHindi = "AACR-2 के आठवें क्षेत्र (Area 8) में 'Standard Number and Terms of Availability' (मानक संख्या जैसे ISBN/ISSN और मूल्य) को दर्ज किया जाता है।",
+            keyHighlight = "सेट 10: पुस्तकालय सूचीकरण • AACR-2 Area 8 ISBN"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "94. क्लासिफाइड कैटलॉग कोड (CCC) में मुख्य प्रविष्टि का कौन-सा अनुभाग 5\" × 3\" आकार के कार्ड के पिछले भाग (Back of Card) पर लिखा जाता है?",
+            optionA = "ट्रेसिंग सेक्शन (Tracing Section - रेखांकन अनुभाग)",
+            optionB = "एक्सेशन नंबर सेक्शन",
+            optionC = "नोट सेक्शन",
+            optionD = "अग्र अनुच्छेद (Leading Section)",
+            correctOption = 1,
+            explanationHindi = "ट्रेसिंग सेक्शन मुख्य कार्ड के पीछे लिखा जाता है जिसमें Cross Reference Entry, Class Index Entry, Book Index Entry और Cross Reference Index Entry के निर्देश होते हैं।",
+            keyHighlight = "सेट 10: पुस्तकालय सूचीकरण • CCC ट्रेसिंग सेक्शन"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "95. मशीन-रीडेबल कैटलॉगिंग (MARC 21) प्रारूप में 'Tag 245' किस सूचना के लिए आरक्षित है?",
+            optionA = "शीर्षक एवं उत्तरदायित्व कथन (Title Statement & Responsibility)",
+            optionB = "मुख्य प्रविष्टि लेखक (Main Entry - Personal Name)",
+            optionC = "प्रकाशन, वितरण विवरण (Publication - Impress)",
+            optionD = "विषय शीर्ष (Subject Access Fields)",
+            correctOption = 1,
+            explanationHindi = "MARC 21 में Tag 100 = लेखक, Tag 245 = शीर्षक व उत्तरदायित्व कथन, Tag 260/264 = प्रकाशन विवरण, Tag 300 = भौतिक विवरण, Tag 650 = विषय शीर्ष होता है।",
+            keyHighlight = "सेट 10: पुस्तकालय सूचीकरण • MARC 21 Tag 245"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "96. डबलिन कोर मेटाडेटा इनिशिएटिव (Dublin Core Metadata Initiative - DCMI) में कुल कितने मूल मेटाडेटा तत्व (Core Elements) होते हैं?",
+            optionA = "15 तत्व (15 Core Elements)",
+            optionB = "10 तत्व",
+            optionC = "20 तत्व",
+            optionD = "8 तत्व",
+            correctOption = 1,
+            explanationHindi = "डबलिन कोर मेटाडेटा (1995) में 15 तत्व होते हैं: Title, Creator, Subject, Description, Publisher, Contributor, Date, Type, Format, Identifier, Source, Language, Relation, Coverage, Rights।",
+            keyHighlight = "सेट 10: पुस्तकालय सूचीकरण • डबलिन कोर 15 तत्व"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "97. आधुनिक पुस्तकालय प्रणाली में 'OPAC' का पूर्ण रूप क्या होता है?",
+            optionA = "Online Public Access Catalogue (ऑनलाइन पब्लिक एक्सेस कैटलॉग)",
+            optionB = "Offline Public Access Centre",
+            optionC = "Open Public Archive Code",
+            optionD = "Operational Public Access Classification",
+            correctOption = 1,
+            explanationHindi = "OPAC का अर्थ 'Online Public Access Catalogue' है, जो पाठकों को कंप्यूटर या इंटरनेट के माध्यम से पुस्तकालय के संग्रह को खोजने की ऑनलाइन सुविधा देता है।",
+            keyHighlight = "सेट 10: पुस्तकालय सूचीकरण • OPAC की अवधारणा"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "98. सी. ए. कटर (Charles Ammi Cutter) द्वारा 1876 में प्रकाशित प्रसिद्ध ग्रंथसूची एवं सूचीकरण संहिता कौन-सी है?",
+            optionA = "रूल्स फॉर ए डिक्शनरी कैटलॉग (Rules for a Dictionary Catalog)",
+            optionB = "क्लासिफाइड कैटलॉग कोड",
+            optionC = "एंग्लो-अमेरिकन कोड",
+            optionD = "ब्रिटिश म्यूजियम कोड",
+            correctOption = 1,
+            explanationHindi = "सी. ए. कटर ने 1876 में 'Rules for a Dictionary Catalog' प्रकाशित की जिसमें पहली बार पुस्तकालय सूचीकरण के उद्देश्यों (Objectives of Library Catalogue) को स्पष्ट रूप से संहिताबद्ध किया गया था।",
+            keyHighlight = "सेट 10: पुस्तकालय सूचीकरण • सी. ए. कटर 1876"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "99. क्लासिफाइड कैटलॉग कोड (CCC) के अनुसार मुख्य प्रविष्टि का पहला अनुभाग 'अग्र अनुच्छेद' (Leading Section) में क्या लिखा जाता है?",
+            optionA = "कॉल नंबर (Call Number - क्रमांक) केवल पेंसिल से",
+            optionB = "पुस्तक का शीर्षक",
+            optionC = "लेखक का नाम बड़े अक्षरों में",
+            optionD = "प्रकाशन वर्ष",
+            correctOption = 1,
+            explanationHindi = "CCC में मुख्य प्रविष्टि के Leading Section में पुस्तक का Call Number (Class Number + Book Number + Collection Number) सदैव पेंसिल से लिखा जाता है ताकि संशोधन संभव हो सके।",
+            keyHighlight = "सेट 10: पुस्तकालय सूचीकरण • CCC अग्र अनुच्छेद कॉल नंबर"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "100. आईएसबीडी (ISBD - International Standard Bibliographic Description) का विकास किस अंतरराष्ट्रीय संस्था द्वारा 1971 में किया गया?",
+            optionA = "आई. एफ. एल. ए. (IFLA)",
+            optionB = "यूनेस्को (UNESCO)",
+            optionC = "अमेरिकन लाइब्रेरी एसोसिएशन (ALA)",
+            optionD = "लाइब्रेरी ऑफ कांग्रेस (LC)",
+            correctOption = 1,
+            explanationHindi = "IFLA ने ग्रंथपरक विवरणों में वैश्विक एकरूपता लाने हेतु 1971 में ISBD (M) - मोनोग्राफ हेतु मानक विवरण प्रारूप तैयार किया, जो बाद में AACR-2 का आधार बना।",
+            keyHighlight = "सेट 10: पुस्तकालय सूचीकरण • IFLA एवं ISBD 1971"
+        )
+    )
+
+    fun getSet11Questions(): List<QuestionEntity> = listOf(
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "101. प्रशासनिक प्रबंधन प्रक्रिया को संक्षिप्त रूप में 'POSDCORB' परिवर्णी शब्द द्वारा 1937 में किसने व्यक्त किया था?",
+            optionA = "लूथर गुलिक एवं लिंडल उर्विक (Luther Gulick & Lyndall Urwick)",
+            optionB = "हेनरी फेयोल",
+            optionC = "एफ. डब्ल्यू. टेलर",
+            optionD = "मैक्स वेबर",
+            correctOption = 1,
+            explanationHindi = "POSDCORB का पूर्ण रूप है: Planning, Organizing, Staffing, Directing, Coordinating, Reporting, Budgeting। इसे लूथर गुलिक व लिंडल उर्विक ने प्रतिपादित किया था।",
+            keyHighlight = "सेट 11: पुस्तकालय प्रबंधन • POSDCORB गुलिक व उर्विक"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "102. आधुनिक 'वैज्ञानिक प्रबंधन का जनक' (Father of Scientific Management) किसे माना जाता है?",
+            optionA = "फ्रेडरिक विंसलो टेलर (F.W. Taylor)",
+            optionB = "हेनरी फेयोल",
+            optionC = "एल्टन मेयो",
+            optionD = "पीटर ड्रकर",
+            correctOption = 1,
+            explanationHindi = "एफ. डब्ल्यू. टेलर को वैज्ञानिक प्रबंधन का जनक माना जाता है जिन्होंने कार्य अध्ययन (Time & Motion Study) और कार्यकुशलता के सिद्धांतों की नींव रखी।",
+            keyHighlight = "सेट 11: पुस्तकालय प्रबंधन • एफ. डब्ल्यू. टेलर वैज्ञानिक प्रबंधन"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "103. आधुनिक प्रशासनिक प्रबंधन के जनक हेनरी फेयोल (Henri Fayol) ने कुल कितने सामान्य प्रबंधन सिद्धांत प्रतिपादित किए हैं?",
+            optionA = "14 सिद्धांत (14 Principles of Management)",
+            optionB = "10 सिद्धांत",
+            optionC = "12 सिद्धांत",
+            optionD = "5 सिद्धांत",
+            correctOption = 1,
+            explanationHindi = "हेनरी फेयोल ने 1916 में अपनी पुस्तक में 14 सिद्धांत दिए, जिनमें श्रम विभाजन, अधिकार व उत्तरदायित्व, अनुशासन, आदेश की एकता, निर्देश की एकता और सोपान श्रृंखला (Scalar Chain) प्रमुख हैं।",
+            keyHighlight = "सेट 11: पुस्तकालय प्रबंधन • हेनरी फेयोल के 14 सिद्धांत"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "104. 'शून्य आधारित बजट' (Zero-Based Budgeting - ZBB) की अवधारणा 1970 में किसके द्वारा प्रस्तुत की गई थी?",
+            optionA = "पीटर ए. पायर (Peter A. Phyrr)",
+            optionB = "रॉबर्ट मैकनामारा",
+            optionC = "मेलविल डेवी",
+            optionD = "डॉ. रंगनाथन",
+            correctOption = 1,
+            explanationHindi = "Zero-Based Budgeting (ZBB) का विकास 1970 में टेक्सास इंस्ट्रूमेंट्स में पीटर ए. पायर ने किया। इसमें पिछले वर्ष के बजट को शून्य मानकर प्रत्येक खर्च का नए सिरे से औचित्य सिद्ध करना होता है।",
+            keyHighlight = "सेट 11: पुस्तकालय प्रबंधन • शून्य आधारित बजट (ZBB)"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "105. विश्वविद्यालय अनुदान आयोग (UGC) द्वारा 1957 में गठित ऐतिहासिक 'पुस्तकालय समिति' के अध्यक्ष कौन थे?",
+            optionA = "डॉ. एस. आर. रंगनाथन",
+            optionB = "डॉ. सी. डी. देशमुख",
+            optionC = "डॉ. डी. एस. कोठारी",
+            optionD = "प्रो. यशपाल",
+            correctOption = 1,
+            explanationHindi = "1957 में यूजीसी के तत्कालीन अध्यक्ष डॉ. सी. डी. देशमुख ने डॉ. एस. आर. रंगनाथन की अध्यक्षता में पुस्तकालय समिति नियुक्त की, जिसने विश्वविद्यालय व कॉलेज पुस्तकालयों हेतु स्टाफ फॉर्मूला व बजट नियम बनाए।",
+            keyHighlight = "सेट 11: पुस्तकालय प्रबंधन • UGC पुस्तकालय समिति 1957"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "106. पुस्तकालय समिति के विभिन्न प्रकारों में से वह समिति जिसे सभी प्रकार के प्रशासनिक एवं वित्तीय निर्णय लेने का कानूनी अधिकार होता है, क्या कहलाती है?",
+            optionA = "कार्यकारी समिति (Executive Committee)",
+            optionB = "सलाहकार समिति (Advisory Committee)",
+            optionC = "तदर्थ समिति (Ad-hoc Committee)",
+            optionD = "अनौपचारिक समिति",
+            correctOption = 1,
+            explanationHindi = "कार्यकारी समिति (Executive Committee) को पुस्तकालय के सभी नीतिगत, वित्तीय एवं प्रशासनिक निर्णय लेने तथा उन्हें लागू करने की पूर्ण वैधानिक शक्ति प्राप्त होती है।",
+            keyHighlight = "सेट 11: पुस्तकालय प्रबंधन • कार्यकारी पुस्तकालय समिति"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "107. पीपीबीएस (PPBS - Planning Programming Budgeting System) का विकास 1961 में किसके द्वारा किया गया था?",
+            optionA = "अमेरिकी रक्षा विभाग (रॉबर्ट मैकनामारा - US Dept of Defense)",
+            optionB = "विश्व बैंक",
+            optionC = "यूनेस्को",
+            optionD = "ब्रिटिश संसद",
+            correctOption = 1,
+            explanationHindi = "PPBS तकनीक 1961 में अमेरिकी रक्षा सचिव रॉबर्ट मैकनामारा के निर्देश पर अमेरिकी रक्षा विभाग में विकसित की गई थी, जिसका उपयोग बाद में पुस्तकालय बजट में भी होने लगा।",
+            keyHighlight = "सेट 11: पुस्तकालय प्रबंधन • PPBS बजट प्रणाली 1961"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "108. पुस्तकालय में पुरानी, फटी-पुरानी एवं अप्रासंगिक पुस्तकों को संग्रह से स्थायी रूप से हटाने की वैज्ञानिक प्रक्रिया को क्या कहा जाता है?",
+            optionA = "वीडिंग आउट (Weeding Out / छंटाई)",
+            optionB = "स्टॉक वेरिफिकेशन",
+            optionC = "जिल्दसाजी",
+            optionD = "शेल्फ रेक्टिफिकेशन",
+            correctOption = 1,
+            explanationHindi = "रंगनाथन जी के पाँचवें सूत्र (पुस्तकालय एक वर्धनशील संस्था है) के अनुसार स्थान व उपयोगिता बनाए रखने हेतु अनुपयोगी पुस्तकों की व्यवस्थित छंटाई (Weeding Out) अनिवार्य है।",
+            keyHighlight = "सेट 11: पुस्तकालय प्रबंधन • पुस्तकों की छंटाई (Weeding Out)"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "109. पुस्तकालय की 'वार्षिक रिपोर्ट' (Annual Report) में अनिवार्य रूप से कौन-से दो प्रमुख भाग होते हैं?",
+            optionA = "विवरणात्मक भाग (Descriptive) एवं सांख्यिकीय भाग (Statistical)",
+            optionB = "केवल आय-व्यय का ब्योरा",
+            optionC = "केवल कर्मचारियों की सूची",
+            optionD = "केवल पुस्तकों के नाम",
+            correctOption = 1,
+            explanationHindi = "वार्षिक रिपोर्ट के दो भाग होते हैं: 1. विवरणात्मक भाग (वर्ष भर की गतिविधियों, नवाचारों व उपलब्धियों का विवरण), 2. सांख्यिकीय भाग (पुस्तकों, पाठकों, निर्गमन व वित्तीय आंकड़े)।",
+            keyHighlight = "सेट 11: पुस्तकालय प्रबंधन • पुस्तकालय वार्षिक रिपोर्ट"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "110. पुस्तकालय प्रबंधन में 'टीक्यूएम' (Total Quality Management - TQM) की अवधारणा मुख्य रूप से किस पर केंद्रित है?",
+            optionA = "निरंतर गुणवत्ता सुधार एवं पाठक संतुष्टि (Continuous Quality Improvement)",
+            optionB = "केवल पुस्तकों की संख्या बढ़ाने पर",
+            optionC = "कर्मचारियों की संख्या घटाने पर",
+            optionD = "पुस्तकालय भवन के सौंदर्यीकरण पर",
+            correctOption = 1,
+            explanationHindi = "TQM एक समग्र प्रबंधन दर्शन है जिसका उद्देश्य पुस्तकालय सेवाओं की गुणवत्ता में निरंतर सुधार करना तथा उपयोगकर्ताओं (पाठकों) की आवश्यकताओं को पूर्णतः संतुष्ट करना है।",
+            keyHighlight = "सेट 11: पुस्तकालय प्रबंधन • सम्पूर्ण गुणवत्ता प्रबंधन (TQM)"
+        )
+    )
+
+    fun getSet12Questions(): List<QuestionEntity> = listOf(
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "111. पुस्तक चयन का सुप्रसिद्ध सिद्धांत \"न्यूनतम लागत पर अधिकतम पाठकों के लिए सर्वोत्तम पठन सामग्री\" (Best reading for the largest number at the least cost) 1876 में किसने दिया था?",
+            optionA = "मेलविल डेवी (Melvil Dewey)",
+            optionB = "एफ. के. डब्ल्यू. ड्रूरी",
+            optionC = "डॉ. एस. आर. रंगनाथन",
+            optionD = "सी. ए. कटर",
+            correctOption = 1,
+            explanationHindi = "यह सिद्धांत मेलविल डेवी द्वारा 1876 में दिया गया था और इसे अमेरिकन लाइब्रेरी एसोसिएशन (ALA) के आदर्श वाक्य (Motto) के रूप में भी अपनाया गया था।",
+            keyHighlight = "सेट 12: अर्जन एवं परिसंचरण • मेलविल डेवी का पुस्तक चयन सिद्धांत"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "112. \"सही समय पर सही पाठक को सही पुस्तक उपलब्ध कराना\" (To provide the right book to the right reader at the right time) पुस्तक चयन सिद्धांत 1930 में किसके द्वारा प्रतिपादित किया गया?",
+            optionA = "एफ. के. डब्ल्यू. ड्रूरी (F.K.W. Drury)",
+            optionB = "एच. ई. ब्लिस",
+            optionC = "एल. आर. मैककोल्विन",
+            optionD = "मेलविल डेवी",
+            correctOption = 1,
+            explanationHindi = "एफ. के. डब्ल्यू. ड्रूरी ने अपनी पुस्तक 'Book Selection' (1930) में यह विश्वविख्यात सिद्धांत प्रतिपादित किया था।",
+            keyHighlight = "सेट 12: अर्जन एवं परिसंचरण • ड्रूरी का पुस्तक चयन सिद्धांत 1930"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "113. पुस्तकालय परिसंचरण (Circulation) की प्रसिद्ध 'ब्राउन चार्जिंग प्रणाली' (Browne Charging System) का आविष्कार 1895 में किसके द्वारा किया गया था?",
+            optionA = "नीना ई. ब्राउन (Nina E. Browne)",
+            optionB = "जे. डी. ब्राउन (J.D. Brown)",
+            optionC = "जॉन कॉटन डाना",
+            optionD = "मेलविल डेवी",
+            correctOption = 1,
+            explanationHindi = "अमेरिका की बोस्टन लाइब्रेरी ब्यूरो की लाइब्रेरियन नीना ई. ब्राउन ने 1895 में ब्राउन प्रणाली शुरू की। इसमें पाठक की जेब (Pocket) में पुस्तक कार्ड (Book Card) डालकर लेन-देन किया जाता है।",
+            keyHighlight = "सेट 12: अर्जन एवं परिसंचरण • नीना ई. ब्राउन प्रणाली 1895"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "114. नेवार्क चार्जिंग सिस्टम (Newark Charging System) का आविष्कार 1900 में नेवार्क पब्लिक लाइब्रेरी (USA) में किसके द्वारा किया गया था?",
+            optionA = "जॉन कॉटन डाना (John Cotton Dana)",
+            optionB = "नीना ई. ब्राउन",
+            optionC = "चार्ल्स कटर",
+            optionD = "विलियम बोर्डन",
+            correctOption = 1,
+            explanationHindi = "नेवार्क प्रणाली का विकास 1900 में जॉन कॉटन डाना ने नेवार्क पब्लिक लाइब्रेरी (न्यू जर्सी) में किया। इसमें तिथि पत्रक (Date Slip) और पाठक कार्ड पर तिथियां दर्ज की जाती हैं।",
+            keyHighlight = "सेट 12: अर्जन एवं परिसंचरण • जॉन कॉटन डाना नेवार्क प्रणाली"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "115. पुस्तकालय के 'परिग्रहण रजिस्टर' (Accession Register) का मानक आकार सामान्यतः कितना होता है और इसमें कितने मानक कॉलम होते हैं?",
+            optionA = "16 × 13 इंच आकार और सामान्यतः 14 या 15 कॉलम",
+            optionB = "10 × 8 इंच आकार और 8 कॉलम",
+            optionC = "12 × 10 इंच आकार और 20 कॉलम",
+            optionD = "18 × 15 इंच आकार और 10 कॉलम",
+            correctOption = 1,
+            explanationHindi = "परिग्रहण पंजी (Accession Register) पुस्तकालय का सबसे महत्वपूर्ण स्थायी कानूनी दस्तावेज होता है। इसका मानक आकार 16\" × 13\" इंच होता है और इसमें 14 से 15 कॉलम होते हैं।",
+            keyHighlight = "सेट 12: अर्जन एवं परिसंचरण • परिग्रहण रजिस्टर 16x13 इंच"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "116. पुस्तकालय में पुस्तकों को कीड़ों (सिल्वरफिश, दीमक, पुस्तक कीट) और फफूंद से बचाने के लिए किस रासायनिक यौगिक का प्रयोग सामान्यतः किया जाता है?",
+            optionA = "नेफ्थलीन बॉल्स एवं पैराडाइक्लोरोबेंजीन (Paradichlorobenzene)",
+            optionB = "सल्फर डाइऑक्साइड",
+            optionC = "ब्लीचिंग पाउडर",
+            optionD = "हाइड्रोक्लोरिक एसिड",
+            correctOption = 1,
+            explanationHindi = "पुस्तकालयों में कीटनाशक व कीट विकर्षक के रूप में नेफ्थलीन बॉल्स, पैराडाइक्लोरोबेंजीन और नीम की सूखी पत्तियों का सुरक्षित रूप से प्रयोग किया जाता है।",
+            keyHighlight = "सेट 12: अर्जन एवं परिसंचरण • पुस्तक संरक्षण एवं कीट नियंत्रण"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "117. प्राचीन व बहुमूल्य पुस्तकों की चमड़े की जिल्द (Leather Binding) को सूखने, फटने और सड़ने से बचाने के लिए किस घोल का लेप किया जाता है?",
+            optionA = "ब्रिटिश म्यूजियम लेदर ड्रेसिंग सॉल्यूशन (British Museum Leather Dressing)",
+            optionB = "अल्कोहल घोल",
+            optionC = "एसिटिक एसिड",
+            optionD = "फॉर्मेलिन घोल",
+            correctOption = 1,
+            explanationHindi = "ब्रिटिश म्यूजियम लेदर ड्रेसिंग सॉल्यूशन (जिसमें लैनोलिन, सीडरवुड ऑयल और मोम होता है) का लेप चमड़े की जिल्दों को मुलायम और संरक्षित रखने हेतु किया जाता है।",
+            keyHighlight = "सेट 12: अर्जन एवं परिसंचरण • ब्रिटिश म्यूजियम लेदर ड्रेसिंग"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "118. किसी पुस्तक को दी जाने वाली 'परिग्रहण संख्या' (Accession Number) के संबंध में निम्नलिखित में से कौन-सा कथन सत्य है?",
+            optionA = "यह प्रत्येक पुस्तक की विशिष्ट (Unique) स्थायी पहचान संख्या है जो कभी बदली नहीं जाती",
+            optionB = "यह विषय के आधार पर बदलती रहती है",
+            optionC = "एक ही नंबर कई विभिन्न पुस्तकों को दिया जा सकता है",
+            optionD = "पुस्तक खो जाने पर वह नंबर तुरंत नई पुस्तक को दे दिया जाता है",
+            correctOption = 1,
+            explanationHindi = "Accession Number प्रत्येक भौतिक पुस्तक को पुस्तकालय में प्रवेश के समय दिया जाने वाला अद्वितीय (Unique) क्रमांक है। पुस्तक खो जाने पर भी वह नंबर किसी दूसरी पुस्तक को कभी नहीं दिया जाता।",
+            keyHighlight = "सेट 12: अर्जन एवं परिसंचरण • परिग्रहण संख्या की विशिष्टता"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "119. पुस्तकालय में भंडार सत्यापन (Stock Verification / भौतिक सत्यापन) की सबसे तीव्र, आधुनिक एवं सटीक स्वचालित तकनीक कौन-सी है?",
+            optionA = "आर.एफ.आई.डी. हैंडहेल्ड रीडर द्वारा स्कैनिंग (RFID Handheld Reader)",
+            optionB = "परिग्रहण रजिस्टर से एक-एक पुस्तक मिलाना",
+            optionC = "शेल्फ लिस्ट कार्ड से मिलान",
+            optionD = "संख्यात्मक पर्ची पद्धति",
+            correctOption = 1,
+            explanationHindi = "RFID हैंडहेल्ड रीडर से बिना शेल्फ से पुस्तक निकाले मात्र रैक के पास से गुजारने पर प्रति सेकंड सैकड़ों पुस्तकों का सत्यापन हो जाता है, जिससे समय और श्रम की भारी बचत होती है।",
+            keyHighlight = "सेट 12: अर्जन एवं परिसंचरण • RFID द्वारा भंडार सत्यापन"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "120. परिसंचरण पटल (Circulation Counter) पर पाठकों के इशू किए गए कार्डों को तिथि अनुसार व्यवस्थित रखने हेतु प्रयुक्त ट्रे को क्या कहा जाता है?",
+            optionA = "चार्जिंग ट्रे (Charging Tray)",
+            optionB = "कैटलॉग कैबिनेट",
+            optionC = "डिस्प्ले रैक",
+            optionD = "बुक ट्रॉल",
+            correctOption = 1,
+            explanationHindi = "ब्राउन एवं नेवार्क चार्जिंग प्रणालियों में काउंटर पर दैनिक लेन-देन कार्डों को देय तिथि (Due Date Guide Cards) के अनुसार चार्जिंग ट्रे (Charging Tray) में रखा जाता है।",
+            keyHighlight = "सेट 12: अर्जन एवं परिसंचरण • चार्जिंग ट्रे"
+        )
+    )
+
+    fun getSet13Questions(): List<QuestionEntity> = listOf(
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "121. डॉ. एस. आर. रंगनाथन ने संदर्भ सेवा (Reference Service) को किन दो मुख्य प्रकारों में वर्गीकृत किया है?",
+            optionA = "तैयार संदर्भ सेवा (Ready Reference) एवं दीर्घकालीन संदर्भ सेवा (Long Range Reference)",
+            optionB = "प्रत्यक्ष सेवा एवं अप्रत्यक्ष सेवा",
+            optionC = "आंतरिक सेवा एवं बाह्य सेवा",
+            optionD = "मौखिक सेवा एवं लिखित सेवा",
+            correctOption = 1,
+            explanationHindi = "डॉ. रंगनाथन ने संदर्भ सेवा को Ready Reference (जो तत्काल 5-15 मिनट में दी जाए) और Long Range Reference (जिसमें विस्तृत खोज, ग्रंथसूची व समय लगता है) में विभाजित किया है।",
+            keyHighlight = "सेट 13: संदर्भ एवं सूचना स्रोत • तैयार व दीर्घकालीन संदर्भ सेवा"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "122. सूचना स्रोतों को 'प्राथमिक' (Primary), 'द्वितीयक' (Secondary) एवं 'तृतीयक' (Tertiary) स्रोतों में वैज्ञानिक रूप से किसने वर्गीकृत किया था?",
+            optionA = "डेनिस ग्रोगन (Denis Grogan) एवं सी. डब्ल्यू. हैनसन",
+            optionB = "मेलविल डेवी",
+            optionC = "डॉ. एस. आर. रंगनाथन",
+            optionD = "सी. ए. कटर",
+            correctOption = 1,
+            explanationHindi = "सी. डब्ल्यू. हैनसन ने सूचना स्रोतों को प्राथमिक व द्वितीयक में बाँटा, जबकि डेनिस ग्रोगन (1982) ने इसे आगे बढ़ाकर प्राथमिक, द्वितीयक और तृतीयक तीन श्रेणियों में वर्गीकृत किया।",
+            keyHighlight = "सेट 13: संदर्भ एवं सूचना स्रोत • डेनिस ग्रोगन व हैनसन वर्गीकरण"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "123. शोध प्रबंध (Ph.D. Theses), मूल शोध पत्रिकाएं (Research Periodicals) और पेटेंट (Patents) किस प्रकार के सूचना स्रोत हैं?",
+            optionA = "प्राथमिक सूचना स्रोत (Primary Sources)",
+            optionB = "द्वितीयक सूचना स्रोत",
+            optionC = "तृतीयक सूचना स्रोत",
+            optionD = "अप्रकाशित अप्रमाणिक स्रोत",
+            correctOption = 1,
+            explanationHindi = "प्राथमिक स्रोत वे होते हैं जिनमें मौलिक शोध, नए तथ्य या पहली बार खोजे गए ज्ञान का विवरण बिना किसी संपादन या मूल्यांकन के प्रकाशित होता है।",
+            keyHighlight = "सेट 13: संदर्भ एवं सूचना स्रोत • प्राथमिक सूचना स्रोत"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "124. विश्व प्रसिद्ध सामान्य विश्वकोश 'एनसाइक्लोपीडिया ब्रिटानिका' (Encyclopaedia Britannica) का प्रथम संस्करण किस वर्ष प्रकाशित हुआ था?",
+            optionA = "1768 में (एडिनबर्ग, स्कॉटलैंड से)",
+            optionB = "1801 में (लंदन से)",
+            optionC = "1750 में (पेरिस से)",
+            optionD = "1850 में (न्यूयॉर्क से)",
+            correctOption = 1,
+            explanationHindi = "एनसाइक्लोपीडिया ब्रिटानिका का पहला संस्करण 1768-1771 के दौरान एडिनबर्ग (स्कॉटलैंड) में प्रकाशित हुआ था। इसका 15वां संस्करण 32 खंडों में मुद्रित हुआ था।",
+            keyHighlight = "सेट 13: संदर्भ एवं सूचना स्रोत • ब्रिटानिका 1768"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "125. किसी भौगोलिक स्थान की स्थिति, क्षेत्रफल, जनसंख्या, पर्वत, नदियाँ और ऐतिहासिक पृष्ठभूमि प्रदान करने वाला संदर्भ स्रोत क्या कहलाता है?",
+            optionA = "गजेटियर (Gazetteer - भौगोलिक शब्दकोश)",
+            optionB = "वार्षिकी (Yearbook)",
+            optionC = "निर्देशिका (Directory)",
+            optionD = "पंचांग (Almanac)",
+            correctOption = 1,
+            explanationHindi = "गजेटियर एक भौगोलिक शब्दकोश या संदर्भ ग्रंथ है जिसमें स्थानों, नगरों, नदियों आदि की विस्तृत भौगोलिक, सामाजिक और ऐतिहासिक सूचनाएं संकलित होती हैं (जैसे- इम्पीरियल गजेटियर ऑफ इंडिया)।",
+            keyHighlight = "सेट 13: संदर्भ एवं सूचना स्रोत • गजेटियर भौगोलिक स्रोत"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "126. केडब्ल्यूआईसी (KWIC - Key Word In Context) अनुक्रमण पद्धति का आविष्कार 1958 में आईबीएम में किसके द्वारा किया गया था?",
+            optionA = "एच. पी. लुहन (Hans Peter Luhn)",
+            optionB = "डेरेक ऑस्टिन",
+            optionC = "यूजीन गारफील्ड",
+            optionD = "गणेश भट्टाचार्य",
+            correctOption = 1,
+            explanationHindi = "KWIC अनुक्रमण तकनीक 1958 में एच. पी. लुहन (H.P. Luhn) द्वारा विकसित की गई थी। इसमें कंप्यूटर द्वारा शीर्षक के प्रत्येक महत्वपूर्ण कीवर्ड को संदर्भ में रखकर प्रविष्टि बनाई जाती है।",
+            keyHighlight = "सेट 13: संदर्भ एवं सूचना स्रोत • KWIC अनुक्रमण एच. पी. लुहन"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "127. प्रेसिस (PRECIS - Preserved Context Indexing System) विषय अनुक्रमण प्रणाली का विकास 1971 में ब्रिटिश नेशनल बिब्लियोग्राफी (BNB) हेतु किसने किया था?",
+            optionA = "डेरेक ऑस्टिन (Derek Austin)",
+            optionB = "एच. पी. लुहन",
+            optionC = "डॉ. रंगनाथन",
+            optionD = "एफ. डब्ल्यू. लैनकास्टर",
+            correctOption = 1,
+            explanationHindi = "PRECIS का विकास 1971 में डेरेक ऑस्टिन ने BNB के कम्प्यूटरीकरण के समय किया था ताकि विषय शीर्षों के संदर्भ को प्रत्येक प्रविष्टि में संरक्षित रखा जा सके।",
+            keyHighlight = "सेट 13: संदर्भ एवं सूचना स्रोत • PRECIS डेरेक ऑस्टिन 1971"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "128. पीओपीएसआई (POPSI - Postulate-based Permuted Subject Indexing) अनुक्रमण पद्धति का विकास किसके द्वारा DRTC बैंगलोर में किया गया?",
+            optionA = "प्रो. गणेश भट्टाचार्य (G. Bhattacharyya)",
+            optionB = "डॉ. एस. आर. रंगनाथन",
+            optionC = "ए. नीलमघन",
+            optionD = "पी. एन. कौला",
+            correctOption = 1,
+            explanationHindi = "POPSI का विकास डॉ. रंगनाथन के शिष्य प्रो. गणेश भट्टाचार्य द्वारा DRTC (बैंगलोर) में रंगनाथन के सामान्य सिद्धांतों और उपसूत्रों के आधार पर किया गया था।",
+            keyHighlight = "सेट 13: संदर्भ एवं सूचना स्रोत • POPSI प्रो. गणेश भट्टाचार्य"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "129. किसी नए पाठक या शोधार्थी को पुस्तकालय के विभिन्न विभागों, कैटलॉग, नियमों और सेवाओं से भली-भांति परिचित कराने की औपचारिक प्रक्रिया क्या कहलाती है?",
+            optionA = "पाठक दीक्षा (User Orientation / Initiation of the Fresh Reader)",
+            optionB = "प्रसार सेवा",
+            optionC = "इंटर-लाइब्रेरी लोन",
+            optionD = "रेफरल सेवा",
+            correctOption = 1,
+            explanationHindi = "डॉ. रंगनाथन के अनुसार 'पाठक दीक्षा' (Initiation of the Reader) संदर्भ विभाग का पहला कार्य है, जिससे नवागंतुक पाठक पुस्तकालय वातावरण में सहज महसूस करता है और स्वतंत्र उपयोग सीखता है।",
+            keyHighlight = "सेट 13: संदर्भ एवं सूचना स्रोत • पाठक दीक्षा (User Orientation)"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "130. स्टेट्समैन ईयरबुक (The Statesman's Yearbook) अथवा इंडिया रेफरेंस एनुअल किस प्रकार के संदर्भ स्रोत का श्रेष्ठ उदाहरण है?",
+            optionA = "वार्षिकी (Yearbook) - द्वितीयक सूचना स्रोत",
+            optionB = "प्राथमिक सूचना स्रोत",
+            optionC = "तृतीयक सूचना स्रोत",
+            optionD = "भौगोलिक शब्दकोश",
+            correctOption = 1,
+            explanationHindi = "Yearbooks और Almanacs द्वितीयक सूचना स्रोत (Secondary Sources) होते हैं जो विगत एक वर्ष की सामाजिक, राजनीतिक, आर्थिक एवं सांख्यिकीय घटनाओं का प्रामाणिक लेखा-जोखा प्रस्तुत करते हैं।",
+            keyHighlight = "सेट 13: संदर्भ एवं सूचना स्रोत • वार्षिकी द्वितीयक स्रोत"
+        )
+    )
+
+    fun getSet14Questions(): List<QuestionEntity> = listOf(
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "131. विश्व का प्रथम ओपन-सोर्स इंटीग्रेटेड लाइब्रेरी मैनेजमेंट सिस्टम (Open Source ILMS) कौन-सा है और यह सर्वप्रथम किस वर्ष जारी किया गया था?",
+            optionA = "कोहा (Koha) - जनवरी 2000 में (न्यूजीलैंड)",
+            optionB = "सोल (SOUL) - 2000 में",
+            optionC = "डी-स्पेस (DSpace) - 2002 में",
+            optionD = "ग्रीनस्टोन (Greenstone) - 1995 में",
+            correctOption = 1,
+            explanationHindi = "Koha विश्व का पहला मुक्त स्रोत एकीकृत पुस्तकालय प्रणाली सॉफ्टवेयर है, जिसे Katipo Communications द्वारा होरोव्हेनुआ लाइब्रेरी ट्रस्ट (न्यूजीलैंड) के लिए विकसित कर जनवरी 2000 में जारी किया गया था।",
+            keyHighlight = "सेट 14: पुस्तकालय स्वचालन • कोहा (Koha) ओपन सोर्स ILMS"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "132. भारत में इन्फ्लिबनेट (INFLIBNET) केंद्र द्वारा भारतीय शैक्षणिक एवं विश्वविद्यालय पुस्तकालयों हेतु विकसित स्वदेशी पुस्तकालय सॉफ्टवेयर कौन-सा है?",
+            optionA = "सोल (SOUL - Software for University Libraries)",
+            optionB = "संजय (SANJAY)",
+            optionC = "मैत्रयी (MAITRAYEE)",
+            optionD = "ग्रंथालय (E-Granthalaya)",
+            correctOption = 1,
+            explanationHindi = "SOUL (Software for University Libraries) को INFLIBNET गांधीनगर ने विकसित किया है। इसके संस्करण SOUL 1.0 (2000), SOUL 2.0 (2009) और SOUL 3.0 (2021) हैं।",
+            keyHighlight = "सेट 14: पुस्तकालय स्वचालन • SOUL सॉफ्टवेयर INFLIBNET"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "133. ओपन-सोर्स डिजिटल रिपॉजिटरी और संस्थागत बौद्धिक संपदा (Institutional Repository) के प्रबंधन हेतु विश्व भर में सर्वाधिक लोकप्रिय सॉफ्टवेयर कौन-सा है?",
+            optionA = "डी-स्पेस (DSpace - MIT एवं HP लैब्स द्वारा विकसित)",
+            optionB = "कोहा",
+            optionC = "ड्रूपल",
+            optionD = "वर्डप्रेस",
+            correctOption = 1,
+            explanationHindi = "DSpace एक प्रसिद्ध ओपन सोर्स डिजिटल रिपॉजिटरी सॉफ्टवेयर है जिसे नवंबर 2002 में MIT Libraries और Hewlett-Packard (HP) Labs द्वारा संयुक्त रूप से जारी किया गया था।",
+            keyHighlight = "सेट 14: पुस्तकालय स्वचालन • DSpace डिजिटल रिपॉजिटरी"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "134. पुस्तकालयों में पुस्तकों के तीव्र निर्गमन-आगमन, सेल्फ-चेकआउट और सुरक्षा निगरानी हेतु प्रयुक्त 'RFID' तकनीक का पूर्ण रूप क्या है?",
+            optionA = "Radio Frequency Identification (रेडियो फ्रीक्वेंसी आइडेंटिफिकेशन)",
+            optionB = "Random File Indexing Device",
+            optionC = "Remote Frequency Identification",
+            optionD = "Radio Format Internet Data",
+            correctOption = 1,
+            explanationHindi = "RFID (Radio Frequency Identification) रेडियो तरंगों पर कार्य करने वाली तकनीक है जिसमें पुस्तक पर चिप (RFID Tag) लगाई जाती है जो बिना सीधे संपर्क के रीडर व एंटीना द्वारा पढ़ी जा सकती है।",
+            keyHighlight = "सेट 14: पुस्तकालय स्वचालन • RFID तकनीक"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "135. भारत के विश्वविद्यालय पुस्तकालयों को कंप्यूटर नेटवर्क से जोड़ने वाले राष्ट्रीय केंद्र 'इन्फ्लिबनेट' (INFLIBNET) का स्थायी मुख्यालय कहाँ स्थित है?",
+            optionA = "गांधीनगर (गुजरात - इन्फोसिटी परिसर)",
+            optionB = "अहमदाबाद (गुजरात)",
+            optionC = "नई दिल्ली",
+            optionD = "बेंगलुरु (कर्नाटक)",
+            correctOption = 1,
+            explanationHindi = "INFLIBNET केंद्र की शुरुआत 1991 में IUCAA के एक प्रोजेक्ट के रूप में हुई थी। 1996 में यह UGC का स्वायत्त अंतर-विश्वविद्यालय केंद्र बना। इसका स्थायी परिसर इन्फोसिटी, गांधीनगर में है।",
+            keyHighlight = "सेट 14: पुस्तकालय स्वचालन • INFLIBNET मुख्यालय गांधीनगर"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "136. डेलनेट (DELNET) की स्थापना 1988 में किस नाम से हुई थी और इसका वर्तमान नाम क्या है?",
+            optionA = "1988 में दिल्ली लाइब्रेरी नेटवर्क, वर्तमान में डेवलपिंग लाइब्रेरी नेटवर्क (नई दिल्ली)",
+            optionB = "डिजिटल लाइब्रेरी नेटवर्क",
+            optionC = "डिस्ट्रिक्ट लाइब्रेरी नेटवर्क",
+            optionD = "डायरेक्ट इलेक्ट्रॉनिक लाइब्रेरी नेटवर्क",
+            correctOption = 1,
+            explanationHindi = "DELNET की स्थापना जनवरी 1988 में NISSAT और इंडिया इंटरनेशनल सेंटर के सहयोग से दिल्ली में हुई थी। वर्तमान में यह 'Developing Library Network' के रूप में राष्ट्रीय-अंतरराष्ट्रीय स्तर पर कार्यरत है।",
+            keyHighlight = "सेट 14: पुस्तकालय स्वचालन • DELNET नेटवर्क"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "137. भारतीय विश्वविद्यालयों के स्वीकृत शोध प्रबंधों (Ph.D. Theses) का केंद्रीय राष्ट्रीय डिजिटल खुला भंडार (Digital Repository) कौन-सा है?",
+            optionA = "शोधगंगा (Shodhganga - INFLIBNET)",
+            optionB = "शोधगंगोत्री",
+            optionC = "ई-पीजी पाठशाला",
+            optionD = "विद्वान डेटाबेस",
+            correctOption = 1,
+            explanationHindi = "शोधगंगा (Shodhganga) भारत भर के विश्वविद्यालयों के फुल-टेक्स्ट पीएचडी शोध प्रबंधों का खुला डिजिटल रिपॉजिटरी है, जबकि 'शोधगंगोत्री' में शोध की सिनॉप्सिस (प्रस्ताव) संकलित होती हैं।",
+            keyHighlight = "सेट 14: पुस्तकालय स्वचालन • शोधगंगा डिजिटल भंडार"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "138. भारत सरकार के शिक्षा मंत्रालय द्वारा समर्थित 'नेशनल डिजिटल लाइब्रेरी ऑफ इंडिया' (NDLI) का विकास और संचालन किस संस्थान द्वारा किया जा रहा है?",
+            optionA = "भारतीय प्रौद्योगिकी संस्थान (IIT), खड़गपुर",
+            optionB = "आईआईटी दिल्ली",
+            optionC = "भारतीय विज्ञान संस्थान (IISc), बेंगलुरु",
+            optionD = "इन्फ्लिबनेट गांधीनगर",
+            correctOption = 1,
+            explanationHindi = "National Digital Library of India (NDLI) का निर्माण व तकनीकी संचालन IIT खड़गपुर द्वारा किया गया है। यह करोड़ों ई-बुक्स, ऑडियो लेक्चर्स और शोध पत्रों का निशुल्क राष्ट्रीय पोर्टल है।",
+            keyHighlight = "सेट 14: पुस्तकालय स्वचालन • NDLI एवं IIT खड़गपुर"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "139. पुस्तकालयों के समूह द्वारा साझा रूप से ई-संसाधन और पत्रिकाएं खरीदने और साझा करने की आधुनिक संगठित व्यवस्था क्या कहलाती है?",
+            optionA = "पुस्तकालय कंसोर्टियम (Library Consortium / संसाधन सहभागिता)",
+            optionB = "पुस्तकालय संघ",
+            optionC = "पुस्तकालय समिति",
+            optionD = "पुस्तकालय परिग्रहण",
+            correctOption = 1,
+            explanationHindi = "Library Consortium पुस्तकालयों का एक ऐसा संघ है जो सामूहिक सौदेबाजी (Collective Bargaining) द्वारा महंगे ई-जर्नल्स व डेटाबेस को कम लागत में अपने सभी सदस्य पुस्तकालयों को उपलब्ध कराता है।",
+            keyHighlight = "सेट 14: पुस्तकालय स्वचालन • पुस्तकालय कंसोर्टियम"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "140. भारत में उच्च शिक्षा हेतु 'ई-शोधसिंधु' (e-ShodhSindhu) कंसोर्टियम दिसंबर 2015 में किन तीन प्रमुख कंसोर्टिया के विलय से बना था?",
+            optionA = "UGC-INFONET, INDEST-AICTE, एवं N-LIST",
+            optionB = "DELNET, CALIBNET, एवं MALIBNET",
+            optionC = "CSIR, ICAR, एवं DRDO कंसोर्टिया",
+            optionD = "FORSA, IIM, एवं HELINET",
+            correctOption = 1,
+            explanationHindi = "शिक्षा मंत्रालय (तत्कालीन MHRD) द्वारा 2015 में तीन प्रमुख राष्ट्रीय कंसोर्टिया: यूजीसी-इन्फोनेट डिजिटल लाइब्रेरी, इंडेस्ट-एआईसीटीई और एन-लिस्ट को मिलाकर 'ई-शोधसिंधु' बनाया गया था।",
+            keyHighlight = "सेट 14: पुस्तकालय स्वचालन • ई-शोधसिंधु कंसोर्टियम"
+        )
+    )
+
+    fun getSet15Questions(): List<QuestionEntity> = listOf(
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "141. पटना स्थित ऐतिहासिक 'खुदा बख्श ओरिएंटल पब्लिक लाइब्रेरी' की औपचारिक स्थापना खान बहादुर मौलवी खुदा बख्श द्वारा किस वर्ष की गई थी?",
+            optionA = "29 अक्टूबर 1891 (1969 में राष्ट्रीय महत्व का संस्थान घोषित)",
+            optionB = "1905 में",
+            optionC = "1875 में",
+            optionD = "1924 में",
+            correctOption = 1,
+            explanationHindi = "खुदा बख्श ओरिएंटल पब्लिक लाइब्रेरी की स्थापना 29 अक्टूबर 1891 को जनता के लिए की गई थी। 1969 में भारत की संसद द्वारा अधिनियम पारित कर इसे 'राष्ट्रीय महत्व का संस्थान' (Institute of National Importance) बनाया गया।",
+            keyHighlight = "सेट 15: बिहार पुस्तकालय इतिहास • खुदा बख्श लाइब्रेरी 1891"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "142. पटना स्थित 'सच्चिदानंद सिन्हा लाइब्रेरी' (श्रीमती राधारमण सिन्हा पुस्तकालय) की स्थापना 1924 में हुई थी, यह वर्तमान में बिहार में किस रूप में कार्य करती है?",
+            optionA = "बिहार का केंद्रीय राज्य पुस्तकालय (Central State Library of Bihar)",
+            optionB = "एक निजी पुस्तकालय",
+            optionC = "स्कूल पुस्तकालय",
+            optionD = "केवल विश्वविद्यालय अनुसंधान केंद्र",
+            correctOption = 1,
+            explanationHindi = "संविधान सभा के प्रथम अंतरिम अध्यक्ष डॉ. सच्चिदानंद सिन्हा द्वारा 1924 में स्थापित यह ऐतिहासिक पुस्तकालय बिहार का केंद्रीय राज्य पुस्तकालय (State Central Library) है।",
+            keyHighlight = "सेट 15: बिहार पुस्तकालय इतिहास • सिन्हा लाइब्रेरी पटना 1924"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "143. बिहार राज्य में 'बिहार लोक पुस्तकालय एवं सूचना केंद्र अधिनियम' (Bihar Public Libraries and Information Centres Act) किस वर्ष राज्य विधानमंडल द्वारा पारित किया गया?",
+            optionA = "वर्ष 2008 में",
+            optionB = "वर्ष 2000 में",
+            optionC = "वर्ष 2012 में",
+            optionD = "वर्ष 1995 में",
+            correctOption = 1,
+            explanationHindi = "बिहार सरकार ने सार्वजनिक पुस्तकालय प्रणाली के सुदृढ़ीकरण हेतु 2008 में 'बिहार लोक पुस्तकालय एवं सूचना केंद्र अधिनियम, 2008' पारित किया।",
+            keyHighlight = "सेट 15: बिहार पुस्तकालय इतिहास • बिहार पुस्तकालय अधिनियम 2008"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "144. सार्वजनिक पुस्तकालय अधिनियम पारित करने वाला बिहार भारत का कौन-सा राज्य बना था?",
+            optionA = "14वां राज्य (14th State in India)",
+            optionB = "10वां राज्य",
+            optionC = "5वां राज्य",
+            optionD = "18वां राज्य",
+            correctOption = 1,
+            explanationHindi = "तमिलनाडु (मद्रास) 1948 में पहला राज्य था। 2008 में पुस्तकालय विधान पारित करके बिहार भारत का 14वां राज्य बना था।",
+            keyHighlight = "सेट 15: बिहार पुस्तकालय इतिहास • बिहार 14वां राज्य 2008"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "145. प्राचीन नालंदा विश्वविद्यालय के विश्वप्रसिद्ध विशाल पुस्तकालय परिसर को किस नाम से जाना जाता था?",
+            optionA = "धर्मगंज (Dharmaganja)",
+            optionB = "ज्ञानमंदिर",
+            optionC = "विद्यापीठ",
+            optionD = "सरस्वती महल",
+            correctOption = 1,
+            explanationHindi = "प्राचीन नालंदा विश्वविद्यालय का पुस्तकालय परिसर 'धर्मगंज' (सत्य का पर्वत / धर्म का खजाना) कहलाता था जहाँ विश्व भर के विद्वान और पांडुलिपियां संकलित थीं।",
+            keyHighlight = "सेट 15: बिहार पुस्तकालय इतिहास • नालंदा पुस्तकालय 'धर्मगंज'"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "146. नालंदा विश्वविद्यालय के 'धर्मगंज' पुस्तकालय परिसर में स्थित तीन भव्य बहुमंजिला भवनों के नाम क्या थे?",
+            optionA = "रत्नसागर, रत्नोदधि और रत्नरंजक (Ratnasagara, Ratnodadhi, Ratnaranjaka)",
+            optionB = "गंगा, यमुना और सरस्वती",
+            optionC = "कौशिकी, गंडकी और सोन",
+            optionD = "शांति, मैत्री और करुणा",
+            correctOption = 1,
+            explanationHindi = "धर्मगंज परिसर में तीन विशाल नौ-मंजिला भवन थे: 1. रत्नसागर (समुद्र के समान), 2. रत्नोदधि (जिसमें दुर्लभ धार्मिक पांडुलिपियां थीं), 3. रत्नरंजक।",
+            keyHighlight = "सेट 15: बिहार पुस्तकालय इतिहास • रत्नसागर, रत्नोदधि, रत्नरंजक"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "147. प्राचीन काल का कौन-सा अन्य विश्वविख्यात बौद्ध विश्वविद्यालय पुस्तकालय बिहार के भागलपुर (अंतीचक) में स्थित था?",
+            optionA = "विक्रमशिला विश्वविद्यालय पुस्तकालय (Vikramashila University)",
+            optionB = "ओदंतपुरी",
+            optionC = "तक्षशिला",
+            optionD = "वल्लभी",
+            correctOption = 1,
+            explanationHindi = "पाल नरेश धर्मपाल द्वारा 8वीं शताब्दी में स्थापित विक्रमशिला विश्वविद्यालय (भागलपुर, बिहार) का पुस्तकालय तंत्रशास्त्र और बौद्ध ग्रंथों का विश्वविख्यात केंद्र था।",
+            keyHighlight = "सेट 15: बिहार पुस्तकालय इतिहास • विक्रमशिला पुस्तकालय भागलपुर"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "148. बिहार लोक पुस्तकालय एवं सूचना केंद्र अधिनियम 2008 के तहत राज्य स्तर पर गठित सर्वोच्च 'राज्य पुस्तकालय विकास समिति' का पदेन अध्यक्ष कौन होता है?",
+            optionA = "राज्य के शिक्षा मंत्री (Minister of Education, Bihar)",
+            optionB = "शिक्षा विभाग के प्रधान सचिव",
+            optionC = "सिन्हा लाइब्रेरी के मुख्य लाइब्रेरियन",
+            optionD = "पटना उच्च न्यायालय के मुख्य न्यायाधीश",
+            correctOption = 1,
+            explanationHindi = "अधिनियम 2008 के प्रावधानों के अनुसार राज्य पुस्तकालय विकास समिति का अध्यक्ष राज्य का शिक्षा मंत्री होता है, जो राज्य में पुस्तकालयों के विकास व बजट का मार्गदर्शन करता है।",
+            keyHighlight = "सेट 15: बिहार पुस्तकालय इतिहास • शिक्षा मंत्री पदेन अध्यक्ष 2008 अधिनियम"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "149. खुदा बख्श ओरिएंटल पब्लिक लाइब्रेरी, पटना अंतरराष्ट्रीय स्तर पर मुख्य रूप से किन भाषाओं की दुर्लभ हस्तलिखित पांडुलिपियों (Manuscripts) हेतु विख्यात है?",
+            optionA = "अरबी, फारसी, उर्दू, तुर्की एवं संस्कृत की दुर्लभ पांडुलिपियां",
+            optionB = "केवल अंग्रेजी व फ्रेंच पांडुलिपियां",
+            optionC = "केवल रूसी पांडुलिपियां",
+            optionD = "केवल चीनी पांडुलिपियां",
+            correctOption = 1,
+            explanationHindi = "इस पुस्तकालय में अरबी, फारसी, उर्दू की 21,000 से अधिक दुर्लभतम पांडुलिपियां, मुगलकालीन पेंटिंग्स और सम्राट बाबर, जहांगीर, शाहजहां के काल की अमूल्य कृतियां संरक्षित हैं।",
+            keyHighlight = "सेट 15: बिहार पुस्तकालय इतिहास • खुदा बख्श दुर्लभ पांडुलिपियां"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "150. बिहार के सभी 38 जिलों में जिला केंद्रीय पुस्तकालयों (District Central Libraries) और राजकीय पुस्तकालयों का प्रशासनिक नियंत्रण किस विभाग के अधीन है?",
+            optionA = "शिक्षा विभाग (माध्यमिक एवं जन शिक्षा निदेशालय, बिहार सरकार)",
+            optionB = "गृह विभाग",
+            optionC = "पर्यटन विभाग",
+            optionD = "राजस्व विभाग",
+            correctOption = 1,
+            explanationHindi = "बिहार में सार्वजनिक एवं जिला केंद्रीय पुस्तकालयों की देखरेख व वित्तीय अनुदान शिक्षा विभाग, बिहार सरकार के माध्यमिक एवं जन शिक्षा निदेशालय के अधीन संचालित है।",
+            keyHighlight = "सेट 15: बिहार पुस्तकालय इतिहास • शिक्षा विभाग बिहार सरकार"
+        )
+    )
+
+    fun getSet16Questions(): List<QuestionEntity> = listOf(
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "151. डॉ. रंगनाथन को 'भारत में लाइब्रेरी साइंस का पिता' (Father of Library Science in India) की उपाधि किसने दी थी?",
+            optionA = "महात्मा गांधी",
+            optionB = "एस. राधाकृष्णन",
+            optionC = "जवाहरलाल नेहरू",
+            optionD = "सर मौरिस ग्वायर (Sir Maurice Gwyer)",
+            correctOption = 4,
+            explanationHindi = "दिल्ली विश्वविद्यालय के तत्कालीन कुलपति सर मौरिस ग्वायर ने डॉ. एस. आर. रंगनाथन के पुस्तकालय विज्ञान में अप्रतिम योगदान के लिए उन्हें 'भारत में लाइब्रेरी साइंस का पिता' (Father of Library Science in India) की उपाधि दी थी।",
+            keyHighlight = "सेट 16: परीक्षा विशेष प्रश्न • सर मौरिस ग्वायर व डॉ. रंगनाथन"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "152. निम्नलिखित में से किसे प्रलेखन (Documentation) में उनके महत्वपूर्ण योगदान के लिए 'नोबेल शांति पुरस्कार' से सम्मानित किया गया था?",
+            optionA = "एस. सी. ब्रैडफोर्ड (S.C. Bradford)",
+            optionB = "एम. ए. गोपीनाथ (M.A. Gopinath)",
+            optionC = "एरिक डी ग्रोलियर (Eric De Grolier)",
+            optionD = "हेनरी ला फॉनटेन (Henri La Fontaine)",
+            correctOption = 4,
+            explanationHindi = "हेनरी ला फॉनटेन बेल्जियम के एक प्रलेखन विशेषज्ञ (Documentalist) थे। उन्हें 1913 में अंतर्राष्ट्रीय शांति ब्यूरो के प्रमुख के रूप में और प्रलेखन के क्षेत्र में उनके काम के लिए नोबेल शांति पुरस्कार से सम्मानित किया गया था।",
+            keyHighlight = "सेट 16: परीक्षा विशेष प्रश्न • हेनरी ला फॉनटेन नोबेल पुरस्कार 1913"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "153. भारत में यूनेस्को (UNESCO) की सहायता से स्थापित 'मॉडल पब्लिक लाइब्रेरी' कहाँ स्थित है?",
+            optionA = "कोलकाता (Kolkata)",
+            optionB = "दिल्ली (Delhi Public Library)",
+            optionC = "मुंबई (Mumbai)",
+            optionD = "जयपुर (Jaipur)",
+            correctOption = 2,
+            explanationHindi = "दिल्ली पब्लिक लाइब्रेरी (DPL) की स्थापना 1951 में भारत सरकार और यूनेस्को (UNESCO) की एक संयुक्त पायलट परियोजना के तहत की गई थी, ताकि इसे दक्षिण एशिया में एक 'मॉडल पब्लिक लाइब्रेरी' के रूप में विकसित किया जा सके।",
+            keyHighlight = "सेट 16: परीक्षा विशेष प्रश्न • दिल्ली पब्लिक लाइब्रेरी यूनेस्को 1951"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "154. वैज्ञानिक संचार के क्षेत्र में 'अदृश्य कॉलेज' (Invisible College) अवधारणा का पहली बार प्रयोग किसके द्वारा किया गया?",
+            optionA = "यूजीन गारफील्ड (Eugene Garfield)",
+            optionB = "डेरेक जे. डी. सोला प्राइस (Derek J. de Solla Price)",
+            optionC = "एलन केंट (Allen Kent)",
+            optionD = "सी. ए. कटर (C.A. Cutter)",
+            correctOption = 2,
+            explanationHindi = "वैज्ञानिक संचार के क्षेत्र में 'इन्विजिबल कॉलेज' शब्द का प्रयोग डेरेक जे. डी. सोला प्राइस ने उन वैज्ञानिकों के अनौपचारिक नेटवर्क का वर्णन करने के लिए किया था जो आपस में शोध और जानकारी साझा करते हैं।",
+            keyHighlight = "सेट 16: परीक्षा विशेष प्रश्न • अदृश्य कॉलेज डेरेक सोला प्राइस"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "155. आईएफएलए (IFLA) ने किस वर्ष में 'प्रकाशन की सार्वभौमिक उपलब्धता' (Universal Availability of Publications - UAP) कार्यक्रम शुरू किया था?",
+            optionA = "1973",
+            optionB = "1976",
+            optionC = "1975",
+            optionD = "1980",
+            correctOption = 1,
+            explanationHindi = "IFLA (International Federation of Library Associations) ने 1973 में UAP (Universal Availability of Publications) कार्यक्रम के वैचारिक ढांचे को अपनाया था। इसका मुख्य उद्देश्य दुनिया भर में सभी के लिए प्रकाशनों की सहज पहुँच सुनिश्चित करना है।",
+            keyHighlight = "सेट 16: परीक्षा विशेष प्रश्न • IFLA UAP कार्यक्रम 1973"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "156. इंटरनेशनल इंफॉर्मेशन सिस्टम ऑन रिसर्च इन डॉक्यूमेंटेशन (ISORID) की स्थापना किसके द्वारा की गई थी?",
+            optionA = "आईएफएलए (IFLA)",
+            optionB = "यूनेस्को (UNESCO)",
+            optionC = "एसएलए (SLA)",
+            optionD = "एस्लिब (ASLIB)",
+            correctOption = 2,
+            explanationHindi = "ISORID (International Information System on Research in Documentation) की स्थापना 1973 में UNESCO द्वारा FID के सहयोग से की गई थी, ताकि प्रलेखन, पुस्तकालय और पुरालेख (archives) अनुसंधान पर जानकारी एकत्र की जा सके।",
+            keyHighlight = "सेट 16: परीक्षा विशेष प्रश्न • ISORID यूनेस्को 1973"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "157. डॉ. एस. आर. रंगनाथन को भारत सरकार द्वारा 'पद्म श्री' सम्मान किस वर्ष प्रदान किया गया था?",
+            optionA = "1935",
+            optionB = "1948",
+            optionC = "1957",
+            optionD = "1972",
+            correctOption = 3,
+            explanationHindi = "भारत सरकार ने पुस्तकालय विज्ञान के क्षेत्र में डॉ. एस. आर. रंगनाथन के असाधारण योगदान का सम्मान करते हुए उन्हें वर्ष 1957 में 'पद्म श्री' से अलंकृत किया था।",
+            keyHighlight = "सेट 16: परीक्षा विशेष प्रश्न • डॉ. रंगनाथन पद्म श्री 1957"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "158. भारत के राष्ट्रीय ज्ञान आयोग (National Knowledge Commission - NKC) के अध्यक्ष कौन थे?",
+            optionA = "प्रणब मुखर्जी",
+            optionB = "नंदन नीलेकणि",
+            optionC = "रवि किशन",
+            optionD = "सैम पित्रोदा (Sam Pitroda)",
+            correctOption = 4,
+            explanationHindi = "भारत के राष्ट्रीय ज्ञान आयोग (National Knowledge Commission - NKC) का गठन 13 जून 2005 को किया गया था। सैम पित्रोदा (Sam Pitroda) को इसका अध्यक्ष नियुक्त किया गया था।",
+            keyHighlight = "सेट 16: परीक्षा विशेष प्रश्न • राष्ट्रीय ज्ञान आयोग सैम पित्रोदा"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "159. डॉ. रंगनाथन की सुप्रसिद्ध पुस्तक 'Five Laws of Library Science' (1931) का मूल प्रकाशक कौन है?",
+            optionA = "कलकत्ता विश्वविद्यालय (University of Calcutta)",
+            optionB = "भारतीय पुस्तकालय संघ (ILA)",
+            optionC = "मद्रास विश्वविद्यालय (Madras University)",
+            optionD = "मद्रास पुस्तकालय संघ (Madras Library Association - MALA)",
+            correctOption = 4,
+            explanationHindi = "डॉ. एस. आर. रंगनाथन की सबसे प्रसिद्ध पुस्तक 'फाइव लॉज़ ऑफ़ लाइब्रेरी साइंस' (पुस्तकालय विज्ञान के पाँच सूत्र) 1931 में मद्रास लाइब्रेरी एसोसिएशन (MALA) द्वारा प्रकाशित की गई थी।",
+            keyHighlight = "सेट 16: परीक्षा विशेष प्रश्न • Five Laws प्रकाशक MALA 1931"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "160. पुस्तकालय विज्ञान के पाँच सूत्रों में से कौन-सा सूत्र पुस्तकालय द्वारा पुरानी व अनुपयोगी पुस्तकों की छंटाई (Weeding of books) का समर्थन करता है?",
+            optionA = "प्रथम सूत्र (First Law)",
+            optionB = "तृतीय सूत्र (Third Law)",
+            optionC = "द्वितीय सूत्र (Second Law)",
+            optionD = "पंचम सूत्र (Fifth Law)",
+            correctOption = 4,
+            explanationHindi = "पाँचवाँ नियम कहता है कि 'पुस्तकालय एक वर्धनशील संस्था है' (Library is a growing organism)। इसी नियम के तहत पुरानी या अप्रचलित पुस्तकों को हटाने (weeding) की आवश्यकता होती है, ताकि नई और प्रासंगिक पुस्तकों के लिए शेल्फ पर जगह बनाई जा सके।",
+            keyHighlight = "सेट 16: परीक्षा विशेष प्रश्न • पंचम सूत्र व वीदिंग ऑफ बुक्स"
+        )
+    )
+
+    fun getSet17Questions(): List<QuestionEntity> = listOf(
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "161. यूके (UK) के ऐतिहासिक लाइब्रेरी एसोसिएशन (Library Association - LA) का नया परिवर्तित नाम क्या है?",
+            optionA = "बी. एल. ए. (BLA)",
+            optionB = "सिलिप (CILIP)",
+            optionC = "निस्केयर (NISCAIR)",
+            optionD = "सेल (SAIL)",
+            correctOption = 2,
+            explanationHindi = "यूके (UK) के लाइब्रेरी एसोसिएशन (LA) का नया नाम CILIP (Chartered Institute of Library and Information Professionals) है। यह नाम 2002 में इंस्टीट्यूट ऑफ इंफॉर्मेशन साइंटिस्ट्स (IIS) के साथ LA के विलय के बाद रखा गया।",
+            keyHighlight = "सेट 17: परीक्षा विशेष प्रश्न • CILIP 2002 यूके"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "162. भारत में 'विश्वविद्यालय अनुदान आयोग' (UGC) की औपचारिक स्थापना किस वर्ष हुई थी?",
+            optionA = "1948 में",
+            optionB = "1950 में",
+            optionC = "1952 में",
+            optionD = "1953 में (28 दिसंबर 1953)",
+            correctOption = 4,
+            explanationHindi = "भारत में विश्वविद्यालय अनुदान आयोग (UGC) की औपचारिक स्थापना 28 दिसंबर 1953 को हुई थी, जिसे बाद में नवंबर 1956 में संसद के एक अधिनियम द्वारा वैधानिक निकाय (Statutory Body) का दर्जा मिला।",
+            keyHighlight = "सेट 17: परीक्षा विशेष प्रश्न • UGC स्थापना 1953"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "163. निम्नलिखित में से किस भारतीय राज्य में अब तक कोई सार्वजनिक पुस्तकालय विधान या अधिनियम (Public Library Act) पारित नहीं हुआ है?",
+            optionA = "हरियाणा (Haryana)",
+            optionB = "ओडिशा (Orissa)",
+            optionC = "गुजरात (Gujarat)",
+            optionD = "पंजाब (Punjab)",
+            correctOption = 4,
+            explanationHindi = "भारत के 19 राज्यों में अब तक पब्लिक लाइब्रेरी एक्ट पारित हो चुका है। हरियाणा (1989), ओडिशा (2001) और गुजरात (2001) में यह कानून लागू है, लेकिन पंजाब राज्य में अब तक ऐसा कोई अधिनियम पारित नहीं हुआ है।",
+            keyHighlight = "सेट 17: परीक्षा विशेष प्रश्न • पंजाब में पुस्तकालय विधान नहीं"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "164. भारत के चार राष्ट्रीय डिपाजिटरी पुस्तकालयों में से एक 'कोनेमारा पब्लिक लाइब्रेरी' (Connemara Public Library) कहाँ स्थित है?",
+            optionA = "चेन्नई (तमिलनाडु)",
+            optionB = "हैदराबाद (तेलंगाना)",
+            optionC = "बेंगलुरु (कर्नाटक)",
+            optionD = "इंदौर (मध्य प्रदेश)",
+            correctOption = 1,
+            explanationHindi = "कोनेमारा पब्लिक लाइब्रेरी एग्मोर, चेन्नई (तमिलनाडु) में स्थित है। यह भारत की चार राष्ट्रीय डिपॉजिटरी लाइब्रेरियों में से एक है, जहाँ डिलीवरी ऑफ बुक्स एक्ट के तहत देश में प्रकाशित प्रत्येक पुस्तक और समाचार पत्र की एक प्रति प्राप्त होती है।",
+            keyHighlight = "सेट 17: परीक्षा विशेष प्रश्न • कोनेमारा पब्लिक लाइब्रेरी चेन्नई"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "165. डॉ. एस. आर. रंगनाथन को किस वर्ष में मद्रास विश्वविद्यालय का प्रथम पूर्णकालिक पुस्तकालयाध्यक्ष (Librarian) नियुक्त किया गया था?",
+            optionA = "1924 में",
+            optionB = "1930 में",
+            optionC = "1928 में",
+            optionD = "1935 में",
+            correctOption = 1,
+            explanationHindi = "डॉ. एस. आर. रंगनाथन ने जनवरी 1924 में मद्रास विश्वविद्यालय के प्रथम लाइब्रेरियन के रूप में कार्यभार संभाला था, जिसके बाद वे सितंबर 1924 में आधुनिक प्रशिक्षण हेतु लंदन स्कूल ऑफ लाइब्रेरियनशिप गए।",
+            keyHighlight = "सेट 17: परीक्षा विशेष प्रश्न • मद्रास विश्वविद्यालय लाइब्रेरियन 1924"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "166. भारत में 'राष्ट्रीय पुस्तकालय सप्ताह' (National Library Week) प्रतिवर्ष किस माह के दौरान मनाया जाता है?",
+            optionA = "अगस्त (August)",
+            optionB = "नवंबर (14 से 20 नवंबर)",
+            optionC = "सितंबर (September)",
+            optionD = "जनवरी (January)",
+            correctOption = 2,
+            explanationHindi = "भारत में हर वर्ष 14 से 20 नवंबर तक 'राष्ट्रीय पुस्तकालय सप्ताह' (National Library Week) मनाया जाता है। इसकी शुरुआत इंडियन लाइब्रेरी एसोसिएशन (ILA) द्वारा 1968 में की गई थी।",
+            keyHighlight = "सेट 17: परीक्षा विशेष प्रश्न • राष्ट्रीय पुस्तकालय सप्ताह 14-20 नवंबर"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "167. विश्व का सबसे बड़ा विश्वविद्यालय पुस्तकालय (Largest University Library in the World) कौन-सा है?",
+            optionA = "हार्वर्ड यूनिवर्सिटी लाइब्रेरी, यूएसए (Harvard University Library, USA)",
+            optionB = "न्यूयॉर्क यूनिवर्सिटी लाइब्रेरी, यूएसए",
+            optionC = "दिल्ली यूनिवर्सिटी लाइब्रेरी, भारत",
+            optionD = "मद्रास यूनिवर्सिटी लाइब्रेरी, भारत",
+            correctOption = 1,
+            explanationHindi = "हार्वर्ड यूनिवर्सिटी लाइब्रेरी (USA) दुनिया की सबसे बड़ी अकादमिक एवं विश्वविद्यालय पुस्तकालय प्रणाली है। इसमें करोड़ों मुद्रित पुस्तकों, दुर्लभ पांडुलिपियों और डिजिटल दस्तावेजों का विशाल संग्रह उपलब्ध है।",
+            keyHighlight = "सेट 17: परीक्षा विशेष प्रश्न • हार्वर्ड यूनिवर्सिटी लाइब्रेरी विश्व की सबसे बड़ी"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "168. भारत के किस राज्य में सर्वप्रथम 'मोबाइल लाइब्रेरी' (चल पुस्तकालय / Library on Wheels) का प्रारंभ किया गया था?",
+            optionA = "आंध्र प्रदेश (Andhra Pradesh)",
+            optionB = "मध्य प्रदेश (Madhya Pradesh)",
+            optionC = "तमिलनाडु (Tamil Nadu)",
+            optionD = "राजस्थान (Rajasthan)",
+            correctOption = 3,
+            explanationHindi = "भारत में मोबाइल लाइब्रेरी की शुरुआत का श्रेय डॉ. एस. आर. रंगनाथन को जाता है, जिन्होंने 1931 में मन्नारगुड़ी (तंजावुर, तमिलनाडु) में एक बैलगाड़ी (Library on Wheels) के माध्यम से ग्रामीण पाठकों हेतु इसकी शुरुआत की थी।",
+            keyHighlight = "सेट 17: परीक्षा विशेष प्रश्न • तमिलनाडु मोबाइल लाइब्रेरी 1931"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "169. कोठारी शिक्षा आयोग की रिपोर्ट (1964-66) ने मुख्य रूप से किस प्रकार के पुस्तकालयों के सुदृढ़ीकरण पर विशेष बल दिया था?",
+            optionA = "राष्ट्रीय पुस्तकालय (National Library)",
+            optionB = "विशिष्ट पुस्तकालय (Special Library)",
+            optionC = "कॉलेज और विश्वविद्यालय पुस्तकालय (Academic/University Libraries)",
+            optionD = "केवल सार्वजनिक पुस्तकालय (Public Library)",
+            correctOption = 3,
+            explanationHindi = "डॉ. डी. एस. कोठारी की अध्यक्षता में गठित शिक्षा आयोग (1964-66) ने उच्च शिक्षा प्रणाली को सुधारने के लिए कॉलेज और विश्वविद्यालय पुस्तकालयों के बजट, फैकल्टी दर्जा और भवन विकास पर विशेष ज़ोर दिया था।",
+            keyHighlight = "सेट 17: परीक्षा विशेष प्रश्न • कोठारी आयोग व विश्वविद्यालय पुस्तकालय"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "170. डॉ. एस. आर. रंगनाथन की पुस्तक 'Five Laws of Library Science' की भूमिका (Introduction) किसके द्वारा लिखी गई थी?",
+            optionA = "डब्ल्यू. सी. बेरविक सेयर्स (W. C. Berwick Sayers)",
+            optionB = "सर पी. एस. शिवस्वामी अय्यर",
+            optionC = "ए. नीलमघन",
+            optionD = "एम. ए. गोपीनाथ",
+            correctOption = 1,
+            explanationHindi = "डॉ. रंगनाथन की इस प्रसिद्ध पुस्तक की भूमिका (Introduction) उनके शिक्षक डब्ल्यू. सी. बेरविक सेयर्स (W. C. Berwick Sayers) ने लिखी थी, जबकि प्राक्कथन (Foreword) सर पी. एस. शिवस्वामी अय्यर द्वारा लिखा गया था।",
+            keyHighlight = "सेट 17: परीक्षा विशेष प्रश्न • भूमिका डब्ल्यू. सी. सेयर्स"
+        )
+    )
+
+    fun getSet18Questions(): List<QuestionEntity> = listOf(
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "171. प्रसिद्ध 'फार्मिंगटन योजना' (Farmington Plan, 1948) पुस्तकालय विज्ञान के किस क्षेत्र से संबंधित है?",
+            optionA = "पुस्तकालय विधान (Library Legislation)",
+            optionB = "लाइब्रेरी कैटलॉगिंग (Library Cataloguing)",
+            optionC = "पुस्तकालय सहयोग एवं सहकारी अर्जन (Library Cooperation / Cooperative Acquisition)",
+            optionD = "पुस्तकालय अनुक्रमण सेवा (Library Indexing Service)",
+            correctOption = 3,
+            explanationHindi = "'फार्मिंगटन योजना' 1948 में अमेरिकी शोध पुस्तकालयों (ARL) द्वारा शुरू किया गया एक सहकारी अधिग्रहण कार्यक्रम (Cooperative Acquisition) था, जो पुस्तकालय सहयोग (Library Cooperation) का एक उत्कृष्ट उदाहरण है।",
+            keyHighlight = "सेट 18: परीक्षा विशेष प्रश्न • फार्मिंगटन योजना 1948 पुस्तकालय सहयोग"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "172. पुस्तकालय में 'शेल्फ सूची' (Shelf List) मुख्य रूप से किस महत्वपूर्ण कार्य के संपादन में सर्वोच्च सुविधा प्रदान करती है?",
+            optionA = "वर्गीकरण (Classification)",
+            optionB = "पुस्तकों की छंटाई (Weeding out)",
+            optionC = "भंडार सत्यापन / भौतिक सत्यापन (Stock Verification)",
+            optionD = "प्रलेखन (Documentation)",
+            correctOption = 3,
+            explanationHindi = "शेल्फ लिस्ट (Shelf list) पुस्तकालय के संग्रह का वह रिकॉर्ड है जिसमें कार्ड ठीक उसी क्रम में व्यवस्थित होते हैं जिस क्रम में किताबें अलमारियों (shelves) पर रखी होती हैं। इसलिए यह भंडार सत्यापन (Stock Verification) में सबसे ज्यादा उपयोगी होती है।",
+            keyHighlight = "सेट 18: परीक्षा विशेष प्रश्न • शेल्फ लिस्ट भंडार सत्यापन"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "173. ब्रिटिश पुस्तकालयों में 'ओपन एक्सेस सिस्टम' (मुक्त द्वार प्रवेश प्रणाली) के ऐतिहासिक प्रवर्तक कौन माने जाते हैं?",
+            optionA = "जेम्स डफ ब्राउन (J.D. Brown)",
+            optionB = "हेनरी ला फॉनटेन",
+            optionC = "ए. नीलमघन",
+            optionD = "एम. ए. गोपीनाथ",
+            correctOption = 1,
+            explanationHindi = "जेम्स डफ ब्राउन (James Duff Brown) एक ब्रिटिश लाइब्रेरियन थे जिन्हें 1894 में क्लर्कनवेल पब्लिक लाइब्रेरी (लंदन) में 'ओपन एक्सेस' (पुस्तकों तक पाठकों की सीधी पहुँच) प्रणाली शुरू करने का श्रेय दिया जाता है।",
+            keyHighlight = "सेट 18: परीक्षा विशेष प्रश्न • जे. डी. ब्राउन ओपन एक्सेस"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "174. प्रशासनिक प्रबंधन में 'स्टाफिंग' (Staffing) मुख्य रूप से किन संसाधनों को प्रदान करने और बनाए रखने से संबंधित है?",
+            optionA = "भौतिक संसाधन (Physical Resources)",
+            optionB = "तकनीकी संसाधन (Technical Resources)",
+            optionC = "मानव संसाधन (Human Resources / योग्य कर्मचारी)",
+            optionD = "वित्तीय संसाधन (Financial Resources)",
+            correctOption = 3,
+            explanationHindi = "स्टाफिंग (Staffing) प्रबंधन प्रक्रिया का वह हिस्सा है जो किसी भी संगठन या पुस्तकालय में योग्य कर्मचारियों (मानव संसाधनों / Human Resources) की भर्ती, चयन, प्रशिक्षण, पदोन्नति और उन्हें बनाए रखने से संबंधित है।",
+            keyHighlight = "सेट 18: परीक्षा विशेष प्रश्न • स्टाफिंग मानव संसाधन"
+        ),
+        QuestionEntity(
+            category = DefaultQuestions.UNIT_6,
+            questionHindi = "175. डॉ. रंगनाथन के यूजीसी स्टाफिंग फॉर्मूले के अनुसार विश्वविद्यालय पुस्तकालय के 'आवधिक अनुभाग' (Periodical Section) के लिए प्रति व्यक्ति कार्य की वार्षिक मात्रा क्या निर्धारित है?",
+            optionA = "600 पत्रिकाएं (Periodicals)",
+            optionB = "500 चालू पत्रिकाएं (500 Current Periodicals)",
+            optionC = "300 पत्रिकाएं",
+            optionD = "1000 पत्रिकाएं",
+            correctOption = 2,
+            explanationHindi = "डॉ. एस. आर. रंगनाथन द्वारा तैयार किए गए यूजीसी स्टाफिंग फॉर्मूले के अनुसार, पुस्तकालय के पीरियोडिकल सेक्शन (पत्रिका अनुभाग) में एक व्यक्ति द्वारा प्रति वर्ष 500 चालू पत्रिकाओं (500 Current Periodicals) के प्रबंधन का मानक तय किया गया है।",
+            keyHighlight = "सेट 18: परीक्षा विशेष प्रश्न • यूजीसी स्टाफिंग फॉर्मूला 500 पत्रिकाएं"
+        )
+    )
+
     fun getAllQuestions(): List<QuestionEntity> {
         return getSet1Questions() +
                 getSet2Questions() +
@@ -916,6 +1991,174 @@ object Unit6Questions {
                 getSet5Questions() +
                 getSet6Questions() +
                 getSet7Questions() +
-                getSet8Questions()
+                getSet8Questions() +
+                getSet9Questions() +
+                getSet10Questions() +
+                getSet11Questions() +
+                getSet12Questions() +
+                getSet13Questions() +
+                getSet14Questions() +
+                getSet15Questions() +
+                getSet16Questions() +
+                getSet17Questions() +
+                getSet18Questions()
+    }
+
+    data class PracticeSetInfo(
+        val setNumber: Int,
+        val title: String,
+        val tag: String,
+        val subtitle: String,
+        val notesSummary: String,
+        val questions: List<QuestionEntity>
+    )
+
+    fun getAllSetsInfo(): List<PracticeSetInfo> {
+        return listOf(
+            PracticeSetInfo(
+                setNumber = 1,
+                title = "सेट 1: पुस्तकालय विज्ञान की मूलभूत अवधारणा",
+                tag = "प्रैक्टिस सेट 01",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "इस सेट में पुस्तकालय शब्द की व्युत्पत्ति, सामाजिक संस्थान, NAPLIS 1985, ओपन एक्सेस और राष्ट्रीय ज्ञान आयोग पर आधारित 10 महत्वपूर्ण प्रश्न संकलित हैं।",
+                questions = getSet1Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 2,
+                title = "सेट 2: पुस्तकालय आधार एवं पाँच सूत्र",
+                tag = "प्रैक्टिस सेट 02",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "डॉ. एस. आर. रंगनाथन द्वारा 1928 में प्रतिपादित Five Laws of Library Science पर आधारित 10 विशिष्ट परीक्षा उपयोगी प्रश्न।",
+                questions = getSet2Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 3,
+                title = "सेट 3: सार्वजनिक पुस्तकालय एवं विधान",
+                tag = "प्रैक्टिस सेट 03",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "यूनेस्को पब्लिक लाइब्रेरी मेनिफेस्टो, भारत के पुस्तकालय अधिनियम, सेस एवं RRRLF कोलकाता पर 10 बहुविकल्पीय प्रश्न।",
+                questions = getSet3Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 4,
+                title = "सेट 4: UNESCO, IFLA एवं समितियां",
+                tag = "प्रैक्टिस सेट 04",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "IFLA, UGC पुस्तकालय समिति 1957, राधाकृष्णन व कोठारी आयोग, INFLIBNET और NML पर 10 महत्वपूर्ण प्रश्न।",
+                questions = getSet4Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 5,
+                title = "सेट 5: विशिष्ट पुस्तकालय एवं सूचना सेवाएं",
+                tag = "प्रैक्टिस सेट 05",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "विशिष्ट पुस्तकालय, SDI सेवा (H.P. Luhn), CAS, DESIDOC, SENDOC एवं अनुवाद सेवाओं पर 10 प्रश्न।",
+                questions = getSet5Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 6,
+                title = "सेट 6: पुस्तकालयों के प्रकार एवं संगठन",
+                tag = "प्रैक्टिस सेट 06",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "शैक्षणिक, विश्वविद्यालय, डिजिटल पुस्तकालय (NDLI), लाइब्रेरी ऑफ कांग्रेस एवं ब्रिटिश लाइब्रेरी पर 10 प्रश्न।",
+                questions = getSet6Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 7,
+                title = "सेट 7: डॉ. एस. आर. रंगनाथन एवं योगदान",
+                tag = "प्रैक्टिस सेट 07",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "डॉ. रंगनाथन की जीवनी, 12 अगस्त राष्ट्रीय लाइब्रेरियन दिवस, CC 1933, CCC 1934, PMEST, DRTC एवं पद्मश्री सम्मान पर 10 प्रश्न।",
+                questions = getSet7Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 8,
+                title = "सेट 8: राष्ट्रीय पुस्तकालय एवं डिलीवरी एक्ट",
+                tag = "प्रैक्टिस सेट 08",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "कलकत्ता पब्लिक लाइब्रेरी 1836, इंपीरियल लाइब्रेरी, राष्ट्रीय पुस्तकालय 1948, डिलीवरी ऑफ बुक्स एक्ट 1954 व INB पर 10 प्रश्न।",
+                questions = getSet8Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 9,
+                title = "सेट 9: पुस्तकालय वर्गीकरण एवं पद्धतियां",
+                tag = "प्रैक्टिस सेट 09",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "DDC (1876), कोलन क्लासिफिकेशन (CC 1933), UDC (1895), फीनिक्स शेड्यूल, PMEST योजक चिह्न, वर्गीकरण के तीन धरातल एवं BC (ब्लिस) पर 10 महत्वपूर्ण प्रश्न।",
+                questions = getSet9Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 10,
+                title = "सेट 10: पुस्तकालय सूचीकरण एवं मेटाडेटा",
+                tag = "प्रैक्टिस सेट 10",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "क्लासिफाइड कैटलॉग कोड (CCC) के 6 अनुभाग, AACR-2, MARC 21 टैग, डबलिन कोर 15 तत्व, OPAC, ISBD एवं सी. ए. कटर पर 10 महत्वपूर्ण प्रश्न।",
+                questions = getSet10Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 11,
+                title = "सेट 11: पुस्तकालय प्रबंधन एवं प्रशासन",
+                tag = "प्रैक्टिस सेट 11",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "POSDCORB, वैज्ञानिक प्रबंधन (टेलर), हेनरी फेयोल के 14 सिद्धांत, शून्य आधारित बजट (ZBB), UGC पुस्तकालय समिति 1957, PPBS, वीडिंग आउट एवं TQM पर 10 प्रश्न।",
+                questions = getSet11Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 12,
+                title = "सेट 12: अर्जन, परिसंचरण एवं संरक्षण",
+                tag = "प्रैक्टिस सेट 12",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "डेवी व ड्रूरी का पुस्तक चयन सिद्धांत, ब्राउन व नेवार्क चार्जिंग सिस्टम, 16x13 परिग्रहण रजिस्टर, कीट नियंत्रण, चमड़े की जिल्दसाजी व RFID स्टॉक वेरिफिकेशन पर 10 प्रश्न।",
+                questions = getSet12Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 13,
+                title = "सेट 13: संदर्भ सेवा, सूचना स्रोत एवं अनुक्रमण",
+                tag = "प्रैक्टिस सेट 13",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "तैयार व दीर्घकालीन संदर्भ सेवा, प्राथमिक/द्वितीयक/तृतीयक स्रोत, एनसाइक्लोपीडिया ब्रिटानिका, गजेटियर, KWIC (लुहन), PRECIS (ऑस्टिन), POPSI (भट्टाचार्य) व पाठक दीक्षा पर 10 प्रश्न।",
+                questions = getSet13Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 14,
+                title = "सेट 14: पुस्तकालय स्वचालन, RFID एवं नेटवर्क",
+                tag = "प्रैक्टिस सेट 14",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "कोहा (Koha), सोउल (SOUL), डी-स्पेस (DSpace), RFID तकनीक, INFLIBNET गांधीनगर, DELNET, शोधगंगा, NDLI (IIT खड़गपुर) एवं ई-शोधसिंधु पर 10 प्रश्न।",
+                questions = getSet14Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 15,
+                title = "सेट 15: बिहार पुस्तकालय इतिहास एवं अधिनियम",
+                tag = "प्रैक्टिस सेट 15",
+                subtitle = "10 बहुविकल्पीय अभ्यास प्रश्न (MCQs)",
+                notesSummary = "खुदा बख्श ओरिएंटल लाइब्रेरी (1891), सिन्हा लाइब्रेरी पटना (1924), बिहार पुस्तकालय अधिनियम 2008 (14वां राज्य), नालंदा धर्मगंज (रत्नसागर, रत्नोदधि, रत्नरंजक), विक्रमशिला व शिक्षा विभाग पर 10 प्रश्न।",
+                questions = getSet15Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 16,
+                title = "सेट 16: परीक्षा विशेष अभ्यास सेट 01",
+                tag = "प्रैक्टिस सेट 16",
+                subtitle = "10 बहुविकल्पीय परीक्षा प्रश्न (MCQs)",
+                notesSummary = "मौरिस ग्वायर व डॉ. रंगनाथन, हेनरी ला फॉनटेन (नोबेल 1913), दिल्ली पब्लिक लाइब्रेरी (UNESCO 1951), अदृश्य कॉलेज, UAP (1973), ISORID, पद्मश्री 1957, NKC, Five Laws (MALA 1931) व 5वां सूत्र।",
+                questions = getSet16Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 17,
+                title = "सेट 17: परीक्षा विशेष अभ्यास सेट 02",
+                tag = "प्रैक्टिस सेट 17",
+                subtitle = "10 बहुविकल्पीय परीक्षा प्रश्न (MCQs)",
+                notesSummary = "CILIP (UK 2002), UGC (1953), पंजाब (पुस्तकालय विधान रहित), कोनेमारा पब्लिक लाइब्रेरी (चेन्नई), मद्रास वि.वि. लाइब्रेरियन 1924, राष्ट्रीय पुस्तकालय सप्ताह (14-20 नवंबर), हार्वर्ड वि.वि. पुस्तकालय, मोबाइल लाइब्रेरी (तमिलनाडु 1931), कोठारी आयोग व डब्ल्यू. सी. सेयर्स।",
+                questions = getSet17Questions()
+            ),
+            PracticeSetInfo(
+                setNumber = 18,
+                title = "सेट 18: परीक्षा विशेष अभ्यास सेट 03",
+                tag = "प्रैक्टिस सेट 18",
+                subtitle = "5 बहुविकल्पीय परीक्षा प्रश्न (MCQs)",
+                notesSummary = "फार्मिंगटन योजना (1948 पुस्तकालय सहयोग), शेल्फ सूची (भंडार सत्यापन), जे. डी. ब्राउन (ओपन एक्सेस 1894), स्टाफिंग (मानव संसाधन) एवं यूजीसी आवधिक अनुभाग फॉर्मूला (500 पत्रिकाएं)।",
+                questions = getSet18Questions()
+            )
+        )
     }
 }
