@@ -136,11 +136,10 @@ class QuestionRepository(
     }
 
     /**
-     * Smart Non-Destructive Question Sync.
-     * Guarantees that even after app updates with new questions:
-     * 1. Old user progress (attempt counts, correct counts, mistakes, and bookmarks) is 100% PRESERVED.
-     * 2. New questions are seamlessly added to the database.
-     * 3. Question IDs remain consistent and backed up in UserProgressStore.
+     * Sync the embedded question bank without stripping any units.
+     *
+     * This keeps the full question set available to the app, including Units 2-6,
+     * while preserving user progress for any existing question entries.
      */
     suspend fun syncAllQuestionsAndPreserveProgress() = withContext(Dispatchers.IO) {
         ensureUnit1Materials()
@@ -159,8 +158,6 @@ class QuestionRepository(
             val savedProgress = progressStore.getProgress(key)
 
             if (existing != null) {
-                // Question already exists in database.
-                // PRESERVE user progress (attempts, correct count, last option, bookmark)!
                 val attempted = maxOf(existing.timesAttempted, savedProgress?.timesAttempted ?: 0)
                 val correct = maxOf(existing.timesCorrect, savedProgress?.timesCorrect ?: 0)
                 val lastOption = if (existing.lastAttemptOption > 0) existing.lastAttemptOption else (savedProgress?.lastAttemptOption ?: 0)
@@ -183,12 +180,10 @@ class QuestionRepository(
                 if (updated != existing) {
                     toUpdate.add(updated)
                 }
-                // Keep SharedPreferences in sync
                 if (attempted > 0 || bookmarked) {
                     progressStore.saveProgress(key, attempted, correct, lastOption, bookmarked)
                 }
             } else {
-                // BRAND NEW question from app update!
                 val attempted = savedProgress?.timesAttempted ?: 0
                 val correct = savedProgress?.timesCorrect ?: 0
                 val lastOption = savedProgress?.lastAttemptOption ?: 0
@@ -212,16 +207,5 @@ class QuestionRepository(
         for (q in toUpdate) {
             questionDao.updateQuestion(q)
         }
-
-        // Remove questions for Units 2, 3, 4, and 5 since user requested DPP removal for them
-        questionDao.deleteQuestionsByCategories(
-            listOf(
-                DefaultQuestions.UNIT_2,
-                DefaultQuestions.UNIT_3,
-                DefaultQuestions.UNIT_4,
-                DefaultQuestions.UNIT_5
-            )
-        )
-        questionDao.deleteUnits2To5Questions()
     }
 }
