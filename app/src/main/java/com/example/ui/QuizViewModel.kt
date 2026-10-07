@@ -34,7 +34,6 @@ sealed interface AppScreen {
     data object QuestionBank : AppScreen
     data object Bookmarks : AppScreen
     data object Mistakes : AppScreen
-    data object SignIn : AppScreen
     data class StudyMode(val category: String? = null) : AppScreen
     data class UnitSubtopics(val category: String) : AppScreen
 }
@@ -75,15 +74,11 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: QuestionRepository
     private val progressStore: UserProgressStore
-    private val cloudSyncManager: CloudSyncManager
-    private val authManager: AuthManager
     private val networkMonitor: NetworkMonitor
 
     init {
         val database = AppDatabase.getDatabase(application, viewModelScope)
         progressStore = UserProgressStore(application)
-        cloudSyncManager = CloudSyncManager(application)
-        authManager = AuthManager(application)
         networkMonitor = NetworkMonitor(application)
 
         repository = QuestionRepository(
@@ -95,24 +90,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
         viewModelScope.launch {
             repository.syncAllQuestionsAndPreserveProgress()
-
-            // If user is already logged in on launch, sync with cloud
-            val user = authManager.currentUser.value
-            if (user != null) {
-                restoreAndSyncCloudData(user.userId)
-            }
-        }
-
-        // Listen for network connectivity: when device comes online, sync queued progress to cloud!
-        viewModelScope.launch {
-            networkMonitor.isOnline.collect { online ->
-                if (online) {
-                    val user = authManager.currentUser.value
-                    if (user != null) {
-                        syncWithCloudNow()
-                    }
-                }
-            }
         }
     }
 
@@ -122,9 +99,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     private val screenHistory = mutableListOf<AppScreen>()
 
-    // Network & Authentication
+    // Network
     val isOnline: StateFlow<Boolean> get() = networkMonitor.isOnline
-    val currentUser: StateFlow<UserSession?> get() = authManager.currentUser
 
     // Data streams from Room
     val allQuestions: StateFlow<List<QuestionEntity>> = repository.allQuestions
@@ -179,128 +155,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _statusMessage.value = null
     }
 
-    // Sign in with Google (1-tap via Credential Manager)
-    fun signInWithGoogle(onComplete: (Boolean, String?) -> Unit) {
-        viewModelScope.launch {
-            when (val result = authManager.signInWithGoogle()) {
-                is AuthResult.Success -> {
-                    restoreAndSyncCloudData(result.user.userId)
-                    onComplete(true, null)
-                }
-                is AuthResult.Error -> onComplete(false, result.message)
-                is AuthResult.Cancelled -> onComplete(false, null)
-            }
-        }
-    }
-
-    // Sign in or Register with Student ID & Password
-    fun signInWithStudentId(
-        studentId: String,
-        password: String,
-        isRegister: Boolean,
-        onComplete: (Boolean, String?) -> Unit
-    ) {
-        viewModelScope.launch {
-            when (val result = authManager.signInWithStudentCredentials(studentId, password, isRegister)) {
-                is AuthResult.Success -> {
-                    restoreAndSyncCloudData(result.user.userId)
-                    onComplete(true, null)
-                }
-                is AuthResult.Error -> onComplete(false, result.message)
-                is AuthResult.Cancelled -> onComplete(false, null)
-            }
-        }
-    }
-
-    fun signOut() {
-        authManager.clearSession()
-        _statusMessage.value = "सफलतापूर्वक लॉग आउट हुआ।"
-    }
-
-    /**
-     * Restore cloud progress for the authenticated user and sync local state with Firestore.
-     */
-    private suspend fun restoreAndSyncCloudData(userId: String) = withContext(Dispatchers.IO) {
-        try {
-            val cloudBundle = cloudSyncManager.restoreProgressFromCloud(userId)
-            if (cloudBundle != null && cloudBundle.progressItems.isNotEmpty()) {
-                val dbQuestions = repository.getAllQuestionsList()
-                val dbMap = dbQuestions.associateBy { it.questionHindi.trim() }
-
-                for (item in cloudBundle.progressItems) {
-                    val key = item.questionKey.trim()
-                    progressStore.saveProgress(
-                        questionHindi = key,
-                        timesAttempted = item.timesAttempted,
-                        timesCorrect = item.timesCorrect,
-                        lastAttemptOption = item.lastAttemptOption,
-                        isBookmarked = item.isBookmarked
-                    )
-
-                    val q = dbMap[key]
-                    if (q != null) {
-                        val updated = q.copy(
-                            timesAttempted = maxOf(q.timesAttempted, item.timesAttempted),
-                            timesCorrect = maxOf(q.timesCorrect, item.timesCorrect),
-                            lastAttemptOption = if (item.lastAttemptOption > 0) item.lastAttemptOption else q.lastAttemptOption,
-                            isBookmarked = q.isBookmarked || item.isBookmarked
-                        )
-                        if (updated != q) {
-                            repository.updateQuestion(updated)
-                        }
-                    }
-                }
-                Log.d("QuizViewModel", "Restored ${cloudBundle.progressItems.size} items from cloud for $userId")
-            }
-
-            // Push current local progress to cloud as well
-            syncWithCloudNow()
-        } catch (e: Exception) {
-            Log.w("QuizViewModel", "Error during cloud restore: ${e.message}")
-        }
-    }
-
-    /**
-     * Trigger explicit or automated cloud sync of progress.
-     */
-    fun syncWithCloudNow() {
-        val user = authManager.currentUser.value ?: return
-        viewModelScope.launch(Dispatchers.IO) {
-            val allQ = repository.getAllQuestionsList()
-            val attempted = allQ.count { it.timesAttempted > 0 }
-            val correct = allQ.sumOf { it.timesCorrect }
-            val attemptsTotal = allQ.sumOf { it.timesAttempted }
-            val accuracy = if (attemptsTotal > 0) (correct * 100) / attemptsTotal else 0
-
-            val allProgress = progressStore.getAllProgress().toMutableMap()
-            for (q in allQ) {
-                if (q.timesAttempted > 0 || q.isBookmarked) {
-                    val key = q.questionHindi.trim()
-                    val existing = allProgress[key]
-                    allProgress[key] = QuestionProgressRecord(
-                        timesAttempted = maxOf(q.timesAttempted, existing?.timesAttempted ?: 0),
-                        timesCorrect = maxOf(q.timesCorrect, existing?.timesCorrect ?: 0),
-                        lastAttemptOption = if (q.lastAttemptOption > 0) q.lastAttemptOption else (existing?.lastAttemptOption ?: 0),
-                        isBookmarked = q.isBookmarked || (existing?.isBookmarked == true),
-                        lastUpdatedMillis = System.currentTimeMillis()
-                    )
-                }
-            }
-
-            cloudSyncManager.syncProgressToCloud(
-                userId = user.userId,
-                displayName = user.displayName,
-                emailOrId = user.emailOrId,
-                stats = UserSummaryStats(
-                    totalAttempted = attempted,
-                    totalCorrect = correct,
-                    accuracy = accuracy
-                ),
-                progressMap = allProgress
-            )
-        }
-    }
-
     // Helper to guarantee every question in an active quiz has a distinct positive ID
     private fun List<QuestionEntity>.ensureUniqueIds(): List<QuestionEntity> {
         val seenIds = mutableSetOf<Long>()
@@ -335,7 +189,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 _quizState.value = _quizState.value.copy(questions = updated)
             }
-            syncWithCloudNow()
         }
     }
 
@@ -513,11 +366,10 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         currentAnswers[current.id] = optionNumber
         _quizState.value = _quizState.value.copy(userAnswers = currentAnswers)
 
-        // Record attempt in database and sync
+        // Record attempt in database
         if (current.id > 0L) {
             viewModelScope.launch {
                 repository.recordQuestionAttempt(current.id, optionNumber)
-                syncWithCloudNow()
             }
         }
     }
@@ -558,7 +410,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 wrongCount = state.wrongAnswersCount
             )
             repository.saveQuizAttempt(attempt)
-            syncWithCloudNow()
         }
 
         while (screenHistory.isNotEmpty() && screenHistory.last() is AppScreen.QuizPlay) {
